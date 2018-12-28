@@ -1,5 +1,7 @@
 package com.example.jy.jyweather.entity;
 
+import com.example.jy.jyweather.util.DrawableUtil;
+import com.example.jy.jyweather.util.StringUtil;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -73,8 +75,12 @@ public class DailyForecastBean implements Serializable {
     @SerializedName("wind_spd")
     private String windSpeed;       //风速
 
+    private String weekday;
+
+    private int icon;
+
     public String getDate() {
-        return date;
+        return date.substring(date.indexOf("-") + 1, date.length());
     }
 
     public String getRelativuHum() {
@@ -134,11 +140,11 @@ public class DailyForecastBean implements Serializable {
     }
 
     public String getMaxTemp() {
-        return maxTemp;
+        return maxTemp.concat("°");
     }
 
     public String getMinTemp() {
-        return minTemp;
+        return minTemp.concat("°");
     }
 
     public String getWindDegree() {
@@ -155,5 +161,13 @@ public class DailyForecastBean implements Serializable {
 
     public String getWindSpeed() {
         return windSpeed;
+    }
+
+    public String getWeekday() {
+        return StringUtil.getWeekday(date);
+    }
+
+    public int getIcon() {
+        return DrawableUtil.getCondIcon(dayCondCode);
     }
 }

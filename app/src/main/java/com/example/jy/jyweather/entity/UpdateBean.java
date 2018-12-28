@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 /**
  * Update实体类
- *
+ * <p>
  * Created by Yang on 2017/12/11.
  */
 public class UpdateBean {
@@ -16,7 +16,7 @@ public class UpdateBean {
     private String utc; //UTC时间
 
     public String getLoc() {
-        return loc;
+        return loc.split(" ")[1];
     }
 
     public String getUtc() {

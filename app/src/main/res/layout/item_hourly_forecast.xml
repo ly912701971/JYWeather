@@ -1,52 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:gravity="center_horizontal"
-    android:orientation="vertical"
-    android:paddingLeft="8dp"
-    android:paddingRight="8dp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:id="@+id/tv_update_time"
+    <data>
+
+        <variable
+            name="hourlyForecast"
+            type="com.example.jy.jyweather.entity.HourlyForecastBean"/>
+    </data>
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="17:59"/>
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp">
 
-    <ImageView
-        android:id="@+id/iv_weather_icon"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginTop="4dp"
-        android:src="@drawable/ic_home"/>
+        <TextView
+            android:id="@+id/tv_update_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{hourlyForecast.time}"/>
 
-    <TextView
-        android:id="@+id/tv_temp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="13°"/>
+        <ImageView
+            android:id="@+id/iv_weather_icon"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="4dp"
+            app:imageId="@{hourlyForecast.icon}"/>
 
-    <TextView
-        android:id="@+id/tv_cond"
-        android:layout_width="76dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:gravity="center"
-        android:text="多云"/>
+        <TextView
+            android:id="@+id/tv_temp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@{hourlyForecast.temperature}"/>
 
-    <TextView
-        android:id="@+id/tv_wind_dir"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="西北风"/>
+        <TextView
+            android:id="@+id/tv_cond"
+            android:layout_width="76dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:gravity="center"
+            android:text="@{hourlyForecast.condText}"/>
 
-    <TextView
-        android:id="@+id/tv_wind_sc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="微风"/>
-</LinearLayout>
+        <TextView
+            android:id="@+id/tv_wind_dir"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@{hourlyForecast.windDirection}"/>
+
+        <TextView
+            android:id="@+id/tv_wind_sc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@{hourlyForecast.windScale}"/>
+    </LinearLayout>
+</layout>

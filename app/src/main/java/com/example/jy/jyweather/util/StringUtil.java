@@ -1,7 +1,5 @@
 package com.example.jy.jyweather.util;
 
-import android.annotation.SuppressLint;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -46,9 +44,14 @@ public class StringUtil {
         return "弱";
     }
 
-    public static String getWeekday(String dateText) throws ParseException {
+    public static String getWeekday(String dateText) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
-        Date date = format.parse(dateText);
+        Date date = null;
+        try {
+            date = format.parse(dateText);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         return weekdays[calendar.get(Calendar.DAY_OF_WEEK) - 1];

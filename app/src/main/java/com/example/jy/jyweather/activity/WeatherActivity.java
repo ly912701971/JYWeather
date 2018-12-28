@@ -4,24 +4,28 @@ import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.example.jy.jyweather.BR;
 import com.example.jy.jyweather.JYApplication;
 import com.example.jy.jyweather.R;
-import com.example.jy.jyweather.adapter.DailyForecastAdapter;
-import com.example.jy.jyweather.adapter.HourlyForecastAdapter;
+import com.example.jy.jyweather.adapter.CommonAdapter;
+import com.example.jy.jyweather.databinding.ActivityWeatherBinding;
+import com.example.jy.jyweather.databinding.WeatherDailyForecastBinding;
+import com.example.jy.jyweather.databinding.WeatherHeaderBinding;
+import com.example.jy.jyweather.databinding.WeatherHourlyForecastBinding;
+import com.example.jy.jyweather.databinding.WeatherLifeSuggestionBinding;
+import com.example.jy.jyweather.databinding.WeatherNowBinding;
 import com.example.jy.jyweather.entity.BasicBean;
 import com.example.jy.jyweather.entity.DailyForecastBean;
 import com.example.jy.jyweather.entity.HourlyForecastBean;
@@ -31,94 +35,17 @@ import com.example.jy.jyweather.entity.UpdateBean;
 import com.example.jy.jyweather.entity.WeatherBean;
 import com.example.jy.jyweather.network.NetworkInterface;
 import com.example.jy.jyweather.service.AutoUpdateService;
-import com.example.jy.jyweather.util.DrawableUtil;
 import com.example.jy.jyweather.util.JsonUtil;
 import com.example.jy.jyweather.util.NotificationUtil;
-import com.example.jy.jyweather.util.StringUtil;
 
 import java.io.IOException;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-public class MainActivity extends BaseActivity implements View.OnClickListener {
-
-    @BindView(R.id.tv_now_temp)
-    TextView tvNowTemp;
-    @BindView(R.id.tv_now_cond)
-    TextView tvNowCond;
-    @BindView(R.id.tv_now_wind_dir)
-    TextView tvNowWindDir;
-    @BindView(R.id.tv_now_wind_sc)
-    TextView tvNowWindSc;
-    @BindView(R.id.tv_now_hum)
-    TextView tvNowHum;
-    @BindView(R.id.iv_home)
-    ImageView ivHome;
-    @BindView(R.id.tv_city)
-    TextView tvCity;
-    @BindView(R.id.iv_setting)
-    ImageView ivSetting;
-    @BindView(R.id.ll_brief)
-    LinearLayout llBrief;
-    @BindView(R.id.rv_hourly)
-    RecyclerView rvHourly;
-    @BindView(R.id.iv_now_icon)
-    ImageView ivNowIcon;
-    @BindView(R.id.rv_daily)
-    RecyclerView rvDaily;
-    @BindView(R.id.srl_refresh)
-    SwipeRefreshLayout srlRefresh;
-    @BindView(R.id.tv_air)
-    TextView tvAir;
-    @BindView(R.id.tv_comfort)
-    TextView tvComfort;
-    @BindView(R.id.tv_car_wash)
-    TextView tvCarWash;
-    @BindView(R.id.tv_dress)
-    TextView tvDress;
-    @BindView(R.id.tv_flu)
-    TextView tvFlu;
-    @BindView(R.id.tv_sport)
-    TextView tvSport;
-    @BindView(R.id.tv_travel)
-    TextView tvTravel;
-    @BindView(R.id.tv_uv)
-    TextView tvUv;
-    @BindView(R.id.ll_air)
-    LinearLayout llAir;
-    @BindView(R.id.ll_comfort)
-    LinearLayout llComfort;
-    @BindView(R.id.ll_car_wash)
-    LinearLayout llCarWash;
-    @BindView(R.id.ll_dress)
-    LinearLayout llDress;
-    @BindView(R.id.ll_flu)
-    LinearLayout llFlu;
-    @BindView(R.id.ll_sport)
-    LinearLayout llSport;
-    @BindView(R.id.ll_travel)
-    LinearLayout llTravel;
-    @BindView(R.id.ll_uv)
-    LinearLayout llUv;
-    @BindView(R.id.tv_update_time)
-    TextView tvUpdateTime;
-    @BindView(R.id.ll_main_background)
-    LinearLayout llMainBackground;
-    @BindView(R.id.ll_now)
-    LinearLayout llNow;
-    @BindView(R.id.ll_hourly_forecast)
-    LinearLayout llHourlyForecast;
-    @BindView(R.id.ll_daily_forecast)
-    LinearLayout llDailyForecast;
-    @BindView(R.id.ll_life_suggestion)
-    LinearLayout llLifeSuggestion;
-    @BindView(R.id.sv_scroll)
-    ScrollView svScroll;
+public class WeatherActivity extends BaseActivity implements View.OnClickListener {
 
     private BasicBean basic;
     private NowBean now;
@@ -130,13 +57,23 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private MyHandler handler = new MyHandler();
     private String mCity;
 
+    private ActivityWeatherBinding weatherBinding;
+    private WeatherHeaderBinding headerBinding;
+    private WeatherNowBinding nowBinding;
+    private WeatherHourlyForecastBinding hourlyBinding;
+    private WeatherDailyForecastBinding dailyBinding;
+    private WeatherLifeSuggestionBinding lifeBinding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStatusBarTrans();
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
-
+        weatherBinding = DataBindingUtil.setContentView(this, R.layout.activity_weather);
+        headerBinding = weatherBinding.headerPart;
+        nowBinding = weatherBinding.nowPart;
+        hourlyBinding = weatherBinding.hourlyForecastPart;
+        dailyBinding = weatherBinding.dailyForecastPart;
+        lifeBinding = weatherBinding.lifeSuggestionPart;
         init();
     }
 
@@ -144,22 +81,22 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
      * 初始化
      */
     private void init() {
-        ivHome.setOnClickListener(this);
-        ivSetting.setOnClickListener(this);
-        llBrief.setOnClickListener(this);
-        tvNowTemp.setOnClickListener(this);
-        tvCity.setOnClickListener(this);
+        headerBinding.ivHome.setOnClickListener(this);
+        headerBinding.ivSetting.setOnClickListener(this);
+        headerBinding.tvCity.setOnClickListener(this);
+        nowBinding.llBrief.setOnClickListener(this);
+        nowBinding.tvNowTemp.setOnClickListener(this);
 
         mCity = getIntent().getStringExtra("city");
         getData(mCity);
 
-        srlRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        weatherBinding.srlRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 if (!isNetworkAvailable()) {
-                    showSnackBar(srlRefresh, getString(R.string.network_unavailable));
+                    showSnackBar(weatherBinding.srlRefresh, getString(R.string.network_unavailable));
                 } else {
-                    srlRefresh.setRefreshing(true);
+                    weatherBinding.srlRefresh.setRefreshing(true);
                     getData(mCity);
                 }
             }
@@ -174,12 +111,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
      * 获取数据
      */
     private void getData(final String city) {
-        srlRefresh.setRefreshing(true);
+        weatherBinding.srlRefresh.setRefreshing(true);
         String dataText = JYApplication.getInstance().getCityDB().getData(city);
 
         if (!isNetworkAvailable()) {
-            srlRefresh.setRefreshing(false);
-            showSnackBar(srlRefresh, getString(R.string.network_unavailable));
+            weatherBinding.srlRefresh.setRefreshing(false);
+            showSnackBar(weatherBinding.srlRefresh, getString(R.string.network_unavailable));
             if (dataText != null) {
                 handleData(dataText);
             }
@@ -194,8 +131,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        showSnackBar(srlRefresh, getString(R.string.data_unavailable));
-                        srlRefresh.setRefreshing(false);
+                        showSnackBar(weatherBinding.srlRefresh, getString(R.string.data_unavailable));
+                        weatherBinding.srlRefresh.setRefreshing(false);
                     }
                 });
 
@@ -236,60 +173,44 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         if (JYApplication.getInstance().getCityDB().getNotification()) {
             NotificationUtil.openNotification(this);
         }
+        JYApplication.getInstance().getCityDB().setCondCode(now.getCode());
 
-        // now
-        if (basic != null) {
-            tvCity.setText(basic.getCityName());
-        }
-        if (update != null) {
-            tvUpdateTime.setText(update.getLoc().split(" ")[1]);
-        }
-        if (now != null) {
-            llMainBackground.setBackgroundResource(DrawableUtil.getBackground(now.getCode()));
-            JYApplication.getInstance().getCityDB().setCondCode(now.getCode());
-            tvNowTemp.setText(now.getTemperature().concat(getString(R.string.degree)));
-            ivNowIcon.setImageResource(DrawableUtil.getCondIcon(now.getCode()));
-            tvNowCond.setText(now.getCondText());
-            tvNowWindDir.setText(now.getWindDirection());
-            if (StringUtil.hasNumber(now.getWindScale())) {
-                tvNowWindSc.setText(now.getWindScale().concat(getString(R.string.level)));
-            } else {
-                tvNowWindSc.setText(now.getWindScale());
-            }
-            tvNowHum.setText(getString(R.string.humidity).concat(now.getRelativeHum()).concat(getString(R.string.percent)));
-        }
+        headerBinding.setBasic(basic);
+        nowBinding.setNow(now);
+        nowBinding.setUpdateTime(update.getLoc());
+        weatherBinding.llMainBackground.setBackgroundResource(now.getNowBackground());
 
         // hourly_forecast
-        if (hourlyForecasts != null && !hourlyForecasts.isEmpty()) {
-            LinearLayoutManager manager = new LinearLayoutManager(this);
-            manager.setOrientation(LinearLayoutManager.HORIZONTAL);
-            rvHourly.setLayoutManager(manager);
-            rvHourly.setHasFixedSize(true);
-            rvHourly.setAdapter(new HourlyForecastAdapter(this, hourlyForecasts));
-        }
+        LinearLayoutManager hourlyManager = new LinearLayoutManager(this);
+        hourlyManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        hourlyBinding.rvHourly.setLayoutManager(hourlyManager);
+        hourlyBinding.rvHourly.setHasFixedSize(true);
+        hourlyBinding.rvHourly.setAdapter(new CommonAdapter<>(hourlyForecasts,
+                R.layout.item_hourly_forecast,
+                BR.hourlyForecast));
 
         // daily_forecast
-        if (dailyForecasts != null && !dailyForecasts.isEmpty()) {
-            LinearLayoutManager manager = new LinearLayoutManager(this,
-                    LinearLayoutManager.VERTICAL, false) {
-                @Override
-                public boolean canScrollVertically() {
-                    // 屏蔽RecyclerView的垂直滑动，否则与最外层ScrollView冲突，导致滑动卡顿
-                    return false;
-                }
-            };
-            rvDaily.setLayoutManager(manager);
-            rvDaily.setHasFixedSize(true);
-            rvDaily.setAdapter(new DailyForecastAdapter(this, dailyForecasts));
-        }
+        LinearLayoutManager dailyManager = new LinearLayoutManager(this,
+                LinearLayoutManager.VERTICAL, false) {
+            @Override
+            public boolean canScrollVertically() {
+                // 屏蔽RecyclerView的垂直滑动，否则与最外层ScrollView冲突，导致滑动卡顿
+                return false;
+            }
+        };
+        dailyBinding.rvDaily.setLayoutManager(dailyManager);
+        dailyBinding.rvDaily.setHasFixedSize(true);
+        dailyBinding.rvDaily.setAdapter(new CommonAdapter<>(dailyForecasts,
+                R.layout.item_daily_forecast,
+                BR.dailyForecast));
 
         // lifestyle
         if (lifestyles != null && !lifestyles.isEmpty()) {
             for (final LifestyleBean lifestyle : lifestyles) {
                 switch (lifestyle.getType()) {
                     case "comf":
-                        tvComfort.setText(lifestyle.getBrief());
-                        llComfort.setOnClickListener(new View.OnClickListener() {
+                        lifeBinding.tvComfort.setText(lifestyle.getBrief());
+                        lifeBinding.llComfort.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 createDialog(lifestyle.getText()).show();
@@ -298,8 +219,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         break;
 
                     case "cw":
-                        tvCarWash.setText(lifestyle.getBrief());
-                        llCarWash.setOnClickListener(new View.OnClickListener() {
+                        lifeBinding.tvCarWash.setText(lifestyle.getBrief());
+                        lifeBinding.llCarWash.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 createDialog(lifestyle.getText()).show();
@@ -308,8 +229,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         break;
 
                     case "drsg":
-                        tvDress.setText(lifestyle.getBrief());
-                        llDress.setOnClickListener(new View.OnClickListener() {
+                        lifeBinding.tvDress.setText(lifestyle.getBrief());
+                        lifeBinding.llDress.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 createDialog(lifestyle.getText()).show();
@@ -318,8 +239,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         break;
 
                     case "flu":
-                        tvFlu.setText(lifestyle.getBrief());
-                        llFlu.setOnClickListener(new View.OnClickListener() {
+                        lifeBinding.tvFlu.setText(lifestyle.getBrief());
+                        lifeBinding.llFlu.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 createDialog(lifestyle.getText()).show();
@@ -328,8 +249,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         break;
 
                     case "sport":
-                        tvSport.setText(lifestyle.getBrief());
-                        llSport.setOnClickListener(new View.OnClickListener() {
+                        lifeBinding.tvSport.setText(lifestyle.getBrief());
+                        lifeBinding.llSport.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 createDialog(lifestyle.getText()).show();
@@ -338,8 +259,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         break;
 
                     case "trav":
-                        tvTravel.setText(lifestyle.getBrief());
-                        llTravel.setOnClickListener(new View.OnClickListener() {
+                        lifeBinding.tvTravel.setText(lifestyle.getBrief());
+                        lifeBinding.llTravel.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 createDialog(lifestyle.getText()).show();
@@ -348,8 +269,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         break;
 
                     case "uv":
-                        tvUv.setText(lifestyle.getBrief());
-                        llUv.setOnClickListener(new View.OnClickListener() {
+                        lifeBinding.tvUv.setText(lifestyle.getBrief());
+                        lifeBinding.llUv.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 createDialog(lifestyle.getText()).show();
@@ -358,8 +279,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         break;
 
                     case "air":
-                        tvAir.setText(lifestyle.getBrief());
-                        llAir.setOnClickListener(new View.OnClickListener() {
+                        lifeBinding.tvAir.setText(lifestyle.getBrief());
+                        lifeBinding.llAir.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 createDialog(lifestyle.getText()).show();
@@ -371,25 +292,26 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 }
             }
         }
-        llLifeSuggestion.setVisibility(View.VISIBLE);
-        llDailyForecast.setVisibility(View.VISIBLE);
-        llHourlyForecast.setVisibility(View.VISIBLE);
-        llNow.setVisibility(View.VISIBLE);
+        headerBinding.rlHeader.setVisibility(View.VISIBLE);
+        nowBinding.rlNow.setVisibility(View.VISIBLE);
+        hourlyBinding.llHourlyForecast.setVisibility(View.VISIBLE);
+        dailyBinding.llDailyForecast.setVisibility(View.VISIBLE);
+        lifeBinding.llLifeSuggestion.setVisibility(View.VISIBLE);
 
         // 刷新数据动画
-        ValueAnimator animator = ValueAnimator.ofInt(svScroll.getHeight(), 0);
+        ValueAnimator animator = ValueAnimator.ofInt(weatherBinding.svScroll.getHeight(), 0);
         animator.setDuration(1000);
         animator.setInterpolator(new DecelerateInterpolator());
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 int currentValue = (int) valueAnimator.getAnimatedValue();
-                svScroll.smoothScrollTo(0, currentValue);
+                weatherBinding.svScroll.smoothScrollTo(0, currentValue);
             }
         });
         animator.start();
 
-        srlRefresh.setRefreshing(false);
+        weatherBinding.srlRefresh.setRefreshing(false);
     }
 
     private Dialog createDialog(String message) {
@@ -408,7 +330,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 if (now != null) {
                     Intent intent = new Intent(this, TodayActivity.class);
                     intent.putExtra("location", basic.getCityName());
-                    intent.putExtra("update_time", update.getLoc().split(" ")[1]);
+                    intent.putExtra("update_time", update.getLoc());
                     intent.putExtra("now", now);
                     intent.putExtra("daily_forecast", dailyForecasts.get(0));
                     startActivity(intent);
@@ -440,11 +362,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             mCity = city;
         }
 
-        tvCity.setText("");
-        llNow.setVisibility(View.INVISIBLE);
-        llHourlyForecast.setVisibility(View.INVISIBLE);
-        llDailyForecast.setVisibility(View.INVISIBLE);
-        llLifeSuggestion.setVisibility(View.INVISIBLE);
+        headerBinding.rlHeader.setVisibility(View.INVISIBLE);
+        nowBinding.rlNow.setVisibility(View.INVISIBLE);
+        hourlyBinding.llHourlyForecast.setVisibility(View.INVISIBLE);
+        dailyBinding.llDailyForecast.setVisibility(View.INVISIBLE);
+        lifeBinding.llLifeSuggestion.setVisibility(View.INVISIBLE);
         getData(mCity);
     }
 
@@ -457,6 +379,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 getData(mCity);
             }
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        // 返回桌面而不是退出应用
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Intent home = new Intent(Intent.ACTION_MAIN);
+            home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            home.addCategory(Intent.CATEGORY_HOME);
+            startActivity(home);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     @SuppressLint("HandlerLeak")

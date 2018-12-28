@@ -100,7 +100,7 @@ public class CityManageActivity extends BaseActivity {
         smlvCityList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(CityManageActivity.this, MainActivity.class);
+                Intent intent = new Intent(CityManageActivity.this, WeatherActivity.class);
                 intent.putExtra("city", cityList.get(i).get("city"));
                 startActivity(intent);
             }

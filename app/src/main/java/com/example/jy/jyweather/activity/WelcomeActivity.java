@@ -2,11 +2,9 @@ package com.example.jy.jyweather.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.example.jy.jyweather.JYApplication;
-import com.example.jy.jyweather.R;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -43,7 +41,7 @@ public class WelcomeActivity extends BaseActivity {
         if (city == null) {
             startActivity(new Intent(this, ChooseCityActivity.class));
         } else {
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(this, WeatherActivity.class);
             intent.putExtra("city", city);
             startActivity(intent);
         }

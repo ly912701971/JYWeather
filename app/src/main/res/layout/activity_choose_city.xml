@@ -1,435 +1,443 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/rl_choose_background"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/ic_background_cloud"
-    android:fitsSystemWindows="true">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <LinearLayout
+    <data>
 
+        <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener"/>
+    </data>
+
+    <RelativeLayout
+        android:id="@+id/rl_choose_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background_dark"
-        android:orientation="vertical">
+        android:background="@drawable/ic_background_cloud"
+        android:fitsSystemWindows="true">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp">
+            android:layout_height="match_parent"
+            android:background="@color/background_dark"
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/iv_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_set_back"/>
-
-            <EditText
-                android:id="@+id/et_search"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:background="@drawable/shape_search"
-                android:hint="@string/search_hint"
-                android:maxLength="12"
-                android:maxLines="1"
-                android:paddingBottom="8dp"
+                android:layout_height="?attr/actionBarSize"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
                 android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="8dp"
-                android:textColor="@color/white"
-                android:textSize="15sp"/>
-        </LinearLayout>
+                android:paddingRight="16dp">
 
-        <LinearLayout
-            android:id="@+id/ll_hot_city"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:padding="16dp"
-                android:text="@string/hot_city"
-                android:textColor="@color/light_gray"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:layout_marginTop="12dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/tv_location"
-                    android:layout_width="0dp"
+                <ImageView
+                    android:id="@+id/iv_back"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/shape_hot_city"
-                    android:drawableStart="@drawable/ic_location"
-                    android:gravity="center"
+                    android:src="@drawable/ic_set_back"/>
+
+                <EditText
+                    android:id="@+id/et_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:background="@drawable/shape_search"
+                    android:hint="@string/search_hint"
+                    android:maxLength="12"
                     android:maxLines="1"
-                    android:padding="8dp"
-                    android:text="@string/locating"
-                    android:textSize="15sp"/>
-
-                <TextView
-                    android:id="@+id/tv_beijing"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/shape_hot_city"
-                    android:gravity="center"
-                    android:onClick="onViewClicked"
-                    android:padding="8dp"
-                    android:text="@string/beijing"
-                    android:textSize="15sp"/>
-
-                <TextView
-                    android:id="@+id/tv_tianjin"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/shape_hot_city"
-                    android:gravity="center"
-                    android:onClick="onViewClicked"
-                    android:padding="8dp"
-                    android:text="@string/tianjin"
+                    android:paddingLeft="16dp"
+                    android:paddingTop="8dp"
+                    android:paddingRight="16dp"
+                    android:paddingBottom="8dp"
+                    android:textColor="@color/white"
                     android:textSize="15sp"/>
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_hot_city"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:layout_marginTop="12dp"
-                android:orientation="horizontal">
+                android:orientation="vertical"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
 
                 <TextView
-                    android:id="@+id/tv_shanghai"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/shape_hot_city"
-                    android:gravity="center"
-                    android:onClick="onViewClicked"
-                    android:padding="8dp"
-                    android:text="@string/shanghai"
-                    android:textSize="15sp"/>
+                    android:layout_gravity="center"
+                    android:padding="16dp"
+                    android:text="@string/hot_city"
+                    android:textColor="@color/light_gray"/>
 
-                <TextView
-                    android:id="@+id/tv_chongqing"
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/shape_hot_city"
-                    android:gravity="center"
-                    android:onClick="onViewClicked"
-                    android:padding="8dp"
-                    android:text="@string/chongqing"
-                    android:textSize="15sp"/>
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="12dp"
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/tv_shenyang"
-                    android:layout_width="0dp"
+                    <TextView
+                        android:id="@+id/tv_location"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/shape_hot_city"
+                        android:drawableStart="@drawable/ic_location"
+                        android:gravity="center"
+                        android:maxLines="1"
+                        android:padding="8dp"
+                        android:text="@string/locating"
+                        android:textSize="15sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_beijing"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/shape_hot_city"
+                        android:gravity="center"
+                        android:onClick="@{clickListener}"
+                        android:padding="8dp"
+                        android:text="@string/beijing"
+                        android:textSize="15sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_tianjin"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/shape_hot_city"
+                        android:gravity="center"
+                        android:onClick="@{clickListener}"
+                        android:padding="8dp"
+                        android:text="@string/tianjin"
+                        android:textSize="15sp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/shape_hot_city"
-                    android:gravity="center"
-                    android:onClick="onViewClicked"
-                    android:padding="8dp"
-                    android:text="@string/shenyang"
-                    android:textSize="15sp"/>
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="12dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_shanghai"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/shape_hot_city"
+                        android:gravity="center"
+                        android:onClick="@{clickListener}"
+                        android:padding="8dp"
+                        android:text="@string/shanghai"
+                        android:textSize="15sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_chongqing"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/shape_hot_city"
+                        android:gravity="center"
+                        android:onClick="@{clickListener}"
+                        android:padding="8dp"
+                        android:text="@string/chongqing"
+                        android:textSize="15sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_shenyang"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/shape_hot_city"
+                        android:gravity="center"
+                        android:onClick="@{clickListener}"
+                        android:padding="8dp"
+                        android:text="@string/shenyang"
+                        android:textSize="15sp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="12dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_dalian"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/shape_hot_city"
+                        android:gravity="center"
+                        android:onClick="@{clickListener}"
+                        android:padding="8dp"
+                        android:text="@string/dalian"
+                        android:textSize="15sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_changchun"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/shape_hot_city"
+                        android:gravity="center"
+                        android:onClick="@{clickListener}"
+                        android:padding="8dp"
+                        android:text="@string/changchun"
+                        android:textSize="15sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_haerbin"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/shape_hot_city"
+                        android:gravity="center"
+                        android:onClick="@{clickListener}"
+                        android:padding="8dp"
+                        android:text="@string/haerbin"
+                        android:textSize="15sp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="12dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_zhengzhou"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/shape_hot_city"
+                        android:gravity="center"
+                        android:onClick="@{clickListener}"
+                        android:padding="8dp"
+                        android:text="@string/zhengzhou"
+                        android:textSize="15sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_wuhan"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/shape_hot_city"
+                        android:gravity="center"
+                        android:onClick="@{clickListener}"
+                        android:padding="8dp"
+                        android:text="@string/wuhan"
+                        android:textSize="15sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_changsha"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/shape_hot_city"
+                        android:gravity="center"
+                        android:onClick="@{clickListener}"
+                        android:padding="8dp"
+                        android:text="@string/changsha"
+                        android:textSize="15sp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="12dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_guangzhou"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/shape_hot_city"
+                        android:gravity="center"
+                        android:onClick="@{clickListener}"
+                        android:padding="8dp"
+                        android:text="@string/guangzhou"
+                        android:textSize="15sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_shenzhen"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/shape_hot_city"
+                        android:gravity="center"
+                        android:onClick="@{clickListener}"
+                        android:padding="8dp"
+                        android:text="@string/shenzhen"
+                        android:textSize="15sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_nanjing"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/shape_hot_city"
+                        android:gravity="center"
+                        android:onClick="@{clickListener}"
+                        android:padding="8dp"
+                        android:text="@string/nanjing"
+                        android:textSize="15sp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="12dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_hangzhou"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/shape_hot_city"
+                        android:gravity="center"
+                        android:onClick="@{clickListener}"
+                        android:padding="8dp"
+                        android:text="@string/hangzhou"
+                        android:textSize="15sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_dongguan"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/shape_hot_city"
+                        android:gravity="center"
+                        android:onClick="@{clickListener}"
+                        android:padding="8dp"
+                        android:text="@string/dongguan"
+                        android:textSize="15sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_chengdu"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/shape_hot_city"
+                        android:gravity="center"
+                        android:onClick="@{clickListener}"
+                        android:padding="8dp"
+                        android:text="@string/chengdu"
+                        android:textSize="15sp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="12dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_qingdao"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/shape_hot_city"
+                        android:gravity="center"
+                        android:onClick="@{clickListener}"
+                        android:padding="8dp"
+                        android:text="@string/qingdao"
+                        android:textSize="15sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_suzhou"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/shape_hot_city"
+                        android:gravity="center"
+                        android:onClick="@{clickListener}"
+                        android:padding="8dp"
+                        android:text="@string/suzhou"
+                        android:textSize="15sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_xiamen"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/shape_hot_city"
+                        android:gravity="center"
+                        android:onClick="@{clickListener}"
+                        android:padding="8dp"
+                        android:text="@string/xiamen"
+                        android:textSize="15sp"/>
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_search_result"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:layout_marginTop="12dp"
-                android:orientation="horizontal">
+                android:orientation="vertical"
+                android:visibility="gone">
 
-                <TextView
-                    android:id="@+id/tv_dalian"
-                    android:layout_width="0dp"
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/divider"/>
+
+                <ListView
+                    android:id="@+id/lv_search_result"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/shape_hot_city"
-                    android:gravity="center"
-                    android:onClick="onViewClicked"
-                    android:padding="8dp"
-                    android:text="@string/dalian"
-                    android:textSize="15sp"/>
-
-                <TextView
-                    android:id="@+id/tv_changchun"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/shape_hot_city"
-                    android:gravity="center"
-                    android:onClick="onViewClicked"
-                    android:padding="8dp"
-                    android:text="@string/changchun"
-                    android:textSize="15sp"/>
-
-                <TextView
-                    android:id="@+id/tv_haerbin"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/shape_hot_city"
-                    android:gravity="center"
-                    android:onClick="onViewClicked"
-                    android:padding="8dp"
-                    android:text="@string/haerbin"
-                    android:textSize="15sp"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:layout_marginTop="12dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/tv_zhengzhou"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/shape_hot_city"
-                    android:gravity="center"
-                    android:onClick="onViewClicked"
-                    android:padding="8dp"
-                    android:text="@string/zhengzhou"
-                    android:textSize="15sp"/>
-
-                <TextView
-                    android:id="@+id/tv_wuhan"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/shape_hot_city"
-                    android:gravity="center"
-                    android:onClick="onViewClicked"
-                    android:padding="8dp"
-                    android:text="@string/wuhan"
-                    android:textSize="15sp"/>
-
-                <TextView
-                    android:id="@+id/tv_changsha"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/shape_hot_city"
-                    android:gravity="center"
-                    android:onClick="onViewClicked"
-                    android:padding="8dp"
-                    android:text="@string/changsha"
-                    android:textSize="15sp"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:layout_marginTop="12dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/tv_guangzhou"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/shape_hot_city"
-                    android:gravity="center"
-                    android:onClick="onViewClicked"
-                    android:padding="8dp"
-                    android:text="@string/guangzhou"
-                    android:textSize="15sp"/>
-
-                <TextView
-                    android:id="@+id/tv_shenzhen"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/shape_hot_city"
-                    android:gravity="center"
-                    android:onClick="onViewClicked"
-                    android:padding="8dp"
-                    android:text="@string/shenzhen"
-                    android:textSize="15sp"/>
-
-                <TextView
-                    android:id="@+id/tv_nanjing"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/shape_hot_city"
-                    android:gravity="center"
-                    android:onClick="onViewClicked"
-                    android:padding="8dp"
-                    android:text="@string/nanjing"
-                    android:textSize="15sp"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:layout_marginTop="12dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/tv_hangzhou"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/shape_hot_city"
-                    android:gravity="center"
-                    android:onClick="onViewClicked"
-                    android:padding="8dp"
-                    android:text="@string/hangzhou"
-                    android:textSize="15sp"/>
-
-                <TextView
-                    android:id="@+id/tv_dongguan"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/shape_hot_city"
-                    android:gravity="center"
-                    android:onClick="onViewClicked"
-                    android:padding="8dp"
-                    android:text="@string/dongguan"
-                    android:textSize="15sp"/>
-
-                <TextView
-                    android:id="@+id/tv_chengdu"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/shape_hot_city"
-                    android:gravity="center"
-                    android:onClick="onViewClicked"
-                    android:padding="8dp"
-                    android:text="@string/chengdu"
-                    android:textSize="15sp"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:layout_marginTop="12dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/tv_qingdao"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/shape_hot_city"
-                    android:gravity="center"
-                    android:onClick="onViewClicked"
-                    android:padding="8dp"
-                    android:text="@string/qingdao"
-                    android:textSize="15sp"/>
-
-                <TextView
-                    android:id="@+id/tv_suzhou"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/shape_hot_city"
-                    android:gravity="center"
-                    android:onClick="onViewClicked"
-                    android:padding="8dp"
-                    android:text="@string/suzhou"
-                    android:textSize="15sp"/>
-
-                <TextView
-                    android:id="@+id/tv_xiamen"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/shape_hot_city"
-                    android:gravity="center"
-                    android:onClick="onViewClicked"
-                    android:padding="8dp"
-                    android:text="@string/xiamen"
-                    android:textSize="15sp"/>
+                    android:divider="@null"/>
             </LinearLayout>
         </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_search_result"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:background="@color/divider"/>
-
-            <ListView
-                android:id="@+id/lv_search_result"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:divider="@null"/>
-        </LinearLayout>
-    </LinearLayout>
-</RelativeLayout>
+    </RelativeLayout>
+</layout>

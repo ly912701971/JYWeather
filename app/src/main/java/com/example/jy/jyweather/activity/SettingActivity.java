@@ -4,50 +4,24 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CompoundButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.Switch;
-import android.widget.TextView;
 
 import com.example.jy.jyweather.JYApplication;
 import com.example.jy.jyweather.R;
 import com.example.jy.jyweather.adapter.IntervalTimeAdapter;
+import com.example.jy.jyweather.databinding.ActivitySettingBinding;
 import com.example.jy.jyweather.service.AutoUpdateService;
 import com.example.jy.jyweather.util.DrawableUtil;
 import com.example.jy.jyweather.util.NotificationUtil;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 public class SettingActivity extends BaseActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-    @BindView(R.id.rl_setting_background)
-    RelativeLayout rlSettingBackground;
-    @BindView(R.id.ll_about_us)
-    LinearLayout llAboutUs;
-    @BindView(R.id.s_notification)
-    Switch sNotification;
-    @BindView(R.id.s_auto_update)
-    Switch sAutoUpdate;
-    @BindView(R.id.tv_update_interval)
-    TextView tvUpdateInterval;
-    @BindView(R.id.tv_interval_time)
-    TextView tvIntervalTime;
-    @BindView(R.id.ll_update_interval)
-    LinearLayout llUpdateInterval;
-    @BindView(R.id.ll_clear_cache)
-    LinearLayout llClearCache;
-    @BindView(R.id.iv_update_icon)
-    ImageView ivUpdateIcon;
+    private ActivitySettingBinding binding;
 
     private boolean hasClearCache;
     private boolean hasChangeInterval;
@@ -57,9 +31,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         super.onCreate(savedInstanceState);
         setStatusBarTrans();
         setStatusBarColor();
-        setContentView(R.layout.activity_setting);
-        ButterKnife.bind(this);
-
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_setting);
         init();
     }
 
@@ -67,17 +39,17 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
      * 初始化
      */
     private void init() {
-        llAboutUs.setOnClickListener(this);
-        sNotification.setOnCheckedChangeListener(this);
-        sAutoUpdate.setOnCheckedChangeListener(this);
-        llUpdateInterval.setOnClickListener(this);
-        llClearCache.setOnClickListener(this);
+        binding.llAboutUs.setOnClickListener(this);
+        binding.sNotification.setOnCheckedChangeListener(this);
+        binding.sAutoUpdate.setOnCheckedChangeListener(this);
+        binding.llUpdateInterval.setOnClickListener(this);
+        binding.llClearCache.setOnClickListener(this);
 
         hasClearCache = false;
         hasChangeInterval = false;
 
-        setSupportActionBar(toolbar);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        setSupportActionBar(binding.toolbar);
+        binding.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 exitActivity();
@@ -86,13 +58,13 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
         String spCode = JYApplication.getInstance().getCityDB().getCondCode();
         if (spCode != null) {
-            rlSettingBackground.setBackgroundResource(DrawableUtil.getBackground(spCode));
+            binding.rlSettingBackground.setBackgroundResource(DrawableUtil.getBackground(spCode));
         }
 
-        sNotification.setChecked(JYApplication.getInstance().getCityDB().getNotification());
-        sAutoUpdate.setChecked(JYApplication.getInstance().getCityDB().getAutoUpdate());
+        binding.sNotification.setChecked(JYApplication.getInstance().getCityDB().getNotification());
+        binding.sAutoUpdate.setChecked(JYApplication.getInstance().getCityDB().getAutoUpdate());
         changeUpdateColor(JYApplication.getInstance().getCityDB().getAutoUpdate());
-        tvIntervalTime.setText(String.valueOf(JYApplication
+        binding.tvIntervalTime.setText(String.valueOf(JYApplication
                 .getInstance().getCityDB().getUpdateInterval()).concat(" 小时"));
     }
 
@@ -139,15 +111,15 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
     private void changeUpdateColor(boolean autoUpdate) {
         if (autoUpdate) {
-            tvUpdateInterval.setTextColor(getResources().getColor(R.color.white));
-            tvIntervalTime.setTextColor(getResources().getColor(R.color.white));
-            ivUpdateIcon.setImageResource(R.drawable.ic_goto);
-            llUpdateInterval.setClickable(true);
+            binding.tvUpdateInterval.setTextColor(getResources().getColor(R.color.white));
+            binding.tvIntervalTime.setTextColor(getResources().getColor(R.color.white));
+            binding.ivUpdateIcon.setImageResource(R.drawable.ic_goto);
+            binding.llUpdateInterval.setClickable(true);
         } else {
-            tvUpdateInterval.setTextColor(getResources().getColor(R.color.text_gray));
-            tvIntervalTime.setTextColor(getResources().getColor(R.color.text_gray));
-            ivUpdateIcon.setImageResource(R.drawable.ic_goto_gray);
-            llUpdateInterval.setClickable(false);
+            binding.tvUpdateInterval.setTextColor(getResources().getColor(R.color.text_gray));
+            binding.tvIntervalTime.setTextColor(getResources().getColor(R.color.text_gray));
+            binding.ivUpdateIcon.setImageResource(R.drawable.ic_goto_gray);
+            binding.llUpdateInterval.setClickable(false);
         }
     }
 
@@ -163,7 +135,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 hasChangeInterval = true;
-                tvIntervalTime.setText(intervalTimes[i]);
+                binding.tvIntervalTime.setText(intervalTimes[i]);
                 JYApplication.getInstance().getCityDB().setUpdateInterval(hours[i]);
                 updateTimeDialog.dismiss();
             }
@@ -187,7 +159,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                     public void onClick(DialogInterface dialogInterface, int i) {
                         JYApplication.getInstance().getCityDB().clearCache();
                         hasClearCache = true;
-                        showSnackBar(llUpdateInterval, "清除缓存成功");
+                        showSnackBar(binding.llUpdateInterval, "清除缓存成功");
                         dialogInterface.dismiss();
                     }
                 })
@@ -204,7 +176,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         if (hasClearCache) {
             startActivity(new Intent(SettingActivity.this, ChooseCityActivity.class));
         }
-        if (sAutoUpdate.isChecked() && hasChangeInterval) {
+        if (binding.sAutoUpdate.isChecked() && hasChangeInterval) {
             startService(new Intent(SettingActivity.this, AutoUpdateService.class));
         }
         finish();

@@ -1,10 +1,12 @@
 package com.example.jy.jyweather.entity;
 
+import com.example.jy.jyweather.util.DrawableUtil;
+import com.example.jy.jyweather.util.StringUtil;
 import com.google.gson.annotations.SerializedName;
 
 /**
  * 未来每小时预报
- *
+ * <p>
  * Created by Yang on 2017/10/15.
  */
 public class HourlyForecastBean {
@@ -47,8 +49,10 @@ public class HourlyForecastBean {
     @SerializedName("cond_txt")
     private String condText;        //天气数据详情
 
+    private int icon;
+
     public String getTime() {
-        return time;
+        return time.split(" ")[1];
     }
 
     public String getRelativuHum() {
@@ -68,7 +72,7 @@ public class HourlyForecastBean {
     }
 
     public String getTemperature() {
-        return temperature;
+        return temperature.concat("°");
     }
 
     public String getWindDegree() {
@@ -80,6 +84,9 @@ public class HourlyForecastBean {
     }
 
     public String getWindScale() {
+        if (StringUtil.hasNumber(windScale)) {
+            return windScale.concat("级");
+        }
         return windScale;
     }
 
@@ -97,5 +104,9 @@ public class HourlyForecastBean {
 
     public String getCondText() {
         return condText;
+    }
+
+    public int getIcon() {
+        return DrawableUtil.getCondIcon(code);
     }
 }

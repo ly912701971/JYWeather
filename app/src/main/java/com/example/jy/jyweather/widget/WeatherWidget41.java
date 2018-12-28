@@ -14,13 +14,11 @@ import android.widget.RemoteViews;
 
 import com.example.jy.jyweather.JYApplication;
 import com.example.jy.jyweather.R;
-import com.example.jy.jyweather.activity.MainActivity;
+import com.example.jy.jyweather.activity.WeatherActivity;
 import com.example.jy.jyweather.entity.WeatherBean;
 import com.example.jy.jyweather.util.DrawableUtil;
 import com.example.jy.jyweather.util.JsonUtil;
-import com.example.jy.jyweather.util.StringUtil;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
@@ -70,14 +68,6 @@ public class WeatherWidget41 extends AppWidgetProvider {
                             .concat(" ~ ")
                             .concat(weather.getDailyForecasts().get(0).getMaxTemp())
                             .concat(JYApplication.getInstance().getString(R.string.c_degree));
-                    String[] dates = weather.getDailyForecasts().get(0).getDate().split("-");
-                    String date = null;
-                    try {
-                        date = dates[1].concat("-").concat(dates[2]).concat(" ")
-                                .concat(StringUtil.getWeekday(weather.getDailyForecasts().get(0).getDate()));
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
                     remoteView.setTextViewText(R.id.tv_city, city);
                     remoteView.setImageViewResource(R.id.iv_weather_icon,
                             DrawableUtil.getCondIcon(weather.getNow().getCode()));
@@ -85,12 +75,12 @@ public class WeatherWidget41 extends AppWidgetProvider {
                     remoteView.setTextViewText(R.id.tv_now_temp,
                             weather.getNow().getTemperature().concat(JYApplication.getInstance().getString(R.string.c_degree)));
                     remoteView.setTextViewText(R.id.tv_temp_scope, tempScope);
-                    remoteView.setTextViewText(R.id.tv_date, date);
+                    remoteView.setTextViewText(R.id.tv_date, weather.getDailyForecasts().get(0).getDate());
                 }
             }
 
             // 使桌面插件响应点击事件，进入MainActivity
-            Intent intent = new Intent(JYApplication.getInstance(), MainActivity.class);
+            Intent intent = new Intent(JYApplication.getInstance(), WeatherActivity.class);
             intent.putExtra("city", defaultCity);
             PendingIntent pendingIntent = PendingIntent.getActivity(JYApplication.getInstance(), 0,
                     intent, PendingIntent.FLAG_UPDATE_CURRENT);

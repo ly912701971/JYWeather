@@ -1,5 +1,7 @@
 package com.example.jy.jyweather.entity;
 
+import com.example.jy.jyweather.util.DrawableUtil;
+import com.example.jy.jyweather.util.StringUtil;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -50,6 +52,10 @@ public class NowBean implements Serializable {
     @SerializedName("wind_spd")
     private String windSpeed;       //风速
 
+    private int nowIcon;
+
+    private int nowBackground;
+
     public String getCloud() {
         return cloud;
     }
@@ -67,7 +73,7 @@ public class NowBean implements Serializable {
     }
 
     public String getRelativeHum() {
-        return relativeHum;
+        return "湿度".concat(relativeHum).concat("%");
     }
 
     public String getPrecipitation() {
@@ -79,7 +85,7 @@ public class NowBean implements Serializable {
     }
 
     public String getTemperature() {
-        return temperature;
+        return temperature.concat("°");
     }
 
     public String getVisibility() {
@@ -95,10 +101,21 @@ public class NowBean implements Serializable {
     }
 
     public String getWindScale() {
+        if (StringUtil.hasNumber(windScale)) {
+            return windScale.concat("级");
+        }
         return windScale;
     }
 
     public String getWindSpeed() {
         return windSpeed;
+    }
+
+    public int getNowIcon() {
+        return DrawableUtil.getCondIcon(code);
+    }
+
+    public int getNowBackground() {
+        return DrawableUtil.getBackground(code);
     }
 }

@@ -1,224 +1,174 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/rl_setting_background"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/ic_background_cloud"
-    android:fitsSystemWindows="true"
-    tools:context="com.example.jy.jyweather.activity.SettingActivity">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/rl_setting_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background_dark"
-        android:orientation="vertical">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:navigationIcon="@drawable/ic_set_back"
-            app:title="@string/setting"
-            app:titleTextAppearance="@style/Toolbar.TitleText"/>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:layout_marginLeft="24dp"
-            android:layout_marginRight="24dp"
-            android:background="@color/divider"/>
+        android:background="@drawable/ic_background_cloud"
+        android:fitsSystemWindows="true">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="24dp"
-            android:visibility="gone">
+            android:layout_height="match_parent"
+            android:background="@color/background_dark"
+            android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="@string/weather_push"
-                android:textSize="16sp"/>
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:navigationIcon="@drawable/ic_set_back"
+                app:title="@string/setting"
+                app:titleTextAppearance="@style/Toolbar.TitleText"/>
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"/>
+            <include layout="@layout/divider"/>
 
-            <Switch
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:thumb="@drawable/shape_switch_thumb"
-                android:track="@drawable/selector_switch_track"/>
+                android:orientation="horizontal"
+                android:padding="24dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/weather_push"
+                    android:textSize="16sp"/>
+
+                <Switch
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="center_vertical"
+                    android:thumb="@drawable/shape_switch_thumb"
+                    android:track="@drawable/selector_switch_track"/>
+            </RelativeLayout>
+
+            <include layout="@layout/divider"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="24dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/notification_bar"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"/>
+
+                <Switch
+                    android:id="@+id/s_notification"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:thumb="@drawable/shape_switch_thumb"
+                    android:track="@drawable/selector_switch_track"/>
+            </RelativeLayout>
+
+            <include layout="@layout/divider"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="24dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/auto_update"
+                    android:textSize="16sp"/>
+
+                <Switch
+                    android:id="@+id/s_auto_update"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:thumb="@drawable/shape_switch_thumb"
+                    android:track="@drawable/selector_switch_track"/>
+            </RelativeLayout>
+
+            <include layout="@layout/divider"/>
+
+            <RelativeLayout
+                android:id="@+id/ll_update_interval"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="24dp">
+
+                <TextView
+                    android:id="@+id/tv_update_interval"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/update_interval"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:id="@+id/tv_interval_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toStartOf="@id/iv_update_icon"
+                    android:text="@string/default_update_interval"
+                    android:textSize="15sp"/>
+
+                <ImageView
+                    android:id="@+id/iv_update_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:src="@drawable/ic_goto"/>
+            </RelativeLayout>
+
+            <include layout="@layout/divider"/>
+
+            <RelativeLayout
+                android:id="@+id/ll_about_us"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="24dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/about_us"
+                    android:textSize="16sp"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:src="@drawable/ic_goto"/>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_clear_cache"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="24dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/clear_cache"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+
+            <include layout="@layout/divider"/>
         </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:layout_marginLeft="24dp"
-            android:layout_marginRight="24dp"
-            android:background="@color/divider"
-            android:visibility="gone"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="24dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/notification_bar"
-                android:textColor="@color/white"
-                android:textSize="16sp"/>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"/>
-
-            <Switch
-                android:id="@+id/s_notification"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:thumb="@drawable/shape_switch_thumb"
-                android:track="@drawable/selector_switch_track"/>
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:layout_marginLeft="24dp"
-            android:layout_marginRight="24dp"
-            android:background="@color/divider"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="24dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/auto_update"
-                android:textSize="16sp"/>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"/>
-
-            <Switch
-                android:id="@+id/s_auto_update"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:thumb="@drawable/shape_switch_thumb"
-                android:track="@drawable/selector_switch_track"/>
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:layout_marginLeft="24dp"
-            android:layout_marginRight="24dp"
-            android:background="@color/divider"/>
-
-        <LinearLayout
-            android:id="@+id/ll_update_interval"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="24dp">
-
-            <TextView
-                android:id="@+id/tv_update_interval"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/update_interval"
-                android:textSize="16sp"/>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"/>
-
-            <TextView
-                android:id="@+id/tv_interval_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/default_update_interval"
-                android:textSize="15sp"/>
-
-            <ImageView
-                android:id="@+id/iv_update_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_goto"/>
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:layout_marginLeft="24dp"
-            android:layout_marginRight="24dp"
-            android:background="@color/divider"/>
-
-        <LinearLayout
-            android:id="@+id/ll_about_us"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="24dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="@string/about_us"
-                android:textSize="16sp"/>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"/>
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_goto"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_clear_cache"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="24dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/clear_cache"
-                android:textSize="16sp"/>
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:layout_marginLeft="24dp"
-            android:layout_marginRight="24dp"
-            android:background="@color/divider"/>
-    </LinearLayout>
-</RelativeLayout>
+    </FrameLayout>
+</layout>

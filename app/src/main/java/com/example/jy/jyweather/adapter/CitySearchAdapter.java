@@ -3,7 +3,6 @@ package com.example.jy.jyweather.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,7 @@ import android.widget.TextView;
 
 import com.example.jy.jyweather.JYApplication;
 import com.example.jy.jyweather.R;
-import com.example.jy.jyweather.activity.MainActivity;
+import com.example.jy.jyweather.activity.WeatherActivity;
 
 import java.util.HashSet;
 import java.util.List;
@@ -83,7 +82,7 @@ public class CitySearchAdapter extends BaseAdapter {
                     }
                 }
 
-                Intent intent = new Intent(context, MainActivity.class);
+                Intent intent = new Intent(context, WeatherActivity.class);
                 intent.putExtra("city", city);
                 context.startActivity(intent);
             }
