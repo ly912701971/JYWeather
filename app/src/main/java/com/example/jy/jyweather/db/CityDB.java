@@ -14,7 +14,6 @@ import java.util.Set;
  * <p>
  * Created by Yang on 2018/1/9.
  */
-
 public class CityDB {
 
     private final String DB_BASE_PATH = "city_database";

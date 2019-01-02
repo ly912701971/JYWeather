@@ -96,11 +96,11 @@ public class DailyForecastBean implements Serializable {
     }
 
     public String getAirPressure() {
-        return airPressure;
+        return airPressure.concat("hPa");
     }
 
     public String getUltraviolet() {
-        return ultraviolet;
+        return StringUtil.getUvLevel(ultraviolet);
     }
 
     public String getVisibility() {

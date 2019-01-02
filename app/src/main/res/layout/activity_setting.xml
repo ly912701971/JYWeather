@@ -132,27 +132,6 @@
 
             <include layout="@layout/divider"/>
 
-            <RelativeLayout
-                android:id="@+id/ll_about_us"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="24dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="@string/about_us"
-                    android:textSize="16sp"/>
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:src="@drawable/ic_goto"/>
-            </RelativeLayout>
-
             <LinearLayout
                 android:id="@+id/ll_clear_cache"
                 android:layout_width="match_parent"

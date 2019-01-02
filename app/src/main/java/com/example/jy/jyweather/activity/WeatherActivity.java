@@ -128,12 +128,9 @@ public class WeatherActivity extends BaseActivity implements View.OnClickListene
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 e.printStackTrace();
 
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        showSnackBar(weatherBinding.srlRefresh, getString(R.string.data_unavailable));
-                        weatherBinding.srlRefresh.setRefreshing(false);
-                    }
+                runOnUiThread(() -> {
+                    showSnackBar(weatherBinding.srlRefresh, getString(R.string.data_unavailable));
+                    weatherBinding.srlRefresh.setRefreshing(false);
                 });
 
                 String dataText = JYApplication.getInstance().getCityDB().getData(city);

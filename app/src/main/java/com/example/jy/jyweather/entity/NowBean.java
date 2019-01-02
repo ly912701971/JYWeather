@@ -69,11 +69,11 @@ public class NowBean implements Serializable {
     }
 
     public String getFeelTemp() {
-        return feelTemp;
+        return feelTemp.concat("°");
     }
 
     public String getRelativeHum() {
-        return "湿度".concat(relativeHum).concat("%");
+        return relativeHum.concat("%");
     }
 
     public String getPrecipitation() {
@@ -89,7 +89,7 @@ public class NowBean implements Serializable {
     }
 
     public String getVisibility() {
-        return visibility;
+        return visibility.concat("km");
     }
 
     public String getWindDegree() {

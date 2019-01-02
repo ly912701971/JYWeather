@@ -1,78 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/ll_city_item"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="com.example.jy.jyweather.util.DrawableUtil"/>
+
+        <import type="android.view.View"/>
+
+        <variable
+            name="map"
+            type="java.util.Map&lt;String,String&gt;"/>
+
+        <variable
+            name="defaultName"
+            type="String"/>
+    </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingBottom="8dp"
-        android:paddingEnd="16dp"
-        android:paddingStart="16dp"
-        android:paddingTop="8dp">
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/iv_weather_icon"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_999"/>
+            android:paddingStart="16dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="8dp">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:orientation="vertical">
-
-            <LinearLayout
+            <ImageView
+                android:id="@+id/iv_weather_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical">
+                app:imageId="@{DrawableUtil.getCondIcon(map[`cond_code`])}"/>
 
-                <TextView
-                    android:id="@+id/tv_city"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/unknown"
-                    android:textSize="16sp"/>
+            <TextView
+                android:id="@+id/tv_city"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_toEndOf="@+id/iv_weather_icon"
+                android:text="@{map[`city`]}"
+                android:textSize="16sp"/>
 
-                <ImageView
-                    android:id="@+id/iv_default_city"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:src="@drawable/ic_default_city"
-                    android:visibility="gone"/>
-            </LinearLayout>
+            <ImageView
+                android:id="@+id/iv_default_city"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_toEndOf="@id/tv_city"
+                android:src="@drawable/ic_default_city"
+                android:visibility="@{defaultName.equals(map[`city`])?View.VISIBLE:View.GONE}"/>
 
             <TextView
                 android:id="@+id/tv_admin_area"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/tv_city"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="4dp"
-                android:text="@string/unknown"
+                android:layout_toEndOf="@id/iv_weather_icon"
+                android:text="@{map[`admin_area`]}"
                 android:textColor="@color/dark_gray"
                 android:textSize="13sp"/>
-        </LinearLayout>
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            <TextView
+                android:id="@+id/tv_temp_scope"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:text="@{map[`temp_scope`]}"/>
+        </RelativeLayout>
 
-        <TextView
-            android:id="@+id/tv_temp_scope"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/unknown"/>
+        <include layout="@layout/divider"/>
     </LinearLayout>
+</layout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="@color/divider"/>
-</LinearLayout>

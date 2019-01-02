@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import pub.devrel.easypermissions.EasyPermissions;
 
@@ -65,17 +64,14 @@ public class ChooseCityActivity extends BaseActivity implements EasyPermissions.
             binding.rlChooseBackground.setBackgroundResource(DrawableUtil.getBackground(spCode));
         }
 
-        binding.ivBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (binding.etSearch.getText().length() > 0) {
-                    binding.etSearch.setText("");
-                } else if (JYApplication.getInstance().getCityDB().getDefaultCity() == null) {
-                    addCity("北京");
-                    finish();
-                } else {
-                    finish();
-                }
+        binding.ivBack.setOnClickListener(view -> {
+            if (binding.etSearch.getText().length() > 0) {
+                binding.etSearch.setText("");
+            } else if (JYApplication.getInstance().getCityDB().getDefaultCity() == null) {
+                addCity("北京");
+                finish();
+            } else {
+                finish();
             }
         });
 
@@ -101,8 +97,6 @@ public class ChooseCityActivity extends BaseActivity implements EasyPermissions.
                             searchResult.add(cityInfo);
                         }
                     }
-                    CitySearchAdapter adapter = new CitySearchAdapter(ChooseCityActivity.this, searchResult);
-                    binding.lvSearchResult.setAdapter(adapter);
                     binding.llSearchResult.setVisibility(View.VISIBLE);
                     binding.llHotCity.setVisibility(View.GONE);
                 } else {
@@ -111,6 +105,9 @@ public class ChooseCityActivity extends BaseActivity implements EasyPermissions.
                 }
             }
         });
+
+        CitySearchAdapter adapter = new CitySearchAdapter(ChooseCityActivity.this, searchResult);
+        binding.lvSearchResult.setAdapter(adapter);
     }
 
     private void locate() {
@@ -144,8 +141,7 @@ public class ChooseCityActivity extends BaseActivity implements EasyPermissions.
     }
 
     private void addCity(String city) {
-        Set<String> citySet = JYApplication.getInstance().getCityDB().getCitySet();
-        citySet = new HashSet<>(citySet);
+        HashSet<String> citySet = (HashSet<String>) JYApplication.getInstance().getCityDB().getCitySet();
         citySet.add(city);
         JYApplication.getInstance().getCityDB().setCitySet(citySet);
         if (citySet.size() == 1) {
@@ -165,7 +161,7 @@ public class ChooseCityActivity extends BaseActivity implements EasyPermissions.
             return;
         }
 
-        String city = null;
+        String city = "";
         switch (v.getId()) {
             case R.id.tv_location:
                 if (locationCity != null) {
@@ -176,7 +172,7 @@ public class ChooseCityActivity extends BaseActivity implements EasyPermissions.
                 city = String.valueOf(((TextView) v).getText());
         }
 
-        addCity(city);
+        addCity(city.replace("市", ""));
     }
 
     private class MyLocationListener extends BDAbstractLocationListener {

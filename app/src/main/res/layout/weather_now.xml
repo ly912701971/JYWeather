@@ -100,7 +100,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:drawableEnd="@drawable/ic_goto"
-                android:text="@{now.relativeHum}"
+                android:text="@{@string/relative_hum + now.relativeHum}"
                 android:textSize="16sp"/>
         </LinearLayout>
     </RelativeLayout>

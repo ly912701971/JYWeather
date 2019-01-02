@@ -88,7 +88,6 @@
         <activity android:name=".activity.TodayActivity"/>
         <activity android:name=".activity.CityManageActivity"/>
         <activity android:name=".activity.ChooseCityActivity"/>
-        <activity android:name=".activity.AboutUsActivity"/>
         <activity
             android:name=".activity.WelcomeActivity"
             android:theme="@style/WelcomeTheme">

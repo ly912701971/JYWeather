@@ -44,10 +44,12 @@
     <string name="precipitation">降水量</string>
     <string name="air_pressure">气压</string>
     <string name="visibility">能见度</string>
-    <string name="feel_temp">体感</string>
+    <string name="feel_temp">体感温度</string>
     <string name="ultraviolet">紫外线</string>
     <string name="sun_rise">日出</string>
     <string name="sun_set">日落</string>
+    <string name="moon_rise">月升</string>
+    <string name="moon_set">月落</string>
     <string name="sun_rise_time">8:00</string>
     <string name="sun_set_time">18:00</string>
     <string name="update_new_time">14:25</string>

@@ -39,7 +39,6 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
      * 初始化
      */
     private void init() {
-        binding.llAboutUs.setOnClickListener(this);
         binding.sNotification.setOnCheckedChangeListener(this);
         binding.sAutoUpdate.setOnCheckedChangeListener(this);
         binding.llUpdateInterval.setOnClickListener(this);
@@ -71,10 +70,6 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ll_about_us:// 点击关于我们
-                startActivity(new Intent(this, AboutUsActivity.class));
-                break;
-
             case R.id.ll_clear_cache:// 点击清除缓存
                 openClearCacheDialog();
                 break;

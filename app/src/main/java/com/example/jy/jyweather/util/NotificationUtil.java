@@ -7,7 +7,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.widget.RemoteViews;
 
 import com.example.jy.jyweather.JYApplication;
@@ -26,7 +25,6 @@ public class NotificationUtil {
     /**
      * 打开通知栏
      */
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public static void openNotification(Context context) {
         NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);// 管理消息通知
         Notification notification;
