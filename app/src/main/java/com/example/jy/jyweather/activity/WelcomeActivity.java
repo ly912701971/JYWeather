@@ -28,8 +28,8 @@ public class WelcomeActivity extends BaseActivity {
                 jumpActivity();
             }
         };
-        // 使用timer.schedule（）方法调用timerTask，定时1.5秒后执行run
-        timer.schedule(timerTask, 1500);
+        // 使用timer.schedule（）方法调用timerTask，定时1秒后执行run
+        timer.schedule(timerTask, 1000);
     }
 
     private void jumpActivity() {
@@ -43,5 +43,4 @@ public class WelcomeActivity extends BaseActivity {
         }
         finish();
     }
-
 }

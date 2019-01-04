@@ -1,10 +1,13 @@
 package com.example.jy.jyweather.activity;
 
 import android.Manifest;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -19,6 +22,7 @@ import com.example.jy.jyweather.R;
 import com.example.jy.jyweather.adapter.CitySearchAdapter;
 import com.example.jy.jyweather.databinding.ActivityChooseCityBinding;
 import com.example.jy.jyweather.util.DrawableUtil;
+import com.example.jy.jyweather.util.GpsUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -111,13 +115,20 @@ public class ChooseCityActivity extends BaseActivity implements EasyPermissions.
     }
 
     private void locate() {
-        // 百度地图自动定位
-        mClient = new LocationClient(JYApplication.getInstance());
-        mClient.registerLocationListener(new MyLocationListener());
-        LocationClientOption option = new LocationClientOption();
-        option.setIsNeedAddress(true);
-        mClient.setLocOption(option);
-        mClient.start();
+        if (GpsUtil.isOpen(JYApplication.getInstance())) {
+            // 百度地图自动定位
+            mClient = new LocationClient(JYApplication.getInstance());
+            mClient.registerLocationListener(new MyLocationListener());
+            LocationClientOption option = new LocationClientOption();
+            option.setIsNeedAddress(true);
+            option.setOpenGps(true);
+            mClient.setLocOption(option);
+            mClient.start();
+        } else {
+            onLocationFailed();
+            showGpsNotOpen();
+        }
+
     }
 
     @Override
@@ -135,9 +146,8 @@ public class ChooseCityActivity extends BaseActivity implements EasyPermissions.
 
     @Override
     public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
-        binding.tvLocation.setText(getResources().getString(R.string.locate_unknown));
-        binding.tvLocation.setClickable(false);
-        showSnackBar(binding.tvLocation, getString(R.string.permission_denied));
+        onLocationFailed();
+        showPermissionDenied();
     }
 
     private void addCity(String city) {
@@ -164,15 +174,59 @@ public class ChooseCityActivity extends BaseActivity implements EasyPermissions.
         String city = "";
         switch (v.getId()) {
             case R.id.tv_location:
-                if (locationCity != null) {
-                    city = locationCity;
+                if (!GpsUtil.isOpen(JYApplication.getInstance())) {
+                    showGpsNotOpen();
+                    return;
+                } else {
+                    if (locationCity != null) {
+                        city = locationCity;
+                    }
                 }
                 break;
+
             default:
                 city = String.valueOf(((TextView) v).getText());
         }
 
         addCity(city.replace("市", ""));
+    }
+
+    private void showGpsNotOpen() {
+        Snackbar snackbar = Snackbar.make(binding.tvLocation,
+                getResources().getString(R.string.locate_failed),
+                Snackbar.LENGTH_LONG);
+        snackbar.setAction("前往打开", v -> {
+//            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+//            startActivityForResult(intent, 2);
+            Intent intent = new Intent("com.example.jy.jyweather");
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            ComponentName comp = new ComponentName("com.huawei.systemmanager", "com.huawei.permissionmanager.ui.MainActivity");
+            intent.setComponent(comp);
+            startActivity(intent);
+        });
+        snackbar.show();
+    }
+
+    private void showPermissionDenied() {
+        Snackbar snackbar = Snackbar.make(binding.tvLocation,
+                getResources().getString(R.string.locate_failed),
+                Snackbar.LENGTH_LONG);
+        snackbar.setAction("前往打开", v -> {
+            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            startActivityForResult(intent, 1);
+        });
+        snackbar.show();
+    }
+
+    private void onLocationSuccessful(String city) {
+        binding.tvLocation.setText(city);
+        locationCity = city.replace("市", "")
+                .replace("区", "")
+                .replace("县", "");
+    }
+
+    private void onLocationFailed() {
+        binding.tvLocation.setText(getResources().getString(R.string.locate_unknown));
     }
 
     private class MyLocationListener extends BDAbstractLocationListener {
@@ -182,14 +236,10 @@ public class ChooseCityActivity extends BaseActivity implements EasyPermissions.
             mClient.stop();
 
             String city = location.getCity();
-            if (city == null) {// 返回为空显示"定位失败"
-                binding.tvLocation.setText(getResources().getString(R.string.locate_unknown));
-                binding.tvLocation.setClickable(false);
+            if (city == null) {
+                onLocationFailed();
             } else {
-                binding.tvLocation.setText(city);
-                locationCity = location.getCity().replace("市", "")
-                        .replace("区", "")
-                        .replace("县", "");
+                onLocationSuccessful(city);
             }
         }
     }
