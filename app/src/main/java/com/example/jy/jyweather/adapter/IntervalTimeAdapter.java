@@ -1,33 +1,28 @@
 package com.example.jy.jyweather.adapter;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.TextView;
 
 import com.example.jy.jyweather.R;
-
-import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import com.example.jy.jyweather.databinding.ItemIntervalTimeBinding;
 
 /**
  * 间隔时间Adapter
  * <p>
  * Created by Yang on 2018/1/13.
  */
-
 public class IntervalTimeAdapter extends BaseAdapter {
 
-    private Context context;
     private String[] intervalTimes;
+    private LayoutInflater inflater;
 
     public IntervalTimeAdapter(Context context, String[] intervalTimes) {
-        this.context = context;
         this.intervalTimes = intervalTimes;
+        inflater = LayoutInflater.from(context);
     }
 
     @Override
@@ -36,7 +31,7 @@ public class IntervalTimeAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int i) {
+    public String getItem(int i) {
         return intervalTimes[i];
     }
 
@@ -47,25 +42,16 @@ public class IntervalTimeAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        ViewHolder holder;
+        ItemIntervalTimeBinding binding;
         if (view == null) {
-            view = LayoutInflater.from(context).inflate(R.layout.item_interval_time, viewGroup, false);
-            holder = new ViewHolder(view);
-            view.setTag(holder);
+            binding = DataBindingUtil.inflate(inflater, R.layout.item_interval_time, viewGroup, false);
+            view = binding.getRoot();
+            view.setTag(binding);
         } else {
-            holder = (ViewHolder) view.getTag();
+            binding = (ItemIntervalTimeBinding) view.getTag();
         }
 
-        holder.tvTime.setText(intervalTimes[i]);
+        binding.setIntervalTime(getItem(i));
         return view;
-    }
-
-    static class ViewHolder {
-        @BindView(R.id.tv_time)
-        TextView tvTime;
-
-        ViewHolder(View view) {
-            ButterKnife.bind(this, view);
-        }
     }
 }

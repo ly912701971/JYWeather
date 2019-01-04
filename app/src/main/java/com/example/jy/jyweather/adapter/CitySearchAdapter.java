@@ -2,38 +2,34 @@ package com.example.jy.jyweather.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.TextView;
 
 import com.example.jy.jyweather.JYApplication;
 import com.example.jy.jyweather.R;
 import com.example.jy.jyweather.activity.WeatherActivity;
+import com.example.jy.jyweather.databinding.ItemSearchCityBinding;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * CitySearchAdapter
  * <p>
  * Created by Yang on 2018/1/8.
  */
-
 public class CitySearchAdapter extends BaseAdapter {
 
-    private Context context;
-
     private List<String> cityList;
+    private LayoutInflater inflater;
 
     public CitySearchAdapter(Context context, List<String> cityList) {
-        this.context = context;
         this.cityList = cityList;
+        inflater = LayoutInflater.from(context);
     }
 
     @Override
@@ -42,7 +38,7 @@ public class CitySearchAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int i) {
+    public String getItem(int i) {
         return cityList.get(i);
     }
 
@@ -53,20 +49,18 @@ public class CitySearchAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int i, View convertView, ViewGroup viewGroup) {
-        ViewHolder holder;
+        ItemSearchCityBinding binding;
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.item_search_city, viewGroup, false);
-            holder = new ViewHolder(convertView);
-            convertView.setTag(holder);
+            binding = DataBindingUtil.inflate(inflater, R.layout.item_search_city, viewGroup, false);
+            convertView = binding.getRoot();
+            convertView.setTag(binding);
         } else {
-            holder = (ViewHolder) convertView.getTag();
+            binding = (ItemSearchCityBinding) convertView.getTag();
         }
 
-        holder.tvCityInfo.setText(cityList.get(i));
-        holder.tvCityInfo.setOnClickListener(view -> {
-            Set<String> citySet = JYApplication.getInstance().getCityDB().getCitySet();
-            citySet = new HashSet<>(citySet);
-
+        binding.setCityInfo(getItem(i));
+        binding.tvCityInfo.setOnClickListener(view -> {
+            Set<String> citySet = new HashSet<>(JYApplication.getInstance().getCityDB().getCitySet());
             String city = cityList.get(i).split(" - ")[0];
             if (!citySet.contains(city)) {
                 citySet.add(city);
@@ -76,20 +70,10 @@ public class CitySearchAdapter extends BaseAdapter {
                 }
             }
 
-            Intent intent = new Intent(context, WeatherActivity.class);
+            Intent intent = new Intent(JYApplication.getInstance(), WeatherActivity.class);
             intent.putExtra("city", city);
-            context.startActivity(intent);
+            JYApplication.getInstance().startActivity(intent);
         });
         return convertView;
-    }
-
-    static class ViewHolder {
-
-        @BindView(R.id.tv_city_info)
-        TextView tvCityInfo;
-
-        ViewHolder(View view) {
-            ButterKnife.bind(this, view);
-        }
     }
 }

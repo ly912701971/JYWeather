@@ -15,10 +15,7 @@
         android:textColor="@color/text_black"
         android:textSize="16sp"/>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="@color/divider"/>
+    <include layout="@layout/divider"/>
 
     <ListView
         android:id="@+id/lv_interval_time"

@@ -126,21 +126,13 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         final String[] intervalTimes = getResources().getStringArray(R.array.interval_time);
         ListView lvIntervalTime = updateTimeView.findViewById(R.id.lv_interval_time);
         lvIntervalTime.setAdapter(new IntervalTimeAdapter(this, intervalTimes));
-        lvIntervalTime.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                hasChangeInterval = true;
-                binding.tvIntervalTime.setText(intervalTimes[i]);
-                JYApplication.getInstance().getCityDB().setUpdateInterval(hours[i]);
-                updateTimeDialog.dismiss();
-            }
+        lvIntervalTime.setOnItemClickListener((adapterView, view, i, l) -> {
+            hasChangeInterval = true;
+            binding.tvIntervalTime.setText(intervalTimes[i]);
+            JYApplication.getInstance().getCityDB().setUpdateInterval(hours[i]);
+            updateTimeDialog.dismiss();
         });
-        updateTimeView.findViewById(R.id.tv_cancel).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                updateTimeDialog.dismiss();
-            }
-        });
+        updateTimeView.findViewById(R.id.tv_cancel).setOnClickListener(view -> updateTimeDialog.dismiss());
 
         updateTimeDialog.setContentView(updateTimeView, getDialogParams(8));
         updateTimeDialog.setCancelable(false);
@@ -149,21 +141,13 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
     private void openClearCacheDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this).setMessage("确认清除缓存?")
-                .setPositiveButton("确认", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        JYApplication.getInstance().getCityDB().clearCache();
-                        hasClearCache = true;
-                        showSnackBar(binding.llUpdateInterval, "清除缓存成功");
-                        dialogInterface.dismiss();
-                    }
+                .setPositiveButton("确认", (dialogInterface, i) -> {
+                    JYApplication.getInstance().getCityDB().clearCache();
+                    hasClearCache = true;
+                    showSnackBar(binding.llUpdateInterval, "清除缓存成功");
+                    dialogInterface.dismiss();
                 })
-                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                }).setCancelable(false);
+                .setNegativeButton("取消", (dialogInterface, i) -> dialogInterface.dismiss()).setCancelable(false);
         builder.create().show();
     }
 

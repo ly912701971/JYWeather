@@ -14,7 +14,6 @@ import java.util.TimerTask;
  * <p>
  * Created by liu on 2018/1/8.
  */
-
 public class WelcomeActivity extends BaseActivity {
 
     @Override
@@ -22,18 +21,15 @@ public class WelcomeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setStatusBarTrans();
 
-        // 创建Timer对象
         Timer timer = new Timer();
-        // 创建TimerTask对象
         TimerTask timerTask = new TimerTask() {
-
             @Override
             public void run() {
                 jumpActivity();
             }
         };
-        // 使用timer.schedule（）方法调用timerTask，定时3秒后执行run
-        timer.schedule(timerTask, 2000);
+        // 使用timer.schedule（）方法调用timerTask，定时1.5秒后执行run
+        timer.schedule(timerTask, 1500);
     }
 
     private void jumpActivity() {

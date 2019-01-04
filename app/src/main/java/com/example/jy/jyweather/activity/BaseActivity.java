@@ -13,7 +13,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.Toast;
 
@@ -24,7 +23,6 @@ import com.example.jy.jyweather.R;
  * <p>
  * Created by Yang on 2017/10/22.
  */
-
 public class BaseActivity extends AppCompatActivity {
 
     @Override
