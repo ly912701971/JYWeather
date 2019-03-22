@@ -1,6 +1,7 @@
 package com.jy.weather.util
 
 import com.google.gson.Gson
+import com.google.gson.JsonSyntaxException
 import com.jy.weather.entity.WeatherBean
 import org.json.JSONObject
 
@@ -12,13 +13,14 @@ import org.json.JSONObject
 
 object JsonUtil {
 
-    fun handleWeatherResponse(response: String): WeatherBean? {
+    fun handleWeatherResponse(response: String?): WeatherBean? {
+        response ?: return null
         try {
             val jsonObject = JSONObject(response)
             val jsonArray = jsonObject.getJSONArray("HeWeather6")
             val weatherContent = jsonArray.getJSONObject(0).toString()
             return Gson().fromJson(weatherContent, WeatherBean::class.java)
-        } catch (e: Exception) {
+        } catch (e: JsonSyntaxException) {
             e.printStackTrace()
         }
         return null

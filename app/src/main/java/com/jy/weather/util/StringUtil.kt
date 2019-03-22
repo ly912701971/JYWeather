@@ -45,4 +45,6 @@ object StringUtil {
         calendar.time = date
         return weekdays[calendar.get(Calendar.DAY_OF_WEEK) - 1]
     }
+
+    fun getTime(): String = SimpleDateFormat("HH:mm", Locale.CHINA).format(Date())
 }

@@ -1,4 +1,4 @@
-package com.jy.weather.base;
+package com.jy.weather.base
 
 /**
  * Activity基类接口
@@ -8,17 +8,17 @@ package com.jy.weather.base;
  * @author Yang
  * @date 2018/9/4
  */
-public interface IBaseActivity<Data> {
+interface IBaseActivity<Data> {
 
     /**
      * 显示错误信息
      */
-    void showErrorMessage(String msg);
+    fun showErrorMessage(msg: String)
 
     /**
      * 显示数据
      *
      * @param data 从Presenter层取回的数据
      */
-    void showData(Data data);
+    fun showData(data: Data)
 }

@@ -151,7 +151,7 @@ public class ChooseCityActivity extends BaseActivity implements EasyPermissions.
     }
 
     private void addCity(String city) {
-        HashSet<String> citySet = (HashSet<String>) JYApplication.cityDB.getCitySet();
+        HashSet<String> citySet = new HashSet<>(JYApplication.cityDB.getCitySet());
         citySet.add(city);
         JYApplication.cityDB.setCitySet(citySet);
         if (citySet.size() == 1) {

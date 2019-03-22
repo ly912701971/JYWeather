@@ -62,7 +62,7 @@
 
         <!-- 桌面插件 -->
         <receiver
-            android:name=".widget.WeatherWidget41"
+            android:name=".widget.WeatherWidget51"
             android:label="卷云天气">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
