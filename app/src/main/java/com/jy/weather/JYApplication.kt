@@ -29,7 +29,7 @@ class JYApplication : Application() {
         cityDB = CityDB(this)
 
         // Bugly初始化
-        Bugly.init(applicationContext, "dfbeff5d40", true)
+        Bugly.init(applicationContext, "dfbeff5d40", false)
 
         // TalkingData初始化
         TCAgent.LOG_ON = true
