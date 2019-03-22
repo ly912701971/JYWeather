@@ -33,7 +33,7 @@ public class WelcomeActivity extends BaseActivity {
     }
 
     private void jumpActivity() {
-        String city = JYApplication.getInstance().getCityDB().getDefaultCity();
+        String city = JYApplication.cityDB.getDefaultCity();
         if (city == null) {
             startActivity(new Intent(this, ChooseCityActivity.class));
         } else {

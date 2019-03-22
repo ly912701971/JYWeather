@@ -63,7 +63,7 @@ public class ChooseCityActivity extends BaseActivity implements EasyPermissions.
     }
 
     private void init() {
-        String spCode = JYApplication.getInstance().getCityDB().getCondCode();
+        String spCode = JYApplication.cityDB.getCondCode();
         if (spCode != null) {
             binding.rlChooseBackground.setBackgroundResource(DrawableUtil.INSTANCE.getBackground(spCode));
         }
@@ -71,7 +71,7 @@ public class ChooseCityActivity extends BaseActivity implements EasyPermissions.
         binding.ivBack.setOnClickListener(view -> {
             if (binding.etSearch.getText().length() > 0) {
                 binding.etSearch.setText("");
-            } else if (JYApplication.getInstance().getCityDB().getDefaultCity() == null) {
+            } else if (JYApplication.cityDB.getDefaultCity() == null) {
                 addCity("北京");
                 finish();
             } else {
@@ -82,6 +82,8 @@ public class ChooseCityActivity extends BaseActivity implements EasyPermissions.
         // 添加全国城市列表
         cityList = Arrays.asList(getResources().getStringArray(R.array.national_cities_list));
         searchResult = new ArrayList<>();
+        CitySearchAdapter adapter = new CitySearchAdapter(ChooseCityActivity.this, searchResult);
+        binding.lvSearchResult.setAdapter(adapter);
 
         binding.etSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -101,6 +103,7 @@ public class ChooseCityActivity extends BaseActivity implements EasyPermissions.
                             searchResult.add(cityInfo);
                         }
                     }
+                    adapter.notifyDataSetChanged();
                     binding.llSearchResult.setVisibility(View.VISIBLE);
                     binding.llHotCity.setVisibility(View.GONE);
                 } else {
@@ -109,15 +112,12 @@ public class ChooseCityActivity extends BaseActivity implements EasyPermissions.
                 }
             }
         });
-
-        CitySearchAdapter adapter = new CitySearchAdapter(ChooseCityActivity.this, searchResult);
-        binding.lvSearchResult.setAdapter(adapter);
     }
 
     private void locate() {
-        if (GpsUtil.INSTANCE.isOpen(JYApplication.getInstance())) {
+        if (GpsUtil.INSTANCE.isOpen(JYApplication.INSTANCE)) {
             // 百度地图自动定位
-            mClient = new LocationClient(JYApplication.getInstance());
+            mClient = new LocationClient(JYApplication.INSTANCE);
             mClient.registerLocationListener(new MyLocationListener());
             LocationClientOption option = new LocationClientOption();
             option.setIsNeedAddress(true);
@@ -151,11 +151,11 @@ public class ChooseCityActivity extends BaseActivity implements EasyPermissions.
     }
 
     private void addCity(String city) {
-        HashSet<String> citySet = (HashSet<String>) JYApplication.getInstance().getCityDB().getCitySet();
+        HashSet<String> citySet = (HashSet<String>) JYApplication.cityDB.getCitySet();
         citySet.add(city);
-        JYApplication.getInstance().getCityDB().setCitySet(citySet);
+        JYApplication.cityDB.setCitySet(citySet);
         if (citySet.size() == 1) {
-            JYApplication.getInstance().getCityDB().setDefaultCity(city);
+            JYApplication.cityDB.setDefaultCity(city);
         }
 
         Intent intent = new Intent(this, WeatherActivity.class);
@@ -174,7 +174,7 @@ public class ChooseCityActivity extends BaseActivity implements EasyPermissions.
         String city = "";
         switch (v.getId()) {
             case R.id.tv_location:
-                if (!GpsUtil.INSTANCE.isOpen(JYApplication.getInstance())) {
+                if (!GpsUtil.INSTANCE.isOpen(JYApplication.INSTANCE)) {
                     showGpsNotOpen();
                     return;
                 } else {

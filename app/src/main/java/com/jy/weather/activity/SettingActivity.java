@@ -46,23 +46,18 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         hasChangeInterval = false;
 
         setSupportActionBar(binding.toolbar);
-        binding.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                exitActivity();
-            }
-        });
+        binding.toolbar.setNavigationOnClickListener(view -> exitActivity());
 
-        String spCode = JYApplication.getInstance().getCityDB().getCondCode();
+        String spCode = JYApplication.cityDB.getCondCode();
         if (spCode != null) {
             binding.rlSettingBackground.setBackgroundResource(DrawableUtil.INSTANCE.getBackground(spCode));
         }
 
-        binding.sNotification.setChecked(JYApplication.getInstance().getCityDB().getNotification());
-        binding.sAutoUpdate.setChecked(JYApplication.getInstance().getCityDB().getAutoUpdate());
-        changeUpdateColor(JYApplication.getInstance().getCityDB().getAutoUpdate());
+        binding.sNotification.setChecked(JYApplication.cityDB.getNotification());
+        binding.sAutoUpdate.setChecked(JYApplication.cityDB.getAutoUpdate());
+        changeUpdateColor(JYApplication.cityDB.getAutoUpdate());
         binding.tvIntervalTime.setText(String.valueOf(JYApplication
-                .getInstance().getCityDB().getUpdateInterval()).concat(" 小时"));
+                .cityDB.getUpdateInterval()).concat(" 小时"));
     }
 
     @Override
@@ -89,11 +84,11 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 } else {
                     NotificationUtil.INSTANCE.cancelNotification(this);
                 }
-                JYApplication.getInstance().getCityDB().setNotification(isChecked);
+                JYApplication.cityDB.setNotification(isChecked);
                 break;
 
             case R.id.s_auto_update:// 自动更新开关:
-                JYApplication.getInstance().getCityDB().setAutoUpdate(isChecked);
+                JYApplication.cityDB.setAutoUpdate(isChecked);
                 changeUpdateColor(isChecked);
                 break;
 
@@ -127,7 +122,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         lvIntervalTime.setOnItemClickListener((adapterView, view, i, l) -> {
             hasChangeInterval = true;
             binding.tvIntervalTime.setText(intervalTimes[i]);
-            JYApplication.getInstance().getCityDB().setUpdateInterval(hours[i]);
+            JYApplication.cityDB.setUpdateInterval(hours[i]);
             updateTimeDialog.dismiss();
         });
         updateTimeView.findViewById(R.id.tv_cancel).setOnClickListener(view -> updateTimeDialog.dismiss());
@@ -140,7 +135,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     private void openClearCacheDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this).setMessage("确认清除缓存?")
                 .setPositiveButton("确认", (dialogInterface, i) -> {
-                    JYApplication.getInstance().getCityDB().clearCache();
+                    JYApplication.cityDB.clearCache();
                     hasClearCache = true;
                     showSnackBar(binding.llUpdateInterval, "清除缓存成功");
                     dialogInterface.dismiss();

@@ -46,7 +46,7 @@ public class CityListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        String defaultCity = JYApplication.getInstance().getCityDB().getDefaultCity();
+        String defaultCity = JYApplication.cityDB.getDefaultCity();
         ItemCityBinding binding;
         if (view == null) {
             binding = DataBindingUtil.inflate(inflater, R.layout.item_city, viewGroup, false);

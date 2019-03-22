@@ -46,7 +46,7 @@ public class WeatherWidget41 extends AppWidgetProvider {
         // 监听系统广播ACTION_TIME_TICK
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Intent.ACTION_TIME_TICK);
-        JYApplication.getInstance().registerReceiver(WeatherWidget41.this, intentFilter);
+        JYApplication.INSTANCE.registerReceiver(WeatherWidget41.this, intentFilter);
     }
 
     @SuppressLint("HandlerLeak")
@@ -55,40 +55,40 @@ public class WeatherWidget41 extends AppWidgetProvider {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
 
-            RemoteViews remoteView = new RemoteViews(JYApplication.getInstance().getPackageName(), R.layout.widget_desktop_4x1);
+            RemoteViews remoteView = new RemoteViews(JYApplication.INSTANCE.getPackageName(), R.layout.widget_desktop_4x1);
             remoteView.setTextViewText(R.id.tv_time,
                     new SimpleDateFormat("HH:mm", Locale.CHINA).format(System.currentTimeMillis()));
-            String city = JYApplication.getInstance().getCityDB().getDefaultCity();
+            String city = JYApplication.cityDB.getDefaultCity();
             if (city != null && !city.equals(defaultCity)) {// 默认城市没有变化
                 defaultCity = city;
                 WeatherBean weather = JsonUtil.INSTANCE.handleWeatherResponse(
-                        JYApplication.getInstance().getCityDB().getData(defaultCity));
+                        JYApplication.cityDB.getData(defaultCity));
                 if (weather != null) {
                     String tempScope = weather.getDailyForecasts().get(0).getMinTemp()
                             .concat(" ~ ")
                             .concat(weather.getDailyForecasts().get(0).getMaxTemp())
-                            .concat(JYApplication.getInstance().getString(R.string.c_degree));
+                            .concat(JYApplication.INSTANCE.getString(R.string.c_degree));
                     remoteView.setTextViewText(R.id.tv_city, city);
                     remoteView.setImageViewResource(R.id.iv_weather_icon,
-                            DrawableUtil.INSTANCE.getCondIcon(weather.getNow().getCode()));
+                            DrawableUtil.getCondIcon(weather.getNow().getCode()));
                     remoteView.setTextViewText(R.id.tv_cond, weather.getNow().getCondText());
                     remoteView.setTextViewText(R.id.tv_now_temp,
-                            weather.getNow().getTemperature().concat(JYApplication.getInstance().getString(R.string.c_degree)));
+                            weather.getNow().getTemperature().concat(JYApplication.INSTANCE.getString(R.string.c_degree)));
                     remoteView.setTextViewText(R.id.tv_temp_scope, tempScope);
                     remoteView.setTextViewText(R.id.tv_date, weather.getDailyForecasts().get(0).getDate());
                 }
             }
 
             // 使桌面插件响应点击事件，进入MainActivity
-            Intent intent = new Intent(JYApplication.getInstance(), WeatherActivity.class);
+            Intent intent = new Intent(JYApplication.INSTANCE, WeatherActivity.class);
             intent.putExtra("city", defaultCity);
-            PendingIntent pendingIntent = PendingIntent.getActivity(JYApplication.getInstance(), 0,
+            PendingIntent pendingIntent = PendingIntent.getActivity(JYApplication.INSTANCE, 0,
                     intent, PendingIntent.FLAG_UPDATE_CURRENT);
             remoteView.setOnClickPendingIntent(R.id.ll_desktop_widget, pendingIntent);
 
             // 更新桌面插件
-            ComponentName componentName = new ComponentName(JYApplication.getInstance(), WeatherWidget41.class);
-            AppWidgetManager.getInstance(JYApplication.getInstance()).updateAppWidget(componentName, remoteView);
+            ComponentName componentName = new ComponentName(JYApplication.INSTANCE, WeatherWidget41.class);
+            AppWidgetManager.getInstance(JYApplication.INSTANCE).updateAppWidget(componentName, remoteView);
         }
     };
 

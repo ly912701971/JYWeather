@@ -98,7 +98,7 @@ public class WeatherActivity extends BaseActivity implements View.OnClickListene
             }
         });
 
-        if (JYApplication.getInstance().getCityDB().getAutoUpdate()) {
+        if (JYApplication.cityDB.getAutoUpdate()) {
             startService(new Intent(this, AutoUpdateService.class));
         }
     }
@@ -108,7 +108,7 @@ public class WeatherActivity extends BaseActivity implements View.OnClickListene
      */
     private void getData(final String city) {
         weatherBinding.srlRefresh.setRefreshing(true);
-        String dataText = JYApplication.getInstance().getCityDB().getData(city);
+        String dataText = JYApplication.cityDB.getData(city);
 
         if (!isNetworkAvailable()) {
             weatherBinding.srlRefresh.setRefreshing(false);
@@ -129,14 +129,14 @@ public class WeatherActivity extends BaseActivity implements View.OnClickListene
                     weatherBinding.srlRefresh.setRefreshing(false);
                 });
 
-                String dataText = JYApplication.getInstance().getCityDB().getData(city);
+                String dataText = JYApplication.cityDB.getData(city);
                 handleData(dataText);
             }
 
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                 String responseText = response.body().string();
-                JYApplication.getInstance().getCityDB().setCityData(mCity, responseText);
+                JYApplication.cityDB.setCityData(mCity, responseText);
                 handleData(responseText);
             }
         });
@@ -163,10 +163,10 @@ public class WeatherActivity extends BaseActivity implements View.OnClickListene
      * 初始化布局
      */
     private void initView() {
-        if (JYApplication.getInstance().getCityDB().getNotification()) {
+        if (JYApplication.cityDB.getNotification()) {
             NotificationUtil.INSTANCE.openNotification(this);
         }
-        JYApplication.getInstance().getCityDB().setCondCode(now.getCode());
+        JYApplication.cityDB.setCondCode(now.getCode());
 
         headerBinding.setBasic(basic);
         nowBinding.setNow(now);

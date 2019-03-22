@@ -43,9 +43,9 @@ object NotificationUtil {
         // 传入当前项目的包名，和通知栏上要显示的自定义布局的ID
         val remoteViews = RemoteViews(context.packageName, R.layout.widget_notification)
         // 下面是设置通知栏布局里面控件的属性
-        val defaultCity = JYApplication.getInstance().cityDB.defaultCity
+        val defaultCity = JYApplication.cityDB.defaultCity
         val weather = JsonUtil.handleWeatherResponse(
-            JYApplication.getInstance().cityDB.getData(defaultCity))
+            JYApplication.cityDB.getData(defaultCity))
         if (weather != null) {
             remoteViews.setTextViewText(R.id.city_name, defaultCity)// 常驻城市名称
             remoteViews.setImageViewResource(R.id.pic_bar,

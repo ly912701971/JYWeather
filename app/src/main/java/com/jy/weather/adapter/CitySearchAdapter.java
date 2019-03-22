@@ -60,19 +60,19 @@ public class CitySearchAdapter extends BaseAdapter {
 
         binding.setCityInfo(getItem(i));
         binding.tvCityInfo.setOnClickListener(view -> {
-            Set<String> citySet = new HashSet<>(JYApplication.getInstance().getCityDB().getCitySet());
+            Set<String> citySet = new HashSet<>(JYApplication.cityDB.getCitySet());
             String city = cityList.get(i).split(" - ")[0];
             if (!citySet.contains(city)) {
                 citySet.add(city);
-                JYApplication.getInstance().getCityDB().setCitySet(citySet);
+                JYApplication.cityDB.setCitySet(citySet);
                 if (citySet.size() == 1) {
-                    JYApplication.getInstance().getCityDB().setDefaultCity(city);
+                    JYApplication.cityDB.setDefaultCity(city);
                 }
             }
 
-            Intent intent = new Intent(JYApplication.getInstance(), WeatherActivity.class);
+            Intent intent = new Intent(JYApplication.INSTANCE, WeatherActivity.class);
             intent.putExtra("city", city);
-            JYApplication.getInstance().startActivity(intent);
+            JYApplication.INSTANCE.startActivity(intent);
         });
         return convertView;
     }

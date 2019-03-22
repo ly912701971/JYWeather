@@ -29,7 +29,7 @@ public class AutoUpdateService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         updateWeather();
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        int updateInterval = JYApplication.getInstance().getCityDB().getUpdateInterval() * 60 * 60 * 1000;
+        int updateInterval = JYApplication.cityDB.getUpdateInterval() * 60 * 60 * 1000;
         long triggerAtTime = SystemClock.elapsedRealtime() + updateInterval;
         Intent i = new Intent(this, AutoUpdateService.class);
         PendingIntent pendingIntent = PendingIntent.getService(this, 0, i, 0);
@@ -41,7 +41,7 @@ public class AutoUpdateService extends Service {
     }
 
     private void updateWeather() {
-        Set<String> citySet = JYApplication.getInstance().getCityDB().getCitySet();
+        Set<String> citySet = JYApplication.cityDB.getCitySet();
         for (final String city : citySet) {
             NetworkInterface.INSTANCE.queryWeatherData(city, new Callback() {
                 @Override
@@ -51,7 +51,9 @@ public class AutoUpdateService extends Service {
 
                 @Override
                 public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                    JYApplication.getInstance().getCityDB().setCityData(city, response.body().string());
+                    if (response.body() != null) {
+                        JYApplication.cityDB.setCityData(city, response.body().string());
+                    }
                 }
             });
         }

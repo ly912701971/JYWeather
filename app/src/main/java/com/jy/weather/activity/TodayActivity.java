@@ -36,7 +36,7 @@ public class TodayActivity extends BaseActivity {
     private void init() {
         setSupportActionBar(binding.toolbar);
         binding.toolbar.setNavigationOnClickListener(v -> finish());
-        String spCode = JYApplication.getInstance().getCityDB().getCondCode();
+        String spCode = JYApplication.cityDB.getCondCode();
         if (spCode != null) {
             binding.rlTodayBackground.setBackgroundResource(DrawableUtil.INSTANCE.getBackground(spCode));
         }

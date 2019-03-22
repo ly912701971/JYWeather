@@ -46,17 +46,17 @@ public class CityManageActivity extends BaseActivity {
         setSupportActionBar(binding.toolbar);
         binding.toolbar.setNavigationOnClickListener(view -> finish());
 
-        String spCode = JYApplication.getInstance().getCityDB().getCondCode();
+        String spCode = JYApplication.cityDB.getCondCode();
         if (spCode != null) {
             binding.rlCityManageBackground.setBackgroundResource(DrawableUtil.INSTANCE.getBackground(spCode));
         }
 
         cityList = new ArrayList<>();
-        citySet = new HashSet<>(JYApplication.getInstance().getCityDB().getCitySet());
+        citySet = new HashSet<>(JYApplication.cityDB.getCitySet());
         String weatherData;
         Map<String, String> cityData;
         for (String city : citySet) {
-            weatherData = JYApplication.getInstance().getCityDB().getData(city);
+            weatherData = JYApplication.cityDB.getData(city);
             WeatherBean weather = JsonUtil.INSTANCE.handleWeatherResponse(weatherData);
             if (weather != null) {
                 cityData = new HashMap<>();
@@ -109,11 +109,11 @@ public class CityManageActivity extends BaseActivity {
             if (city == null) {
                 return false;
             }
-            String defaultCity = JYApplication.getInstance().getCityDB().getDefaultCity();
+            String defaultCity = JYApplication.cityDB.getDefaultCity();
             switch (index) {
                 case 0:// 点击"常驻"
                     if (!city.equals(defaultCity)) {
-                        JYApplication.getInstance().getCityDB().setDefaultCity(city);
+                        JYApplication.cityDB.setDefaultCity(city);
                         adapter.notifyDataSetChanged();
                     }
                     break;
@@ -131,8 +131,8 @@ public class CityManageActivity extends BaseActivity {
                             }
                         }
                         citySet.remove(city);
-                        JYApplication.getInstance().getCityDB().setCitySet(citySet);
-                        JYApplication.getInstance().getCityDB().removeCity(city);
+                        JYApplication.cityDB.setCitySet(citySet);
+                        JYApplication.cityDB.removeCity(city);
                     }
                     break;
                 default:
