@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName
  *
  * Created by Yang on 2017/12/11.
  */
-data class UpdateBean(
+data class Update(
     @SerializedName("loc")
     private val loc: String,    //当地时间
 

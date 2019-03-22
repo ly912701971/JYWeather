@@ -10,7 +10,7 @@ import java.io.Serializable
  *
  * Created by Yang on 2017/10/15.
  */
-data class DailyForecastBean(
+data class DailyForecast(
     private val date: String,   //日期
 
     @SerializedName("hum")

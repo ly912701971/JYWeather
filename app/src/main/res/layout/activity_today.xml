@@ -14,11 +14,11 @@
 
         <variable
             name="now"
-            type="com.jy.weather.entity.NowBean" />
+            type="com.jy.weather.entity.Now" />
 
         <variable
             name="dailyForecast"
-            type="com.jy.weather.entity.DailyForecastBean" />
+            type="com.jy.weather.entity.DailyForecast" />
     </data>
 
     <RelativeLayout

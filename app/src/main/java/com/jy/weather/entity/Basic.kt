@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName
  *
  * Created by Yang on 2017/10/15.
  */
-data class BasicBean(
+data class Basic(
     @SerializedName("cid")
     val cityId: String,      //城市id
 

@@ -30,12 +30,12 @@ import java.io.IOException
 
 class WeatherActivity : BaseActivity(), View.OnClickListener {
 
-    private lateinit var basic: BasicBean
-    private lateinit var now: NowBean
-    private lateinit var update: UpdateBean
-    private lateinit var dailyForecasts: List<DailyForecastBean>
-    private lateinit var hourlyForecasts: List<HourlyForecastBean>
-    private lateinit var lifestyles: List<LifestyleBean>
+    private lateinit var basic: Basic
+    private lateinit var now: Now
+    private lateinit var update: Update
+    private lateinit var dailyForecasts: List<DailyForecast>
+    private lateinit var hourlyForecasts: List<HourlyForecast>
+    private lateinit var lifestyles: List<Lifestyle>
 
     private val handler = MyHandler()
     private lateinit var mCity: String

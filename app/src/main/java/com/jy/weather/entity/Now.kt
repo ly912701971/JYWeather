@@ -10,7 +10,7 @@ import java.io.Serializable
  *
  * Created by Yang on 2017/10/15.
  */
-data class NowBean(
+data class Now(
     @SerializedName("cloud")
     val cloud: String,           //云量
 

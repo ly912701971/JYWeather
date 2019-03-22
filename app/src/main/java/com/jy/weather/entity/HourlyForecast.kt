@@ -9,7 +9,7 @@ import com.jy.weather.util.StringUtil
  *
  * Created by Yang on 2017/10/15.
  */
-data class HourlyForecastBean(
+data class HourlyForecast(
     private val time: String,   //时间
 
     @SerializedName("hum")

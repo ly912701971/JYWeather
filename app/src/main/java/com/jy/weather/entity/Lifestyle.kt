@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName
  *
  * Created by Yang on 2017/10/15.
  */
-data class LifestyleBean(
+data class Lifestyle(
     val type: String,   //类型
 
     @SerializedName("brf")

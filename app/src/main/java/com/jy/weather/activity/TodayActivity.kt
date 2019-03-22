@@ -5,8 +5,8 @@ import android.os.Bundle
 import com.jy.weather.JYApplication
 import com.jy.weather.R
 import com.jy.weather.databinding.ActivityTodayBinding
-import com.jy.weather.entity.DailyForecastBean
-import com.jy.weather.entity.NowBean
+import com.jy.weather.entity.DailyForecast
+import com.jy.weather.entity.Now
 import com.jy.weather.util.DrawableUtil
 
 /**
@@ -40,8 +40,8 @@ class TodayActivity : BaseActivity() {
         if (intent != null) {
             binding.location = intent.getStringExtra("location")
             binding.updateTime = intent.getStringExtra("update_time")
-            binding.now = intent.getSerializableExtra("now") as NowBean
-            binding.dailyForecast = intent.getSerializableExtra("daily_forecast") as DailyForecastBean
+            binding.now = intent.getSerializableExtra("now") as Now
+            binding.dailyForecast = intent.getSerializableExtra("daily_forecast") as DailyForecast
         }
     }
 }

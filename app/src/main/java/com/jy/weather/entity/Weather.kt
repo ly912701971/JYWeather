@@ -7,21 +7,21 @@ import com.google.gson.annotations.SerializedName
  *
  * Created by Yang on 2017/10/15.
  */
-data class WeatherBean(
+data class Weather(
     val status: String,
 
-    val update: UpdateBean,
+    val update: Update,
 
-    val basic: BasicBean,
+    val basic: Basic,
 
-    val now: NowBean,
+    val now: Now,
 
     @SerializedName("daily_forecast")
-    val dailyForecasts: List<DailyForecastBean>,
+    val dailyForecasts: List<DailyForecast>,
 
     @SerializedName("hourly")
-    val hourlyForecasts: List<HourlyForecastBean>,
+    val hourlyForecasts: List<HourlyForecast>,
 
     @SerializedName("lifestyle")
-    val lifestyles: List<LifestyleBean>
+    val lifestyles: List<Lifestyle>
 )
