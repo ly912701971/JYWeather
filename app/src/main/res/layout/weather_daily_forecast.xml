@@ -15,16 +15,16 @@
             android:layout_height="wrap_content"
             android:padding="8dp"
             android:text="@string/daily_forecast"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:background="@color/dark_gray"/>
+            android:background="@color/dark_gray" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_daily"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
     </LinearLayout>
 </layout>

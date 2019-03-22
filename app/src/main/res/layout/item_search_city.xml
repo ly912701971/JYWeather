@@ -5,7 +5,7 @@
 
         <variable
             name="cityInfo"
-            type="String"/>
+            type="String" />
     </data>
 
     <RelativeLayout
@@ -22,12 +22,12 @@
             android:paddingRight="32dp"
             android:paddingBottom="16dp"
             android:text="@{cityInfo}"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
         <include
             layout="@layout/divider"
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:layout_below="@+id/tv_city_info"/>
+            android:layout_below="@+id/tv_city_info" />
     </RelativeLayout>
 </layout>

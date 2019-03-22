@@ -10,7 +10,7 @@
 
         <include
             android:id="@+id/header_part"
-            layout="@layout/weather_header"/>
+            layout="@layout/weather_header" />
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/srl_refresh"
@@ -32,19 +32,19 @@
 
                     <include
                         android:id="@+id/now_part"
-                        layout="@layout/weather_now"/>
+                        layout="@layout/weather_now" />
 
                     <include
                         android:id="@+id/hourly_forecast_part"
-                        layout="@layout/weather_hourly_forecast"/>
+                        layout="@layout/weather_hourly_forecast" />
 
                     <include
                         android:id="@+id/daily_forecast_part"
-                        layout="@layout/weather_daily_forecast"/>
+                        layout="@layout/weather_daily_forecast" />
 
                     <include
                         android:id="@+id/life_suggestion_part"
-                        layout="@layout/weather_life_suggestion"/>
+                        layout="@layout/weather_life_suggestion" />
                 </LinearLayout>
             </ScrollView>
         </android.support.v4.widget.SwipeRefreshLayout>

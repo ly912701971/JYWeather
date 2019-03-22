@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
         <variable
             name="now"
-            type="com.example.jy.jyweather.entity.NowBean"/>
+            type="com.jy.weather.entity.NowBean" />
 
         <variable
             name="updateTime"
-            type="String"/>
+            type="String" />
     </data>
 
     <RelativeLayout
@@ -32,14 +32,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/update_time"/>
+                android:text="@string/update_time" />
 
             <TextView
                 android:id="@+id/tv_update_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
-                android:text="@{updateTime}"/>
+                android:text="@{updateTime}" />
         </LinearLayout>
 
         <TextView
@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@id/ll_brief"
             android:text="@{now.temperature}"
-            android:textSize="80sp"/>
+            android:textSize="80sp" />
 
         <LinearLayout
             android:id="@+id/ll_brief"
@@ -62,7 +62,7 @@
                 android:id="@+id/iv_now_icon"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                app:imageId="@{now.nowIcon}"/>
+                app:imageId="@{now.nowIcon}" />
 
             <TextView
                 android:id="@+id/tv_now_cond"
@@ -70,13 +70,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="@{now.condText}"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
 
             <View
                 android:layout_width="1px"
                 android:layout_height="match_parent"
                 android:layout_marginStart="8dp"
-                android:background="@color/white"/>
+                android:background="@color/white" />
 
             <TextView
                 android:id="@+id/tv_now_wind_dir"
@@ -84,7 +84,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="@{now.windDirection}"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tv_now_wind_sc"
@@ -92,7 +92,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="@{now.windScale}"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tv_now_hum"
@@ -101,7 +101,7 @@
                 android:layout_marginStart="8dp"
                 android:drawableEnd="@drawable/ic_goto"
                 android:text="@{@string/relative_hum + now.relativeHum}"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
         </LinearLayout>
     </RelativeLayout>
 </layout>

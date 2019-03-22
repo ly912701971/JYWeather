@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
         <variable
             name="dailyForecast"
-            type="com.example.jy.jyweather.entity.DailyForecastBean"/>
+            type="com.jy.weather.entity.DailyForecastBean" />
     </data>
 
     <LinearLayout
@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:gravity="center"
-            android:text="@{dailyForecast.date}"/>
+            android:text="@{dailyForecast.date}" />
 
         <TextView
             android:id="@+id/tv_weekday"
@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:gravity="center"
-            android:text="@{dailyForecast.weekday}"/>
+            android:text="@{dailyForecast.weekday}" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -45,14 +45,14 @@
                 android:id="@+id/iv_cond_day"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                app:imageId="@{dailyForecast.icon}"/>
+                app:imageId="@{dailyForecast.icon}" />
 
             <TextView
                 android:id="@+id/tv_cond_day"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="@{dailyForecast.dayCondText}"/>
+                android:text="@{dailyForecast.dayCondText}" />
         </LinearLayout>
 
         <TextView
@@ -61,7 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1.5"
             android:gravity="center"
-            android:text="@{dailyForecast.minTemp}"/>
+            android:text="@{dailyForecast.minTemp}" />
 
         <TextView
             android:id="@+id/tv_temp_max"
@@ -69,7 +69,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1.5"
             android:gravity="center"
-            android:text="@{dailyForecast.maxTemp}"/>
+            android:text="@{dailyForecast.maxTemp}" />
     </LinearLayout>
 </layout>
 

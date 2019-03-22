@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/shape_dialog_white"
@@ -13,15 +12,15 @@
         android:padding="24dp"
         android:text="@string/update_interval"
         android:textColor="@color/text_black"
-        android:textSize="16sp"/>
+        android:textSize="16sp" />
 
-    <include layout="@layout/divider"/>
+    <include layout="@layout/divider" />
 
     <ListView
         android:id="@+id/lv_interval_time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:divider="@null"/>
+        android:divider="@null" />
 
     <TextView
         android:id="@+id/tv_cancel"
@@ -33,5 +32,5 @@
         android:padding="8dp"
         android:text="@string/cancel"
         android:textColor="@color/text_black"
-        android:textSize="16sp"/>
+        android:textSize="16sp" />
 </LinearLayout>

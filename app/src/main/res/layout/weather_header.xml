@@ -5,7 +5,7 @@
 
         <variable
             name="basic"
-            type="com.example.jy.jyweather.entity.BasicBean"/>
+            type="com.jy.weather.entity.BasicBean" />
     </data>
 
     <RelativeLayout
@@ -22,7 +22,7 @@
             android:id="@+id/iv_home"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_home"/>
+            android:src="@drawable/ic_home" />
 
         <TextView
             android:id="@+id/tv_city"
@@ -31,14 +31,14 @@
             android:layout_marginStart="16dp"
             android:layout_toEndOf="@id/iv_home"
             android:text="@{basic.cityName}"
-            android:textSize="20sp"/>
+            android:textSize="20sp" />
 
         <ImageView
             android:id="@+id/iv_setting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:src="@drawable/ic_setting"/>
+            android:src="@drawable/ic_setting" />
     </RelativeLayout>
 </layout>
 

@@ -5,7 +5,7 @@
 
         <variable
             name="clickListener"
-            type="android.view.View.OnClickListener"/>
+            type="android.view.View.OnClickListener" />
     </data>
 
     <RelativeLayout
@@ -33,7 +33,7 @@
                     android:id="@+id/iv_back"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_set_back"/>
+                    android:src="@drawable/ic_set_back" />
 
                 <EditText
                     android:id="@+id/et_search"
@@ -49,7 +49,7 @@
                     android:paddingRight="16dp"
                     android:paddingBottom="8dp"
                     android:textColor="@color/white"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -66,7 +66,7 @@
                     android:layout_gravity="center"
                     android:padding="16dp"
                     android:text="@string/hot_city"
-                    android:textColor="@color/light_gray"/>
+                    android:textColor="@color/light_gray" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -89,7 +89,7 @@
                         android:onClick="@{clickListener}"
                         android:padding="8dp"
                         android:text="@string/locating"
-                        android:textSize="15sp"/>
+                        android:textSize="15sp" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -102,7 +102,7 @@
                         android:onClick="@{clickListener}"
                         android:padding="8dp"
                         android:text="@string/beijing"
-                        android:textSize="15sp"/>
+                        android:textSize="15sp" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -115,7 +115,7 @@
                         android:onClick="@{clickListener}"
                         android:padding="8dp"
                         android:text="@string/tianjin"
-                        android:textSize="15sp"/>
+                        android:textSize="15sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -136,7 +136,7 @@
                         android:onClick="@{clickListener}"
                         android:padding="8dp"
                         android:text="@string/shanghai"
-                        android:textSize="15sp"/>
+                        android:textSize="15sp" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -149,7 +149,7 @@
                         android:onClick="@{clickListener}"
                         android:padding="8dp"
                         android:text="@string/chongqing"
-                        android:textSize="15sp"/>
+                        android:textSize="15sp" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -162,7 +162,7 @@
                         android:onClick="@{clickListener}"
                         android:padding="8dp"
                         android:text="@string/shenyang"
-                        android:textSize="15sp"/>
+                        android:textSize="15sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -183,7 +183,7 @@
                         android:onClick="@{clickListener}"
                         android:padding="8dp"
                         android:text="@string/dalian"
-                        android:textSize="15sp"/>
+                        android:textSize="15sp" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -196,7 +196,7 @@
                         android:onClick="@{clickListener}"
                         android:padding="8dp"
                         android:text="@string/changchun"
-                        android:textSize="15sp"/>
+                        android:textSize="15sp" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -209,7 +209,7 @@
                         android:onClick="@{clickListener}"
                         android:padding="8dp"
                         android:text="@string/haerbin"
-                        android:textSize="15sp"/>
+                        android:textSize="15sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -230,7 +230,7 @@
                         android:onClick="@{clickListener}"
                         android:padding="8dp"
                         android:text="@string/zhengzhou"
-                        android:textSize="15sp"/>
+                        android:textSize="15sp" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -243,7 +243,7 @@
                         android:onClick="@{clickListener}"
                         android:padding="8dp"
                         android:text="@string/wuhan"
-                        android:textSize="15sp"/>
+                        android:textSize="15sp" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -256,7 +256,7 @@
                         android:onClick="@{clickListener}"
                         android:padding="8dp"
                         android:text="@string/changsha"
-                        android:textSize="15sp"/>
+                        android:textSize="15sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -277,7 +277,7 @@
                         android:onClick="@{clickListener}"
                         android:padding="8dp"
                         android:text="@string/guangzhou"
-                        android:textSize="15sp"/>
+                        android:textSize="15sp" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -290,7 +290,7 @@
                         android:onClick="@{clickListener}"
                         android:padding="8dp"
                         android:text="@string/shenzhen"
-                        android:textSize="15sp"/>
+                        android:textSize="15sp" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -303,7 +303,7 @@
                         android:onClick="@{clickListener}"
                         android:padding="8dp"
                         android:text="@string/nanjing"
-                        android:textSize="15sp"/>
+                        android:textSize="15sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -324,7 +324,7 @@
                         android:onClick="@{clickListener}"
                         android:padding="8dp"
                         android:text="@string/hangzhou"
-                        android:textSize="15sp"/>
+                        android:textSize="15sp" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -337,7 +337,7 @@
                         android:onClick="@{clickListener}"
                         android:padding="8dp"
                         android:text="@string/dongguan"
-                        android:textSize="15sp"/>
+                        android:textSize="15sp" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -350,7 +350,7 @@
                         android:onClick="@{clickListener}"
                         android:padding="8dp"
                         android:text="@string/chengdu"
-                        android:textSize="15sp"/>
+                        android:textSize="15sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -371,7 +371,7 @@
                         android:onClick="@{clickListener}"
                         android:padding="8dp"
                         android:text="@string/qingdao"
-                        android:textSize="15sp"/>
+                        android:textSize="15sp" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -384,7 +384,7 @@
                         android:onClick="@{clickListener}"
                         android:padding="8dp"
                         android:text="@string/suzhou"
-                        android:textSize="15sp"/>
+                        android:textSize="15sp" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -397,7 +397,7 @@
                         android:onClick="@{clickListener}"
                         android:padding="8dp"
                         android:text="@string/xiamen"
-                        android:textSize="15sp"/>
+                        android:textSize="15sp" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -411,13 +411,13 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1px"
-                    android:background="@color/divider"/>
+                    android:background="@color/divider" />
 
                 <ListView
                     android:id="@+id/lv_search_result"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:divider="@null"/>
+                    android:divider="@null" />
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>

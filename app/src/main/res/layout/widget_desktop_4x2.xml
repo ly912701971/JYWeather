@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/shape_desktop_widget"
@@ -22,7 +21,7 @@
             android:layout_marginLeft="8dp"
             android:text="@string/unknown"
             android:textColor="@color/white"
-            android:textSize="45sp"/>
+            android:textSize="45sp" />
 
         <TextView
             android:id="@+id/today_date"
@@ -32,7 +31,7 @@
             android:layout_marginLeft="15dp"
             android:text="1/7 星期日"
             android:textColor="@color/white"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/city"
@@ -42,7 +41,7 @@
             android:layout_marginLeft="15dp"
             android:text="@string/unknown"
             android:textColor="@color/white"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
         <ImageView
             android:id="@+id/imageView1"
@@ -50,17 +49,17 @@
             android:layout_height="50dp"
             android:layout_alignParentRight="true"
             android:layout_marginTop="6dp"
-            android:src="@drawable/ic_103"/>
+            android:src="@drawable/ic_103" />
 
         <TextView
             android:id="@+id/lowHighTemp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
             android:layout_below="@+id/imageView1"
+            android:layout_alignParentRight="true"
             android:text="-1/6°"
             android:textColor="@color/white"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/nowTemp"
@@ -71,17 +70,17 @@
             android:layout_toLeftOf="@+id/lowHighTemp"
             android:text="2°"
             android:textColor="@color/white"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/weather_detail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
             android:layout_below="@+id/lowHighTemp"
+            android:layout_alignParentRight="true"
             android:text="晴间多云"
             android:textColor="@color/white"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/view1"
@@ -89,9 +88,9 @@
             android:layout_height="1dp"
             android:layout_below="@id/weather_detail"
             android:layout_marginLeft="3dp"
-            android:layout_marginRight="3dp"
             android:layout_marginTop="10dp"
-            android:background="@color/linen"/>
+            android:layout_marginRight="3dp"
+            android:background="@color/linen" />
 
         <TextView
             android:id="@+id/forecast"
@@ -102,6 +101,6 @@
             android:layout_marginTop="18dp"
             android:text="未来一小时还是晴天哦！"
             android:textColor="@color/white"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
     </RelativeLayout>
 </RelativeLayout>

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
         <variable
             name="hourlyForecast"
-            type="com.example.jy.jyweather.entity.HourlyForecastBean"/>
+            type="com.jy.weather.entity.HourlyForecastBean" />
     </data>
 
     <LinearLayout
@@ -21,21 +21,21 @@
             android:id="@+id/tv_update_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{hourlyForecast.time}"/>
+            android:text="@{hourlyForecast.time}" />
 
         <ImageView
             android:id="@+id/iv_weather_icon"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginTop="4dp"
-            app:imageId="@{hourlyForecast.icon}"/>
+            app:imageId="@{hourlyForecast.icon}" />
 
         <TextView
             android:id="@+id/tv_temp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="@{hourlyForecast.temperature}"/>
+            android:text="@{hourlyForecast.temperature}" />
 
         <TextView
             android:id="@+id/tv_cond"
@@ -43,20 +43,20 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:gravity="center"
-            android:text="@{hourlyForecast.condText}"/>
+            android:text="@{hourlyForecast.condText}" />
 
         <TextView
             android:id="@+id/tv_wind_dir"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="@{hourlyForecast.windDirection}"/>
+            android:text="@{hourlyForecast.windDirection}" />
 
         <TextView
             android:id="@+id/tv_wind_sc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="@{hourlyForecast.windScale}"/>
+            android:text="@{hourlyForecast.windScale}" />
     </LinearLayout>
 </layout>
