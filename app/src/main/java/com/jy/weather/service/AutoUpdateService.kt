@@ -35,17 +35,7 @@ class AutoUpdateService : Service() {
     private fun updateWeather() {
         val citySet = HashSet<String>(JYApplication.cityDB.citySet)
         for (city in citySet) {
-            NetworkInterface.queryWeatherData(city, object : Callback {
-                override fun onFailure(call: Call, e: IOException) {
-
-                }
-
-                @Throws(IOException::class)
-                override fun onResponse(call: Call, response: Response) {
-                    val body = response.body() ?: return
-                    JYApplication.cityDB.setCityData(city, body.string())
-                }
-            })
+            NetworkInterface.queryWeatherData(city)
         }
     }
 }

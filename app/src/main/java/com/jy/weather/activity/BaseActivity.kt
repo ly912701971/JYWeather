@@ -79,10 +79,10 @@ open class BaseActivity : AppCompatActivity() {
             resources.getColor(resId)
         }
 
-    fun getDialogParams(num: Int): LayoutParams {
+    fun getDialogParams(percentWidth: Double): LayoutParams {
         val metrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(metrics)
-        return LayoutParams(metrics.widthPixels * num / 10, ViewGroup.LayoutParams.WRAP_CONTENT)
+        return LayoutParams((metrics.widthPixels * percentWidth).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
     fun showToast(text: String) {

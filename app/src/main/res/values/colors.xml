@@ -148,6 +148,6 @@
     <color name="divider">#77a9a9a9</color>
     <color name="item_default">#88c9c9ce</color>
     <color name="item_delete">#88f93f25</color>
-    <color name="dialog_dark">#99000000</color>
+    <color name="dialog_dark">#aa000000</color>
     <color name="desktop_widget_background">#60000000</color>
 </resources>

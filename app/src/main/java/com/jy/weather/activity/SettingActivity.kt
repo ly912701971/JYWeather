@@ -123,7 +123,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
         }
         updateTimeView.findViewById<View>(R.id.tv_cancel).setOnClickListener { updateTimeDialog.dismiss() }
 
-        updateTimeDialog.setContentView(updateTimeView, getDialogParams(8))
+        updateTimeDialog.setContentView(updateTimeView, getDialogParams(0.8))
         updateTimeDialog.setCancelable(false)
         updateTimeDialog.show()
     }
