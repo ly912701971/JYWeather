@@ -74,8 +74,6 @@
                 android:layout_centerVertical="true"
                 android:text="@{map[`temp_scope`]}" />
         </RelativeLayout>
-
-        <include layout="@layout/divider" />
     </LinearLayout>
 </layout>
 

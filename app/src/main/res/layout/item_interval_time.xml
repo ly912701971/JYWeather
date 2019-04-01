@@ -21,11 +21,5 @@
             android:text="@{intervalTime}"
             android:textColor="@color/text_black"
             android:textSize="16sp" />
-
-        <include
-            layout="@layout/divider"
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:layout_below="@+id/tv_time" />
     </RelativeLayout>
 </layout>

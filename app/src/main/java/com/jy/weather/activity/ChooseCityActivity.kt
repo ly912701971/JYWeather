@@ -93,9 +93,9 @@ class ChooseCityActivity : BaseActivity(), EasyPermissions.PermissionCallbacks, 
                     }
                     adapter.notifyDataSetChanged()
                     binding.llSearchResult.visibility = View.VISIBLE
-                    binding.llHotCity.visibility = View.GONE
+                    binding.glHotCity.visibility = View.GONE
                 } else {
-                    binding.llHotCity.visibility = View.VISIBLE
+                    binding.glHotCity.visibility = View.VISIBLE
                     binding.llSearchResult.visibility = View.GONE
                 }
             }
