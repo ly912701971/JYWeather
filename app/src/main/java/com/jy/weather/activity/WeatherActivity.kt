@@ -20,7 +20,9 @@ import com.jy.weather.entity.*
 import com.jy.weather.network.NetworkInterface
 import com.jy.weather.service.AutoUpdateService
 import com.jy.weather.util.JsonUtil
+import com.jy.weather.util.NetworkUtil
 import com.jy.weather.util.NotificationUtil
+import com.jy.weather.util.SnackbarUtil
 import kotlinx.android.synthetic.main.dialog_lifestyle.view.*
 
 class WeatherActivity : BaseActivity(), View.OnClickListener {
@@ -72,8 +74,8 @@ class WeatherActivity : BaseActivity(), View.OnClickListener {
         getData(mCity)
 
         weatherBinding.srlRefresh.setOnRefreshListener {
-            if (!isNetworkAvailable) {
-                showSnackBar(weatherBinding.srlRefresh, getString(R.string.network_unavailable))
+            if (!NetworkUtil.isNetworkAvailable()) {
+                SnackbarUtil.showSnackBar(weatherBinding.srlRefresh, getString(R.string.network_unavailable))
             } else {
                 weatherBinding.srlRefresh.isRefreshing = true
                 getData(mCity)
@@ -92,9 +94,9 @@ class WeatherActivity : BaseActivity(), View.OnClickListener {
     private fun getData(city: String) {
         weatherBinding.srlRefresh.isRefreshing = true
 
-        if (!isNetworkAvailable) {// 无网使用缓存数据
+        if (!NetworkUtil.isNetworkAvailable()) {// 无网使用缓存数据
             weatherBinding.srlRefresh.isRefreshing = false
-            showSnackBar(weatherBinding.srlRefresh, getString(R.string.network_unavailable))
+            SnackbarUtil.showSnackBar(weatherBinding.srlRefresh, getString(R.string.network_unavailable))
             handleData(JYApplication.cityDB.getData(city))
             return
         }
@@ -107,7 +109,7 @@ class WeatherActivity : BaseActivity(), View.OnClickListener {
         }, {
             it.printStackTrace()
 
-            showSnackBar(weatherBinding.srlRefresh, getString(R.string.data_unavailable))
+            SnackbarUtil.showSnackBar(weatherBinding.srlRefresh, getString(R.string.data_unavailable))
             weatherBinding.srlRefresh.isRefreshing = false
             handleData(JYApplication.cityDB.getData(city))
         })

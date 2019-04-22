@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
+        <import type="android.view.View"/>
+
         <variable
-            name="clickListener"
-            type="android.view.View.OnClickListener" />
+            name="viewModel"
+            type="com.jy.weather.viewmodel.ChooseCityViewModel"/>
     </data>
 
     <RelativeLayout
-        android:id="@+id/rl_choose_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/ic_background_cloud"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="true"
+        app:backgroundId="@{viewModel.bgResId}">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -33,7 +35,7 @@
                     android:id="@+id/iv_back"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_set_back" />
+                    android:src="@drawable/ic_set_back"/>
 
                 <EditText
                     android:id="@+id/et_search"
@@ -45,22 +47,23 @@
                     android:maxLength="12"
                     android:maxLines="1"
                     android:paddingLeft="16dp"
+                    android:autofillHints=""
                     android:paddingTop="8dp"
                     android:paddingRight="16dp"
                     android:paddingBottom="8dp"
                     android:textColor="@color/white"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"/>
             </LinearLayout>
 
             <GridLayout
-                android:id="@+id/gl_hot_city"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:columnCount="3"
                 android:orientation="horizontal"
                 android:paddingStart="24dp"
                 android:paddingEnd="24dp"
-                android:rowCount="8">
+                android:rowCount="8"
+                android:visibility="@{viewModel.hasSearch ? View.GONE : View.VISIBLE}">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -71,7 +74,7 @@
                     android:layout_gravity="center"
                     android:padding="16dp"
                     android:text="@string/hot_city"
-                    android:textColor="@color/light_gray" />
+                    android:textColor="@color/light_gray"/>
 
                 <TextView
                     android:id="@+id/tv_location"
@@ -84,10 +87,10 @@
                     android:drawableStart="@drawable/ic_location"
                     android:gravity="center"
                     android:maxLines="1"
-                    android:onClick="@{clickListener}"
+                    android:onClick="@{viewModel::cityClicked}"
                     android:padding="8dp"
-                    android:text="@string/locating"
-                    android:textSize="15sp" />
+                    android:text="@{viewModel.location}"
+                    android:textSize="15sp"/>
 
                 <TextView
                     android:layout_width="0dp"
@@ -99,10 +102,10 @@
                     android:layout_marginBottom="12dp"
                     android:background="@drawable/shape_hot_city"
                     android:gravity="center"
-                    android:onClick="@{clickListener}"
+                    android:onClick="@{viewModel::cityClicked}"
                     android:padding="8dp"
                     android:text="@string/beijing"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"/>
 
                 <TextView
                     android:layout_width="0dp"
@@ -112,10 +115,10 @@
                     android:layout_marginBottom="12dp"
                     android:background="@drawable/shape_hot_city"
                     android:gravity="center"
-                    android:onClick="@{clickListener}"
+                    android:onClick="@{viewModel::cityClicked}"
                     android:padding="8dp"
                     android:text="@string/tianjin"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"/>
 
                 <TextView
                     android:layout_width="0dp"
@@ -125,10 +128,10 @@
                     android:layout_marginBottom="12dp"
                     android:background="@drawable/shape_hot_city"
                     android:gravity="center"
-                    android:onClick="@{clickListener}"
+                    android:onClick="@{viewModel::cityClicked}"
                     android:padding="8dp"
                     android:text="@string/shanghai"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"/>
 
                 <TextView
                     android:layout_width="0dp"
@@ -140,10 +143,10 @@
                     android:layout_marginBottom="12dp"
                     android:background="@drawable/shape_hot_city"
                     android:gravity="center"
-                    android:onClick="@{clickListener}"
+                    android:onClick="@{viewModel::cityClicked}"
                     android:padding="8dp"
                     android:text="@string/chongqing"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"/>
 
                 <TextView
                     android:layout_width="0dp"
@@ -153,10 +156,10 @@
                     android:layout_marginBottom="12dp"
                     android:background="@drawable/shape_hot_city"
                     android:gravity="center"
-                    android:onClick="@{clickListener}"
+                    android:onClick="@{viewModel::cityClicked}"
                     android:padding="8dp"
                     android:text="@string/shenyang"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"/>
 
                 <TextView
                     android:layout_width="0dp"
@@ -166,10 +169,10 @@
                     android:layout_marginBottom="12dp"
                     android:background="@drawable/shape_hot_city"
                     android:gravity="center"
-                    android:onClick="@{clickListener}"
+                    android:onClick="@{viewModel::cityClicked}"
                     android:padding="8dp"
                     android:text="@string/dalian"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"/>
 
                 <TextView
                     android:layout_width="0dp"
@@ -181,10 +184,10 @@
                     android:layout_marginBottom="12dp"
                     android:background="@drawable/shape_hot_city"
                     android:gravity="center"
-                    android:onClick="@{clickListener}"
+                    android:onClick="@{viewModel::cityClicked}"
                     android:padding="8dp"
                     android:text="@string/changchun"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"/>
 
                 <TextView
                     android:layout_width="0dp"
@@ -194,10 +197,10 @@
                     android:layout_marginBottom="12dp"
                     android:background="@drawable/shape_hot_city"
                     android:gravity="center"
-                    android:onClick="@{clickListener}"
+                    android:onClick="@{viewModel::cityClicked}"
                     android:padding="8dp"
                     android:text="@string/haerbin"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"/>
 
                 <TextView
                     android:layout_width="0dp"
@@ -207,10 +210,10 @@
                     android:layout_marginBottom="12dp"
                     android:background="@drawable/shape_hot_city"
                     android:gravity="center"
-                    android:onClick="@{clickListener}"
+                    android:onClick="@{viewModel::cityClicked}"
                     android:padding="8dp"
                     android:text="@string/zhengzhou"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"/>
 
                 <TextView
                     android:layout_width="0dp"
@@ -222,10 +225,10 @@
                     android:layout_marginBottom="12dp"
                     android:background="@drawable/shape_hot_city"
                     android:gravity="center"
-                    android:onClick="@{clickListener}"
+                    android:onClick="@{viewModel::cityClicked}"
                     android:padding="8dp"
                     android:text="@string/wuhan"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"/>
 
                 <TextView
                     android:layout_width="0dp"
@@ -235,10 +238,10 @@
                     android:layout_marginBottom="12dp"
                     android:background="@drawable/shape_hot_city"
                     android:gravity="center"
-                    android:onClick="@{clickListener}"
+                    android:onClick="@{viewModel::cityClicked}"
                     android:padding="8dp"
                     android:text="@string/changsha"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"/>
 
                 <TextView
                     android:layout_width="0dp"
@@ -248,10 +251,10 @@
                     android:layout_marginBottom="12dp"
                     android:background="@drawable/shape_hot_city"
                     android:gravity="center"
-                    android:onClick="@{clickListener}"
+                    android:onClick="@{viewModel::cityClicked}"
                     android:padding="8dp"
                     android:text="@string/guangzhou"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"/>
 
                 <TextView
                     android:layout_width="0dp"
@@ -263,10 +266,10 @@
                     android:layout_marginBottom="12dp"
                     android:background="@drawable/shape_hot_city"
                     android:gravity="center"
-                    android:onClick="@{clickListener}"
+                    android:onClick="@{viewModel::cityClicked}"
                     android:padding="8dp"
                     android:text="@string/shenzhen"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"/>
 
                 <TextView
                     android:layout_width="0dp"
@@ -276,10 +279,10 @@
                     android:layout_marginBottom="12dp"
                     android:background="@drawable/shape_hot_city"
                     android:gravity="center"
-                    android:onClick="@{clickListener}"
+                    android:onClick="@{viewModel::cityClicked}"
                     android:padding="8dp"
                     android:text="@string/nanjing"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"/>
 
                 <TextView
                     android:layout_width="0dp"
@@ -289,10 +292,10 @@
                     android:layout_marginBottom="12dp"
                     android:background="@drawable/shape_hot_city"
                     android:gravity="center"
-                    android:onClick="@{clickListener}"
+                    android:onClick="@{viewModel::cityClicked}"
                     android:padding="8dp"
                     android:text="@string/hangzhou"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"/>
 
                 <TextView
                     android:layout_width="0dp"
@@ -304,10 +307,10 @@
                     android:layout_marginBottom="12dp"
                     android:background="@drawable/shape_hot_city"
                     android:gravity="center"
-                    android:onClick="@{clickListener}"
+                    android:onClick="@{viewModel::cityClicked}"
                     android:padding="8dp"
                     android:text="@string/dongguan"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"/>
 
                 <TextView
                     android:layout_width="0dp"
@@ -317,10 +320,10 @@
                     android:layout_marginBottom="12dp"
                     android:background="@drawable/shape_hot_city"
                     android:gravity="center"
-                    android:onClick="@{clickListener}"
+                    android:onClick="@{viewModel::cityClicked}"
                     android:padding="8dp"
                     android:text="@string/chengdu"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"/>
 
                 <TextView
                     android:layout_width="0dp"
@@ -330,10 +333,10 @@
                     android:layout_marginBottom="12dp"
                     android:background="@drawable/shape_hot_city"
                     android:gravity="center"
-                    android:onClick="@{clickListener}"
+                    android:onClick="@{viewModel::cityClicked}"
                     android:padding="8dp"
                     android:text="@string/qingdao"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"/>
 
                 <TextView
                     android:layout_width="0dp"
@@ -345,10 +348,10 @@
                     android:layout_marginBottom="12dp"
                     android:background="@drawable/shape_hot_city"
                     android:gravity="center"
-                    android:onClick="@{clickListener}"
+                    android:onClick="@{viewModel::cityClicked}"
                     android:padding="8dp"
                     android:text="@string/suzhou"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"/>
 
                 <TextView
                     android:layout_width="0dp"
@@ -358,30 +361,30 @@
                     android:layout_marginBottom="12dp"
                     android:background="@drawable/shape_hot_city"
                     android:gravity="center"
-                    android:onClick="@{clickListener}"
+                    android:onClick="@{viewModel::cityClicked}"
                     android:padding="8dp"
                     android:text="@string/xiamen"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"/>
             </GridLayout>
 
             <LinearLayout
-                android:id="@+id/ll_search_result"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="@{viewModel.hasSearch ? View.VISIBLE : View.GONE}">
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1px"
-                    android:background="@color/divider" />
+                    android:background="@color/divider"/>
 
                 <ListView
                     android:id="@+id/lv_search_result"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:divider="@color/divider"
-                    android:dividerHeight="1px" />
+                    android:dividerHeight="1px"
+                    app:data="@{viewModel.searchResult}"/>
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>

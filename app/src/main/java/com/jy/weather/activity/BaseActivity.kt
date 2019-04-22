@@ -22,26 +22,6 @@ import com.jy.weather.R
  */
 open class BaseActivity : AppCompatActivity() {
 
-    /**
-     * 判断网络是否正常
-     *
-     * @return true:网络正常，false:网络异常
-     */
-    val isNetworkAvailable: Boolean
-        get() {
-            val connectivityManager = applicationContext
-                .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            val networkInfo = connectivityManager.allNetworkInfo
-            if (networkInfo != null && networkInfo.isNotEmpty()) {
-                for (info in networkInfo) {
-                    if (info.isConnected) {
-                        return true
-                    }
-                }
-            }
-            return false
-        }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -87,19 +67,5 @@ open class BaseActivity : AppCompatActivity() {
 
     fun showToast(text: String) {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
-    }
-
-    @JvmOverloads
-    fun showSnackBar(
-        view: View,
-        text: String,
-        action: String? = null,
-        listener: View.OnClickListener? = null
-    ) {
-        val snackbar = Snackbar.make(view, text, Snackbar.LENGTH_LONG)
-        if (action != null && listener != null) {
-            snackbar.setAction(action, listener)
-        }
-        snackbar.show()
     }
 }

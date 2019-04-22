@@ -4,8 +4,8 @@
     <data>
 
         <variable
-            name="cityInfo"
-            type="String" />
+            name="viewModel"
+            type="com.jy.weather.viewmodel.CitySearchItemViewModel"/>
     </data>
 
     <RelativeLayout
@@ -14,14 +14,14 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tv_city_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="@{() -> viewModel.cityInfoClicked()}"
             android:paddingLeft="32dp"
             android:paddingTop="16dp"
             android:paddingRight="32dp"
             android:paddingBottom="16dp"
-            android:text="@{cityInfo}"
-            android:textSize="16sp" />
+            android:text="@{viewModel.cityInfo}"
+            android:textSize="16sp"/>
     </RelativeLayout>
 </layout>

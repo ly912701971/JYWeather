@@ -17,6 +17,7 @@ import com.jy.weather.databinding.ActivitySettingBinding
 import com.jy.weather.service.AutoUpdateService
 import com.jy.weather.util.DrawableUtil
 import com.jy.weather.util.NotificationUtil
+import com.jy.weather.util.SnackbarUtil
 
 class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
@@ -133,7 +134,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
             .setPositiveButton("确认") { dialogInterface, _ ->
                 JYApplication.cityDB.clearCache()
                 hasClearCache = true
-                showSnackBar(binding.llUpdateInterval, "清除缓存成功")
+                SnackbarUtil.showSnackBar(binding.llUpdateInterval, "清除缓存成功")
                 dialogInterface.dismiss()
             }
             .setNegativeButton("取消") { dialogInterface, _ -> dialogInterface.dismiss() }.setCancelable(false)

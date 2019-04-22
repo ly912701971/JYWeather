@@ -14,7 +14,6 @@ import com.jy.weather.databinding.ItemCityBinding
 /**
  * 城市列表adapter
  *
- *
  * Created by Yang on 2018/1/6.
  */
 class CityListAdapter(
@@ -41,11 +40,10 @@ class CityListAdapter(
         val defaultCity = JYApplication.cityDB.defaultCity
         val binding: ItemCityBinding
         if (view == null) {
-            binding = DataBindingUtil.inflate(inflater, R.layout.item_city, viewGroup, false)
+            binding = ItemCityBinding.inflate(inflater, viewGroup, false)
             view = binding.root
-            view.tag = binding
         } else {
-            binding = view.tag as ItemCityBinding
+            binding = DataBindingUtil.getBinding(view)!!
         }
 
         binding.map = getItem(i)

@@ -44,8 +44,8 @@ class CityDB(context: Context) {
             editor.apply()
         }
 
-    var condCode: String?
-        get() = sp.getString(DB_COND_CODE, null)
+    var condCode: String
+        get() = sp.getString(DB_COND_CODE, null) ?: "0"
         set(condCode) {
             editor.putString(DB_COND_CODE, condCode)
             editor.apply()

@@ -14,6 +14,7 @@ import com.jy.weather.adapter.CityListAdapter
 import com.jy.weather.databinding.ActivityCityManageBinding
 import com.jy.weather.util.DrawableUtil
 import com.jy.weather.util.JsonUtil
+import com.jy.weather.util.SnackbarUtil
 import java.util.*
 
 class CityManageActivity : BaseActivity() {
@@ -100,9 +101,9 @@ class CityManageActivity : BaseActivity() {
                 }
                 // 点击"删除"
                 1 -> if (citySet.size == 1) {// 只有一个城市
-                    showSnackBar(binding.smlvCityList, "请至少保留一个城市")
+                    SnackbarUtil.showSnackBar(binding.smlvCityList, "请至少保留一个城市")
                 } else if (city == defaultCity) {// 删除常驻城市
-                    showSnackBar(binding.smlvCityList, "您不能删除常驻城市")
+                    SnackbarUtil.showSnackBar(binding.smlvCityList, "您不能删除常驻城市")
                 } else {
                     for (data in cityList) {
                         if (city == data["city"]) {
