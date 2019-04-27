@@ -4,7 +4,8 @@ import android.databinding.BindingAdapter
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ListView
-import com.jy.weather.adapter.CitySearchAdapter
+import com.baoyz.swipemenulistview.SwipeMenuAdapter
+import com.jy.weather.base.IBaseAdapter
 
 /**
  * Created by liyang
@@ -21,9 +22,13 @@ fun setBackground(viewGroup: ViewGroup, bgId: Int) {
 }
 
 @BindingAdapter("data")
-fun setData(listView: ListView, data: List<String>?) {
-    val adapter = listView.adapter as CitySearchAdapter
+fun setData(listView: ListView, data: List<*>?) {
+    val adapter = if (listView.adapter is SwipeMenuAdapter) {
+        (listView.adapter as SwipeMenuAdapter).wrappedAdapter
+    } else {
+        listView.adapter
+    } as IBaseAdapter
     if (data != null) {
-        adapter.setCityList(data)
+        adapter.setData(data)
     }
 }

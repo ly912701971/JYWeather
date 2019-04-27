@@ -6,28 +6,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-
-import com.jy.weather.JYApplication
-import com.jy.weather.R
+import com.jy.weather.base.IBaseAdapter
 import com.jy.weather.databinding.ItemCityBinding
+import com.jy.weather.entity.CityData
+import com.jy.weather.viewmodel.CityListItemViewModel
 
 /**
  * 城市列表adapter
  *
  * Created by Yang on 2018/1/6.
  */
-class CityListAdapter(
-    context: Context,
-    private val cityList: List<Map<String, String>>
-) : BaseAdapter() {
+class CityListAdapter(context: Context) : BaseAdapter(), IBaseAdapter {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
+    private var cityList: List<CityData> = listOf()
 
     override fun getCount(): Int {
         return cityList.size
     }
 
-    override fun getItem(i: Int): Map<String, String> {
+    override fun getItem(i: Int): CityData {
         return cityList[i]
     }
 
@@ -37,7 +35,6 @@ class CityListAdapter(
 
     override fun getView(i: Int, convertView: View?, viewGroup: ViewGroup): View {
         var view = convertView
-        val defaultCity = JYApplication.cityDB.defaultCity
         val binding: ItemCityBinding
         if (view == null) {
             binding = ItemCityBinding.inflate(inflater, viewGroup, false)
@@ -46,8 +43,12 @@ class CityListAdapter(
             binding = DataBindingUtil.getBinding(view)!!
         }
 
-        binding.map = getItem(i)
-        binding.defaultName = defaultCity
+        binding.viewModel = CityListItemViewModel(getItem(i))
         return view
+    }
+
+    override fun setData(data: List<*>) {
+        cityList = data as List<CityData>
+        notifyDataSetChanged()
     }
 }

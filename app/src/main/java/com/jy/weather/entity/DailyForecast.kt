@@ -11,10 +11,11 @@ import java.io.Serializable
  * Created by Yang on 2017/10/15.
  */
 data class DailyForecast(
-    private val date: String,   //日期
+    @SerializedName("date")
+    private val _date: String,   //日期
 
     @SerializedName("hum")
-    val relativuHum: String,    //相对湿度
+    val relativeHum: String,    //相对湿度
 
     @SerializedName("pcpn")
     val precipitation: String,  //降水量
@@ -23,10 +24,10 @@ data class DailyForecast(
     val probability: String,    //降水概率
 
     @SerializedName("pres")
-    private val airPressure: String,    //气压
+    private val _airPressure: String,    //气压
 
     @SerializedName("uv_index")
-    private val ultraviolet: String,    //紫外线
+    private val _ultraviolet: String,    //紫外线
 
     @SerializedName("vis")
     val visibility: String,     //能见度
@@ -56,10 +57,10 @@ data class DailyForecast(
     val moonSet: String,    //月落时间
 
     @SerializedName("tmp_max")
-    private val maxTemp: String,    //最大温度
+    private val _maxTemp: String,    //最大温度
 
     @SerializedName("tmp_min")
-    private val minTemp: String,    //最低温度
+    private val _minTemp: String,    //最低温度
 
     @SerializedName("wind_deg")
     val windDegree: String,     //风向(度数)
@@ -71,23 +72,27 @@ data class DailyForecast(
     val windScale: String,      //风力等级
 
     @SerializedName("wind_spd")
-    val windSpeed: String,      //风速
-
-    private val weekday: String,
-
-    private val icon: Int
+    val windSpeed: String       //风速
 ) : Serializable {
-    fun getDate(): String = date.substring(date.indexOf("-") + 1, date.length)
 
-    fun getAirPressure(): String = "${airPressure}hPa"
+    val date
+        get() = _date.substring(_date.indexOf("-") + 1, _date.length)
 
-    fun getUltraviolet(): String = StringUtil.getUvLevel(ultraviolet)
+    val airPressure
+        get() = "${_airPressure}hPa"
 
-    fun getMaxTemp(): String = "$maxTemp°"
+    val ultraviolet
+        get() = StringUtil.getUvLevel(_ultraviolet)
 
-    fun getMinTemp(): String = "$minTemp°"
+    val maxTemp
+        get() = "$_maxTemp°"
 
-    fun getWeekday(): String = StringUtil.getWeekday(date)
+    val minTemp
+        get() = "$_minTemp°"
 
-    fun getIcon(): Int = DrawableUtil.getCondIcon(dayCondCode)
+    val weekday
+        get() = StringUtil.getWeekday(_date)
+
+    val icon
+        get() = DrawableUtil.getCondIcon(dayCondCode)
 }

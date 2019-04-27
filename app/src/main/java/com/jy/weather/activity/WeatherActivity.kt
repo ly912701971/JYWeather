@@ -97,13 +97,12 @@ class WeatherActivity : BaseActivity(), View.OnClickListener {
         if (!NetworkUtil.isNetworkAvailable()) {// 无网使用缓存数据
             weatherBinding.srlRefresh.isRefreshing = false
             SnackbarUtil.showSnackBar(weatherBinding.srlRefresh, getString(R.string.network_unavailable))
-            handleData(JYApplication.cityDB.getData(city))
+            handleData(JYApplication.cityDB.getCityData(city))
             return
         }
 
         NetworkInterface.queryWeatherData(city, {
             if (it != null) {
-                JYApplication.cityDB.setCityData(mCity, it)
                 handleData(it)
             }
         }, {
@@ -111,7 +110,7 @@ class WeatherActivity : BaseActivity(), View.OnClickListener {
 
             SnackbarUtil.showSnackBar(weatherBinding.srlRefresh, getString(R.string.data_unavailable))
             weatherBinding.srlRefresh.isRefreshing = false
-            handleData(JYApplication.cityDB.getData(city))
+            handleData(JYApplication.cityDB.getCityData(city))
         })
     }
 
@@ -141,7 +140,7 @@ class WeatherActivity : BaseActivity(), View.OnClickListener {
         headerBinding.basic = basic
         nowBinding.now = now
         nowBinding.updateTime = update.getLoc()
-        weatherBinding.llMainBackground.setBackgroundResource(now.getNowBackground())
+        weatherBinding.llMainBackground.setBackgroundResource(now.nowBackgroundId)
 
         // hourly_forecast
         val hourlyManager = LinearLayoutManager(this).apply {

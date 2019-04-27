@@ -21,10 +21,10 @@ data class Now(
     val condText: String,        //天气数据详情
 
     @SerializedName("fl")
-    private val feelTemp: String,        //体感温度
+    private val _feelTemp: String,        //体感温度
 
     @SerializedName("hum")
-    private val relativeHum: String,     //相对湿度
+    private val _relativeHum: String,     //相对湿度
 
     @SerializedName("pcpn")
     val precipitation: String,   //降水量
@@ -33,10 +33,10 @@ data class Now(
     val airPressure: String,     //气压
 
     @SerializedName("tmp")
-    private val temperature: String,     //温度
+    private val _temperature: String,     //温度
 
     @SerializedName("vis")
-    private val visibility: String,      //能见度
+    private val _visibility: String,      //能见度
 
     @SerializedName("wind_deg")
     val windDegree: String,      //风向(度数)
@@ -45,31 +45,34 @@ data class Now(
     val windDirection: String,   //风向(方位)
 
     @SerializedName("wind_sc")
-    private val windScale: String,       //风力等级
+    private val _windScale: String,       //风力等级
 
     @SerializedName("wind_spd")
-    val windSpeed: String,       //风速
-
-    private val nowIcon: Int,
-
-    private val nowBackground: Int
+    val windSpeed: String       //风速
 ) : Serializable {
-    fun getFeelTemp(): String = "$feelTemp°"
 
-    fun getRelativeHum(): String = "$relativeHum%"
+    val feelTemp
+        get() = "$_feelTemp°"
 
-    fun getTemperature(): String = "$temperature°"
+    val relativeHum
+        get() = "$_relativeHum%"
 
-    fun getVisibility(): String = "${visibility}km"
+    val temperature
+        get() = "$_temperature°"
 
-    fun getWindScale(): String =
-        if (StringUtil.hasNumber(windScale)) {
-            "${windScale}级"
+    val visibility
+        get() = "${_visibility}km"
+
+    val windScale
+        get() = if (StringUtil.hasNumber(_windScale)) {
+            "${_windScale}级"
         } else {
-            windScale
+            _windScale
         }
 
-    fun getNowIcon(): Int = DrawableUtil.getCondIcon(code)
+    val nowIcon
+        get() = DrawableUtil.getCondIcon(code)
 
-    fun getNowBackground(): Int = DrawableUtil.getBackground(code)
+    val nowBackgroundId
+        get() = DrawableUtil.getBackground(code)
 }

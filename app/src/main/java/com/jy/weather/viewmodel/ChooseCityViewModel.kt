@@ -20,7 +20,6 @@ import com.jy.weather.util.NetworkUtil
 import com.jy.weather.util.SnackbarObj
 import java.lang.ref.WeakReference
 import java.util.*
-import kotlin.collections.HashSet
 
 class ChooseCityViewModel {
 
@@ -47,10 +46,12 @@ class ChooseCityViewModel {
 
     fun afterTextChanged(editable: Editable) {
         if (editable.isNotEmpty()) {
-            searchResult.clear()
-            searchResult.addAll(nationalCityList.filter {
-                it.contains(editable)
-            })
+            searchResult.run {
+                clear()
+                addAll(nationalCityList.filter {
+                    it.contains(editable)
+                })
+            }
             hasSearch.set(true)
         } else {
             hasSearch.set(false)
@@ -96,17 +97,8 @@ class ChooseCityViewModel {
             locate()
             return
         }
-        addCity(city)
+        JYApplication.cityDB.addCity(city)
         navigator.get()?.jumpToNewCity(city)
-    }
-
-    fun addCity(city: String) {
-        val citySet = HashSet(JYApplication.cityDB.citySet)
-        citySet.add(city)
-        if (citySet.size == 1) {
-            JYApplication.cityDB.defaultCity = city
-        }
-        JYApplication.cityDB.citySet = citySet
     }
 
     private fun showGpsNotOpen() {

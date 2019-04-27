@@ -30,8 +30,8 @@ class ChooseCityActivity : BaseActivity(),
     }
 
     private lateinit var binding: ActivityChooseCityBinding
-    private lateinit var snackbarCallback: Observable.OnPropertyChangedCallback
     private lateinit var viewModel: ChooseCityViewModel
+    private lateinit var snackbarCallback: Observable.OnPropertyChangedCallback
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,7 +48,10 @@ class ChooseCityActivity : BaseActivity(),
         } else {
             viewModel.locate()
         }
+
         init()
+
+        viewModel.start()
     }
 
     private fun init() {
@@ -57,7 +60,7 @@ class ChooseCityActivity : BaseActivity(),
             when {
                 binding.etSearch.text.isNotEmpty() -> binding.etSearch.setText("")
                 JYApplication.cityDB.defaultCity == null -> {
-                    viewModel.addCity("北京")
+                    JYApplication.cityDB.addCity("北京")
                     finish()
                 }
                 else -> finish()
@@ -82,19 +85,15 @@ class ChooseCityActivity : BaseActivity(),
         snackbarCallback = object : Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 val snackbarObj = viewModel.snackbarObj.get() ?: return
-                SnackbarUtil.showSnackBar(window.decorView,
+                SnackbarUtil.showSnackBar(
+                    window.decorView,
                     snackbarObj.text,
                     snackbarObj.action,
-                    snackbarObj.listener)
+                    snackbarObj.listener
+                )
             }
         }
         viewModel.snackbarObj.addOnPropertyChangedCallback(snackbarCallback)
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        viewModel.start()
     }
 
     override fun onDestroy() {

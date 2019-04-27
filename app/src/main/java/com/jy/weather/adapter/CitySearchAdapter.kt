@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import com.jy.weather.base.IBaseAdapter
 import com.jy.weather.databinding.ItemSearchCityBinding
 import com.jy.weather.navigator.ChooseCityNavigator
 import com.jy.weather.viewmodel.CitySearchItemViewModel
@@ -18,7 +19,7 @@ import com.jy.weather.viewmodel.CitySearchItemViewModel
 class CitySearchAdapter(
     context: Context,
     private val navigator: ChooseCityNavigator
-) : BaseAdapter() {
+) : BaseAdapter(), IBaseAdapter {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var cityList: List<String> = listOf()
@@ -45,14 +46,17 @@ class CitySearchAdapter(
             binding = DataBindingUtil.getBinding(view)!!
         }
 
-        val viewModel = CitySearchItemViewModel(getItem(i))
-        viewModel.setNavigator(navigator)
-        binding.viewModel = viewModel
+        binding.viewModel = CitySearchItemViewModel(getItem(i), navigator)
         return view
     }
 
     fun setCityList(cityList: List<String>) {
         this.cityList = cityList
+        notifyDataSetChanged()
+    }
+
+    override fun setData(data: List<*>) {
+        cityList = data as List<String>
         notifyDataSetChanged()
     }
 }

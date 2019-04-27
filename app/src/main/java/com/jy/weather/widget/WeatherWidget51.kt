@@ -31,15 +31,15 @@ class WeatherWidget51 : WeatherWidget() {
         val city = JYApplication.cityDB.defaultCity ?: "北京"
         if (city != defaultCity) {// 城市变化
             defaultCity = city
-            val weather = JsonUtil.handleWeatherResponse(JYApplication.cityDB.getData(city)) as Weather
+            val weather = JsonUtil.handleWeatherResponse(JYApplication.cityDB.getCityData(city)) as Weather
             view.setTextViewText(R.id.tv_city, city)
             view.setImageViewResource(R.id.iv_weather_icon, DrawableUtil.getCondIcon(weather.now.code))
             view.setTextViewText(R.id.tv_cond, weather.now.condText)
             view.setTextViewText(R.id.tv_now_temp,
-                weather.now.getTemperature() + JYApplication.INSTANCE.getString(R.string.c_degree))
+                weather.now.temperature + JYApplication.INSTANCE.getString(R.string.c_degree))
             view.setTextViewText(R.id.tv_temp_scope,
-                "${weather.dailyForecasts[0].getMinTemp()} ~ ${weather.dailyForecasts[0].getMaxTemp()}℃")
-            view.setTextViewText(R.id.tv_date, weather.dailyForecasts[0].getDate())
+                "${weather.dailyForecasts[0].minTemp} ~ ${weather.dailyForecasts[0].maxTemp}℃")
+            view.setTextViewText(R.id.tv_date, weather.dailyForecasts[0].date)
         }
 
         // 使桌面插件响应点击事件，进入MainActivity

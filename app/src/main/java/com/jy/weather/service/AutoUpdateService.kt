@@ -33,7 +33,7 @@ class AutoUpdateService : Service() {
     }
 
     private fun updateWeather() {
-        val citySet = HashSet<String>(JYApplication.cityDB.citySet)
+        val citySet = JYApplication.cityDB.citySet
         for (city in citySet) {
             NetworkInterface.queryWeatherData(city)
         }

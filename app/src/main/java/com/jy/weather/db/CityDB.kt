@@ -30,8 +30,8 @@ class CityDB(context: Context) {
         editor = sp.edit()
     }
 
-    var citySet: Set<String>?
-        get() = sp.getStringSet(DB_CITY_SET, setOf())
+    var citySet: HashSet<String>
+        get() = HashSet(sp.getStringSet(DB_CITY_SET, emptySet()))
         set(citySet) {
             editor.putStringSet(DB_CITY_SET, citySet)
             editor.apply()
@@ -75,18 +75,31 @@ class CityDB(context: Context) {
             editor.apply()
         }
 
-    fun getData(key: String): String? {
-        return sp.getString(key, null)
+    fun getCityData(city: String): String? {
+        return sp.getString(city, null)
     }
 
-    fun setCityData(key: String, value: String) {
-        editor.putString(key, value)
+    fun setCityData(city: String, value: String) {
+        editor.putString(city, value)
         editor.apply()
+    }
+
+    fun addCity(city: String) {
+        citySet = citySet.apply {
+            add(city)
+        }
+        if (citySet.size == 1) {
+            defaultCity = city
+        }
     }
 
     fun removeCity(city: String) {
         editor.remove(city)
         editor.apply()
+
+        citySet = citySet.apply {
+            remove(city)
+        }
     }
 
     fun clearCache() {

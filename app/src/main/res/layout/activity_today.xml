@@ -1,32 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
         <variable
-            name="location"
-            type="String" />
-
-        <variable
-            name="updateTime"
-            type="String" />
-
-        <variable
-            name="now"
-            type="com.jy.weather.entity.Now" />
-
-        <variable
-            name="dailyForecast"
-            type="com.jy.weather.entity.DailyForecast" />
+            name="viewModel"
+            type="com.jy.weather.viewmodel.TodayViewModel"/>
     </data>
 
     <RelativeLayout
-        android:id="@+id/rl_today_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/ic_background_cloud"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="true"
+        app:backgroundId="@{viewModel.bgResId}">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -39,8 +26,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:navigationIcon="@drawable/ic_set_back"
-                app:title="@{location}"
-                app:titleTextAppearance="@style/Toolbar.TitleText" />
+                app:title="@{viewModel.location}"
+                app:titleTextAppearance="@style/Toolbar.TitleText"/>
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -54,7 +41,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toStartOf="@+id/tv_update_time"
-                    android:text="@string/update_time" />
+                    android:text="@string/update_time"/>
 
                 <TextView
                     android:id="@+id/tv_update_time"
@@ -62,7 +49,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_marginStart="4dp"
-                    android:text="@{updateTime}" />
+                    android:text="@{viewModel.updateTime}"/>
             </RelativeLayout>
 
             <LinearLayout
@@ -76,15 +63,15 @@
                 <ImageView
                     android:layout_width="64dp"
                     android:layout_height="64dp"
-                    app:imageId="@{now.nowIcon}" />
+                    app:imageId="@{viewModel.icon}"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:text="@{now.temperature}"
+                    android:text="@{viewModel.temperature}"
                     android:textColor="@color/white"
-                    android:textSize="64sp" />
+                    android:textSize="64sp"/>
             </LinearLayout>
 
             <LinearLayout
@@ -105,14 +92,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="8dp"
-                        android:text="@{now.feelTemp}"
-                        android:textSize="16sp" />
+                        android:text="@{viewModel.feelTemp}"
+                        android:textSize="16sp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/feel_temp"
-                        android:textColor="@color/light_gray" />
+                        android:textColor="@color/light_gray"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -126,14 +113,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="8dp"
-                        android:text="@{now.relativeHum}"
-                        android:textSize="16sp" />
+                        android:text="@{viewModel.relativeHum}"
+                        android:textSize="16sp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/relative_hum"
-                        android:textColor="@color/light_gray" />
+                        android:textColor="@color/light_gray"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -147,14 +134,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="8dp"
-                        android:text="@{now.windScale}"
-                        android:textSize="16sp" />
+                        android:text="@{viewModel.windScale}"
+                        android:textSize="16sp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{now.windDirection}"
-                        android:textColor="@color/light_gray" />
+                        android:text="@{viewModel.windDirection}"
+                        android:textColor="@color/light_gray"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -176,14 +163,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="8dp"
-                        android:text="@{now.visibility}"
-                        android:textSize="16sp" />
+                        android:text="@{viewModel.visibility}"
+                        android:textSize="16sp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/visibility"
-                        android:textColor="@color/light_gray" />
+                        android:textColor="@color/light_gray"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -197,14 +184,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="8dp"
-                        android:text="@{dailyForecast.ultraviolet}"
-                        android:textSize="16sp" />
+                        android:text="@{viewModel.ultraviolet}"
+                        android:textSize="16sp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/ultraviolet"
-                        android:textColor="@color/light_gray" />
+                        android:textColor="@color/light_gray"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -218,14 +205,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="8dp"
-                        android:text="@{dailyForecast.airPressure}"
-                        android:textSize="16sp" />
+                        android:text="@{viewModel.airPressure}"
+                        android:textSize="16sp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/air_pressure"
-                        android:textColor="@color/light_gray" />
+                        android:textColor="@color/light_gray"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -247,14 +234,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="8dp"
-                        android:text="@{dailyForecast.sunRise}"
-                        android:textSize="16sp" />
+                        android:text="@{viewModel.sunRise}"
+                        android:textSize="16sp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/sun_rise"
-                        android:textColor="@color/light_gray" />
+                        android:textColor="@color/light_gray"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -268,14 +255,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="8dp"
-                        android:text="@{dailyForecast.sunSet}"
-                        android:textSize="16sp" />
+                        android:text="@{viewModel.sunSet}"
+                        android:textSize="16sp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/sun_set"
-                        android:textColor="@color/light_gray" />
+                        android:textColor="@color/light_gray"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -289,14 +276,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="8dp"
-                        android:text="@{dailyForecast.moonRise}"
-                        android:textSize="16sp" />
+                        android:text="@{viewModel.moonRise}"
+                        android:textSize="16sp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/moon_rise"
-                        android:textColor="@color/light_gray" />
+                        android:textColor="@color/light_gray"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -318,25 +305,25 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="8dp"
-                        android:text="@{dailyForecast.moonSet}"
-                        android:textSize="16sp" />
+                        android:text="@{viewModel.moonSet}"
+                        android:textSize="16sp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/moon_set"
-                        android:textColor="@color/light_gray" />
+                        android:textColor="@color/light_gray"/>
                 </LinearLayout>
 
                 <View
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"/>
 
                 <View
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"/>
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>

@@ -2,20 +2,21 @@ package com.jy.weather.activity
 
 import android.databinding.DataBindingUtil
 import android.os.Bundle
-import com.jy.weather.JYApplication
 import com.jy.weather.R
 import com.jy.weather.databinding.ActivityTodayBinding
 import com.jy.weather.entity.DailyForecast
 import com.jy.weather.entity.Now
-import com.jy.weather.util.DrawableUtil
+import com.jy.weather.viewmodel.TodayViewModel
 
 /**
  * 今日详情界面
+ *
  * Created by Yang on 2017/12/11.
  */
 class TodayActivity : BaseActivity() {
 
     private lateinit var binding: ActivityTodayBinding
+    private lateinit var viewModel: TodayViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,25 +24,20 @@ class TodayActivity : BaseActivity() {
         setStatusBarColor()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_today)
 
-        init()
+        viewModel = TodayViewModel()
+        binding.viewModel = viewModel
+
+        setupToolbar()
+
+        val intent = intent
+        viewModel.start(intent.getStringExtra("location"),
+            intent.getStringExtra("update_time"),
+            intent.getSerializableExtra("now") as Now,
+            intent.getSerializableExtra("daily_forecast") as DailyForecast)
     }
 
-    /**
-     * 初始化
-     */
-    private fun init() {
+    private fun setupToolbar() {
         setSupportActionBar(binding.toolbar)
         binding.toolbar.setNavigationOnClickListener { finish() }
-        val spCode = JYApplication.cityDB.condCode
-        if (spCode != null) {
-            binding.rlTodayBackground.setBackgroundResource(DrawableUtil.getBackground(spCode))
-        }
-        val intent = intent
-        if (intent != null) {
-            binding.location = intent.getStringExtra("location")
-            binding.updateTime = intent.getStringExtra("update_time")
-            binding.now = intent.getSerializableExtra("now") as Now
-            binding.dailyForecast = intent.getSerializableExtra("daily_forecast") as DailyForecast
-        }
     }
 }

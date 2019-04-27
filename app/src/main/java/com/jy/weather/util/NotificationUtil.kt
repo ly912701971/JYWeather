@@ -43,19 +43,19 @@ object NotificationUtil {
         // 传入当前项目的包名，和通知栏上要显示的自定义布局的ID
         val remoteViews = RemoteViews(context.packageName, R.layout.widget_notification)
         // 下面是设置通知栏布局里面控件的属性
-        val defaultCity = JYApplication.cityDB.defaultCity ?: return
+        val defaultCity = JYApplication.cityDB.defaultCity ?: "北京"
         val weather =
-            JsonUtil.handleWeatherResponse(JYApplication.cityDB.getData(defaultCity))
+            JsonUtil.handleWeatherResponse(JYApplication.cityDB.getCityData(defaultCity))
         if (weather != null) {
             remoteViews.setTextViewText(R.id.city_name, defaultCity)// 常驻城市名称
             remoteViews.setImageViewResource(R.id.pic_bar,
-                weather.now.getNowIcon()) // 要显示的天气图片
+                weather.now.nowIcon) // 要显示的天气图片
             remoteViews.setTextViewText(R.id.now_Temp,
-                weather.now.getTemperature())// 当前温度
+                weather.now.temperature)// 当前温度
             remoteViews.setTextViewText(R.id.lowTemp,
-                weather.dailyForecasts[0].getMinTemp())// 最低温度
+                weather.dailyForecasts[0].minTemp)// 最低温度
             remoteViews.setTextViewText(R.id.highTemp,
-                weather.dailyForecasts[0].getMaxTemp())// 最高温度
+                weather.dailyForecasts[0].maxTemp)// 最高温度
             remoteViews.setTextViewText(R.id.weatherDetail,
                 weather.now.condText)// 天气情况
             remoteViews.setTextViewText(R.id.sun_rise_time,

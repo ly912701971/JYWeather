@@ -1,20 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
-        <import type="com.jy.weather.util.DrawableUtil" />
-
-        <import type="android.view.View" />
+        <import type="android.view.View"/>
 
         <variable
-            name="map"
-            type="java.util.Map&lt;String,String&gt;" />
-
-        <variable
-            name="defaultName"
-            type="String" />
+            name="viewModel"
+            type="com.jy.weather.viewmodel.CityListItemViewModel"/>
     </data>
 
     <LinearLayout
@@ -34,7 +28,7 @@
                 android:id="@+id/iv_weather_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:imageId="@{DrawableUtil.getCondIcon(map[`cond_code`])}" />
+                app:imageId="@{viewModel.iconId}"/>
 
             <TextView
                 android:id="@+id/tv_city"
@@ -42,8 +36,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_toEndOf="@+id/iv_weather_icon"
-                android:text="@{map[`city`]}"
-                android:textSize="16sp" />
+                android:text="@{viewModel.cityName}"
+                android:textSize="16sp"/>
 
             <ImageView
                 android:id="@+id/iv_default_city"
@@ -52,7 +46,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_toEndOf="@id/tv_city"
                 android:src="@drawable/ic_default_city"
-                android:visibility="@{defaultName.equals(map[`city`])?View.VISIBLE:View.GONE}" />
+                android:visibility="@{viewModel.isDefaultCity ? View.VISIBLE : View.GONE}"/>
 
             <TextView
                 android:id="@+id/tv_admin_area"
@@ -62,9 +56,9 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="4dp"
                 android:layout_toEndOf="@id/iv_weather_icon"
-                android:text="@{map[`admin_area`]}"
+                android:text="@{viewModel.adminArea}"
                 android:textColor="@color/dark_gray"
-                android:textSize="13sp" />
+                android:textSize="13sp"/>
 
             <TextView
                 android:id="@+id/tv_temp_scope"
@@ -72,7 +66,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:text="@{map[`temp_scope`]}" />
+                android:text="@{viewModel.tempScope}"/>
         </RelativeLayout>
     </LinearLayout>
 </layout>
