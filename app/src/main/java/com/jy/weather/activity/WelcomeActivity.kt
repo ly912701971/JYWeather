@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import com.jy.weather.JYApplication
 import io.reactivex.Observable
+import io.reactivex.disposables.Disposable
 import java.util.concurrent.TimeUnit
 
 /**
@@ -14,12 +15,14 @@ import java.util.concurrent.TimeUnit
  */
 class WelcomeActivity : BaseActivity() {
 
+    private lateinit var disposable: Disposable
+
     @SuppressLint("CheckResult")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStatusBarTrans()
 
-        Observable.timer(1, TimeUnit.SECONDS)
+        disposable = Observable.timer(1, TimeUnit.SECONDS)
             .subscribe {
                 jumpActivity()
             }
@@ -30,10 +33,15 @@ class WelcomeActivity : BaseActivity() {
         if (city == null) {
             startActivity(Intent(this, ChooseCityActivity::class.java))
         } else {
-            val intent = Intent(this, WeatherActivity::class.java)
-            intent.putExtra("city", city)
-            startActivity(intent)
+            startActivity(Intent(this, WeatherActivity::class.java).apply {
+                putExtra("city", city)
+            })
         }
         finish()
+    }
+
+    override fun onDestroy() {
+        disposable.dispose()
+        super.onDestroy()
     }
 }

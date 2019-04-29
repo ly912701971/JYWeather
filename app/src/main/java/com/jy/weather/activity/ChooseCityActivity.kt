@@ -3,30 +3,27 @@ package com.jy.weather.activity
 import android.Manifest
 import android.content.ComponentName
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.databinding.DataBindingUtil
 import android.databinding.Observable
 import android.os.Bundle
-import android.provider.Settings
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.View
 import com.jy.weather.JYApplication
 import com.jy.weather.R
 import com.jy.weather.adapter.CitySearchAdapter
 import com.jy.weather.databinding.ActivityChooseCityBinding
 import com.jy.weather.navigator.ChooseCityNavigator
+import com.jy.weather.util.AlertDialogUtil
 import com.jy.weather.util.SnackbarUtil
 import com.jy.weather.viewmodel.ChooseCityViewModel
-import pub.devrel.easypermissions.EasyPermissions
 
-class ChooseCityActivity : BaseActivity(),
-    EasyPermissions.PermissionCallbacks,
-    ChooseCityNavigator {
+class ChooseCityActivity : BaseActivity(), ChooseCityNavigator {
 
     companion object {
-        private val PERMISSIONS = arrayOf(
-            Manifest.permission.ACCESS_FINE_LOCATION
-        )
+        private const val PERMISSION = Manifest.permission.ACCESS_FINE_LOCATION
     }
 
     private lateinit var binding: ActivityChooseCityBinding
@@ -37,21 +34,38 @@ class ChooseCityActivity : BaseActivity(),
         super.onCreate(savedInstanceState)
         setStatusBarTrans()
         setStatusBarColor()
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_choose_city)
 
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_choose_city)
         viewModel = ChooseCityViewModel()
         viewModel.setNavigator(this)
         binding.viewModel = viewModel
 
-        if (!EasyPermissions.hasPermissions(this, *PERMISSIONS)) {
-            EasyPermissions.requestPermissions(this, "您需要同意以下权限方可使用定位功能", 1, *PERMISSIONS)
-        } else {
-            viewModel.locate()
-        }
-
         init()
 
+        requestPermission()
+
         viewModel.start()
+    }
+
+    private fun requestPermission() {
+        if (ContextCompat.checkSelfPermission(this, PERMISSION)
+            != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, PERMISSION)) {
+                AlertDialogUtil.showDialog(this,
+                    resources.getString(R.string.request_permission),
+                    {
+                        ActivityCompat.requestPermissions(this, arrayOf(PERMISSION), 0)
+                    },
+                    {
+                        viewModel.permissionDenied()
+                    })
+            } else {
+                ActivityCompat.requestPermissions(this, arrayOf(PERMISSION), 0)
+            }
+        } else {
+            viewModel.hasGranted = true
+            viewModel.locate()
+        }
     }
 
     private fun init() {
@@ -59,8 +73,9 @@ class ChooseCityActivity : BaseActivity(),
         binding.ivBack.setOnClickListener {
             when {
                 binding.etSearch.text.isNotEmpty() -> binding.etSearch.setText("")
-                JYApplication.cityDB.defaultCity == null -> {
-                    JYApplication.cityDB.addCity("北京")
+                JYApplication.cityDB.defaultCity == null -> {// 默认城市北京
+                    JYApplication.cityDB.addCity(resources.getString(R.string.default_city))
+                    jumpToNewCity(resources.getString(R.string.default_city))
                     finish()
                 }
                 else -> finish()
@@ -103,44 +118,26 @@ class ChooseCityActivity : BaseActivity(),
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
-    }
 
-    override fun onPermissionsGranted(requestCode: Int, perms: List<String>) {
-        if (perms.size == PERMISSIONS.size) {
+        if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            viewModel.hasGranted = true
             viewModel.locate()
+        } else {
+            viewModel.permissionDenied()
         }
     }
 
-    override fun onPermissionsDenied(requestCode: Int, perms: List<String>) {
-        viewModel.setLocation(viewModel.locateUnknown)
-        showPermissionDenied()
-    }
-
-    private fun showPermissionDenied() {
-        SnackbarUtil.showSnackBar(window.decorView,
-            resources.getString(R.string.permission_denied),
-            resources.getString(R.string.goto_open),
-            View.OnClickListener {
-                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-                startActivityForResult(intent, 1)
-            })
-    }
-
     override fun jumpToOpenGps() {
-        //            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        //            startActivityForResult(intent, 2);
-        val intent = Intent("com.jy.weather")
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        val comp = ComponentName("com.huawei.systemmanager", "com.huawei.permissionmanager.ui.MainActivity")
-        intent.component = comp
-        startActivity(intent)
+        startActivity(Intent("com.jy.weather").apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            component = ComponentName("com.huawei.systemmanager", "com.huawei.permissionmanager.ui.MainActivity")
+        })
     }
 
     override fun jumpToNewCity(city: String) {
-        val intent = Intent(this, WeatherActivity::class.java)
-        intent.putExtra("city", city)
-        startActivity(intent)
+        startActivity(Intent(this, WeatherActivity::class.java).apply {
+            putExtra("city", city)
+        })
         finish()
     }
 }

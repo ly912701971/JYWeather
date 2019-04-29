@@ -1,7 +1,6 @@
 package com.jy.weather.activity
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Intent
 import android.databinding.DataBindingUtil
@@ -9,12 +8,12 @@ import android.os.Bundle
 import android.view.View
 import android.widget.CompoundButton
 import android.widget.ListView
-
 import com.jy.weather.JYApplication
 import com.jy.weather.R
 import com.jy.weather.adapter.IntervalTimeAdapter
 import com.jy.weather.databinding.ActivitySettingBinding
 import com.jy.weather.service.AutoUpdateService
+import com.jy.weather.util.AlertDialogUtil
 import com.jy.weather.util.DrawableUtil
 import com.jy.weather.util.NotificationUtil
 import com.jy.weather.util.SnackbarUtil
@@ -130,15 +129,13 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
     }
 
     private fun openClearCacheDialog() {
-        val builder = AlertDialog.Builder(this).setMessage("确认清除缓存?")
-            .setPositiveButton("确认") { dialogInterface, _ ->
+        AlertDialogUtil.showDialog(this,
+            resources.getString(R.string.confirm_clear_cache),
+            {
                 JYApplication.cityDB.clearCache()
                 hasClearCache = true
-                SnackbarUtil.showSnackBar(binding.llUpdateInterval, "清除缓存成功")
-                dialogInterface.dismiss()
-            }
-            .setNegativeButton("取消") { dialogInterface, _ -> dialogInterface.dismiss() }.setCancelable(false)
-        builder.create().show()
+                SnackbarUtil.showSnackBar(window.decorView, resources.getString(R.string.clear_cache_success))
+            })
     }
 
     private fun exitActivity() {

@@ -23,8 +23,12 @@ import java.util.*
 
 class ChooseCityViewModel {
 
-    private lateinit var locationClient: LocationClient
     private val context = JYApplication.INSTANCE
+    private val locateUnknown: String by lazy {
+        context.getString(R.string.locate_unknown)
+    }
+
+    private lateinit var locationClient: LocationClient
     private lateinit var nationalCityList: List<String>
     private lateinit var navigator: WeakReference<ChooseCityNavigator>
 
@@ -33,10 +37,7 @@ class ChooseCityViewModel {
     val searchResult: ObservableList<String> = ObservableArrayList()
     val hasSearch: ObservableBoolean = ObservableBoolean(false)
     val snackbarObj: ObservableField<SnackbarObj> = ObservableField()
-
-    val locateUnknown: String by lazy {
-        context.getString(R.string.locate_unknown)
-    }
+    var hasGranted: Boolean = false
 
     fun start() {
         bgResId.set(DrawableUtil.getBackground(JYApplication.cityDB.condCode))
@@ -60,20 +61,23 @@ class ChooseCityViewModel {
 
     fun locate() {
         if (GpsUtil.isOpen(context)) {
-            val option = LocationClientOption().apply {
-                setIsNeedAddress(true)
-                isOpenGps = true
-                timeOut = 4000
-            }
             locationClient = LocationClient(context).apply {
                 registerLocationListener(MyLocationListener())
-                locOption = option
+                locOption = LocationClientOption().apply {
+                    setIsNeedAddress(true)
+                    isOpenGps = true
+                    timeOut = 4000
+                }
                 start()
             }
         } else {
             setLocation(locateUnknown)
             showGpsNotOpen()
         }
+    }
+
+    fun permissionDenied() {
+        setLocation(locateUnknown)
     }
 
     fun cityClicked(v: View) {
@@ -83,7 +87,10 @@ class ChooseCityViewModel {
         }
 
         val city = when (v.id) {
-            R.id.tv_location -> if (!GpsUtil.isOpen(JYApplication.INSTANCE)) {
+            R.id.tv_location -> if (!hasGranted) {
+                snackbarObj.set(SnackbarObj(context.getString(R.string.permission_denied)))
+                return
+            } else if (!GpsUtil.isOpen(JYApplication.INSTANCE)) {
                 showGpsNotOpen()
                 return
             } else {
@@ -113,7 +120,7 @@ class ChooseCityViewModel {
         this.navigator = WeakReference(navigator)
     }
 
-    fun setLocation(city: String) {
+    private fun setLocation(city: String) {
         location.set(city)
     }
 

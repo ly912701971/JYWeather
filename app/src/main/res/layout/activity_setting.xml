@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <FrameLayout
         android:id="@+id/rl_setting_background"
@@ -21,9 +21,9 @@
                 android:layout_height="?attr/actionBarSize"
                 app:navigationIcon="@drawable/ic_set_back"
                 app:title="@string/setting"
-                app:titleTextAppearance="@style/Toolbar.TitleText" />
+                app:titleTextAppearance="@style/Toolbar.TitleText"/>
 
-            <include layout="@layout/divider" />
+            <include layout="@layout/divider"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -37,7 +37,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="@string/weather_push"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"/>
 
                 <Switch
                     android:layout_width="wrap_content"
@@ -45,10 +45,10 @@
                     android:layout_alignParentEnd="true"
                     android:layout_gravity="center_vertical"
                     android:thumb="@drawable/shape_switch_thumb"
-                    android:track="@drawable/selector_switch_track" />
+                    android:track="@drawable/selector_switch_track"/>
             </RelativeLayout>
 
-            <include layout="@layout/divider" />
+            <include layout="@layout/divider"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -62,7 +62,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/notification_bar"
                     android:textColor="@color/white"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"/>
 
                 <Switch
                     android:id="@+id/s_notification"
@@ -70,10 +70,10 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:thumb="@drawable/shape_switch_thumb"
-                    android:track="@drawable/selector_switch_track" />
+                    android:track="@drawable/selector_switch_track"/>
             </RelativeLayout>
 
-            <include layout="@layout/divider" />
+            <include layout="@layout/divider"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -86,7 +86,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/auto_update"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"/>
 
                 <Switch
                     android:id="@+id/s_auto_update"
@@ -94,10 +94,10 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:thumb="@drawable/shape_switch_thumb"
-                    android:track="@drawable/selector_switch_track" />
+                    android:track="@drawable/selector_switch_track"/>
             </RelativeLayout>
 
-            <include layout="@layout/divider" />
+            <include layout="@layout/divider"/>
 
             <RelativeLayout
                 android:id="@+id/ll_update_interval"
@@ -112,7 +112,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/update_interval"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"/>
 
                 <TextView
                     android:id="@+id/tv_interval_time"
@@ -120,17 +120,17 @@
                     android:layout_height="wrap_content"
                     android:layout_toStartOf="@id/iv_update_icon"
                     android:text="@string/default_update_interval"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"/>
 
                 <ImageView
                     android:id="@+id/iv_update_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:src="@drawable/ic_goto" />
+                    android:src="@drawable/ic_goto"/>
             </RelativeLayout>
 
-            <include layout="@layout/divider" />
+            <include layout="@layout/divider"/>
 
             <LinearLayout
                 android:id="@+id/ll_clear_cache"
@@ -144,10 +144,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/clear_cache"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"/>
             </LinearLayout>
 
-            <include layout="@layout/divider" />
+            <include layout="@layout/divider"/>
         </LinearLayout>
     </FrameLayout>
 </layout>

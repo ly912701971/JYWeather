@@ -36,9 +36,7 @@
         <item>8 小时</item>
         <item>12 小时</item>
     </string-array>
-    <string name="change_wallpaper">更换壁纸</string>
     <string name="clear_cache">清除缓存</string>
-    <string name="about_us">关于我们</string>
     <string name="update_time">发布时间:</string>
     <string name="relative_hum">湿度</string>
     <string name="precipitation">降水量</string>
@@ -53,11 +51,6 @@
     <string name="sun_rise_time">8:00</string>
     <string name="sun_set_time">18:00</string>
     <string name="update_new_time">14:25</string>
-    <!-- 地点相关-->
-    <string name="now_location_name">绵阳培城区</string>
-    <string name="popular_city">热门城市</string>
-    <string name="now_location">当前城市</string>
-    <string name="input_city_name">请输入城市（汉字/拼音）</string>
 
     <!-- 单位 符号 -->
     <string name="percent">%</string>
@@ -68,17 +61,24 @@
     <string name="level">级</string>
     <string name="unknown">N/A</string>
 
+    <!-- 地点相关-->
     <string name="city_manage">城市管理</string>
     <string name="search_hint">搜索全国城市</string>
     <string name="hot_city">热门城市</string>
     <string name="locating">定位中</string>
     <string name="locate_unknown">未知</string>
-
+    <string name="default_city">北京</string>
     <string name="locate_failed">定位失败，请打开Gps后重试</string>
     <string name="network_unavailable">您当前网络不可用，请联网后重试</string>
-    <string name="data_unavailable">由于未知原因获取数据失败，请稍后再试</string>
-    <string name="permission_denied">权限获取失败，如需使用定位功能，请手动授权后使用</string>
+    <string name="data_unavailable">由于未知原因获取数据失败，请稍后重试</string>
+    <string name="permission_denied">定位权限获取失败，请手动授权后重试</string>
     <string name="goto_open">前往打开</string>
+    <string name="request_permission">您需要同意以下权限方可使用定位功能</string>
+    <string name="confirm_clear_cache">确定清除缓存</string>
+    <string name="clear_cache_success">清除缓存成功</string>
+    <string name="already_resident_city">该城市已是常驻城市</string>
+    <string name="keep_resident_city">您不能删除常驻城市</string>
+    <string name="keep_one_city">请至少保留一个城市</string>
 
     <!-- 热门城市 -->
     <string name="beijing">北京市</string>
