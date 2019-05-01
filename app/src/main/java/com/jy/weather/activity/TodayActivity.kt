@@ -22,8 +22,8 @@ class TodayActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setStatusBarTrans()
         setStatusBarColor()
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_today)
 
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_today)
         viewModel = TodayViewModel()
         binding.viewModel = viewModel
 

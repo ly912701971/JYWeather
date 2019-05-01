@@ -10,10 +10,11 @@ import com.jy.weather.util.StringUtil
  * Created by Yang on 2017/10/15.
  */
 data class HourlyForecast(
-    private val time: String,   //时间
+    @SerializedName("time")
+    private val _time: String,   //时间
 
     @SerializedName("hum")
-    val relativuHum: String,    //相对湿度
+    val relativeHum: String,    //相对湿度
 
     @SerializedName("pop")
     val probability: String,    //降水概率
@@ -25,7 +26,7 @@ data class HourlyForecast(
     val airPressure: String,    //气压
 
     @SerializedName("tmp")
-    private val temperature: String,    //温度
+    private val _temperature: String,    //温度
 
     @SerializedName("wind_deg")
     val windDegree: String,     //风向(度数)
@@ -34,7 +35,7 @@ data class HourlyForecast(
     val windDirection: String,  //风向(方位)
 
     @SerializedName("wind_sc")
-    private val windScale: String,  //风力等级
+    private val _windScale: String,  //风力等级
 
     @SerializedName("wind_spd")
     val windSpeed: String,  //风速
@@ -46,21 +47,22 @@ data class HourlyForecast(
     val code: String,       //天气状况代码
 
     @SerializedName("cond_txt")
-    val condText: String,   //天气数据详情
-
-    private val icon: Int
+    val condText: String    //天气数据详情
 ) {
 
-    fun getTime(): String = time.split(" ".toRegex()).getOrElse(1) { "unknown" }
+    val time
+        get() = _time.split(" ".toRegex())[1]
 
-    fun getTemperature(): String = "$temperature°"
+    val temperature
+        get() = "$_temperature°"
 
-    fun getWindScale(): String =
-        if (StringUtil.hasNumber(windScale)) {
-            windScale + "级"
+    val windScale
+        get() = if (StringUtil.hasNumber(_windScale)) {
+            "${_windScale}级"
         } else {
-            windScale
+            _windScale
         }
 
-    fun getIcon(): Int = DrawableUtil.getCondIcon(code)
+    val icon
+        get() = DrawableUtil.getCondIcon(code)
 }

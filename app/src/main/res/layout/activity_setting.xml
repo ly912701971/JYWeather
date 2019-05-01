@@ -2,12 +2,19 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.jy.weather.viewmodel.SettingViewModel"/>
+    </data>
+
     <FrameLayout
         android:id="@+id/rl_setting_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/ic_background_cloud"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="true"
+        app:backgroundId="@{viewModel.bgResId}">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -69,6 +76,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
+                    android:checked="@{viewModel.notificationCheck}"
+                    android:onCheckedChanged="@{viewModel.onNotificationCheck}"
                     android:thumb="@drawable/shape_switch_thumb"
                     android:track="@drawable/selector_switch_track"/>
             </RelativeLayout>
@@ -93,6 +102,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
+                    android:checked="@{viewModel.autoUpdateCheck}"
+                    android:onCheckedChanged="@{viewModel.onAutoUpdateCheck}"
                     android:thumb="@drawable/shape_switch_thumb"
                     android:track="@drawable/selector_switch_track"/>
             </RelativeLayout>
@@ -103,7 +114,9 @@
                 android:id="@+id/ll_update_interval"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clickable="@{viewModel.autoUpdateCheck}"
                 android:gravity="center_vertical"
+                android:onClick="@{() -> viewModel.openIntervalDialog()}"
                 android:orientation="horizontal"
                 android:padding="24dp">
 
@@ -112,6 +125,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/update_interval"
+                    android:textColor="@{viewModel.autoUpdateCheck ? viewModel.colorWhite : viewModel.colorGray}"
                     android:textSize="16sp"/>
 
                 <TextView
@@ -119,7 +133,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toStartOf="@id/iv_update_icon"
-                    android:text="@string/default_update_interval"
+                    android:text="@{viewModel.intervalText}"
+                    android:textColor="@{viewModel.autoUpdateCheck ? viewModel.colorWhite : viewModel.colorGray}"
                     android:textSize="15sp"/>
 
                 <ImageView
@@ -127,7 +142,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:src="@drawable/ic_goto"/>
+                    app:imageId="@{viewModel.autoUpdateCheck ? viewModel.gotoIcon : viewModel.gotoIconGray}"/>
             </RelativeLayout>
 
             <include layout="@layout/divider"/>
@@ -137,6 +152,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
+                android:onClick="@{() -> viewModel.openClearCacheDialog()}"
                 android:orientation="horizontal"
                 android:padding="24dp">
 

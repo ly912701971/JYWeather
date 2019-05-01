@@ -16,7 +16,7 @@ class CitySearchItemViewModel(
 
     fun cityInfoClicked() {
         var city = cityInfo.get() ?: return
-        city = city.split(Regex(" - ")).getOrElse(0) { "unknown" }
+        city = city.split(Regex(" - "))[0]
         JYApplication.cityDB.addCity(city)
 
         navigator.get()?.jumpToNewCity(city)

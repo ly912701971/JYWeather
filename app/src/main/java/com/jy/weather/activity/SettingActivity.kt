@@ -1,155 +1,104 @@
 package com.jy.weather.activity
 
-import android.annotation.SuppressLint
-import android.app.Dialog
+import android.app.AlertDialog
 import android.content.Intent
 import android.databinding.DataBindingUtil
+import android.databinding.Observable
 import android.os.Bundle
-import android.view.View
-import android.widget.CompoundButton
-import android.widget.ListView
-import com.jy.weather.JYApplication
 import com.jy.weather.R
-import com.jy.weather.adapter.IntervalTimeAdapter
 import com.jy.weather.databinding.ActivitySettingBinding
+import com.jy.weather.navigator.SettingNavigator
 import com.jy.weather.service.AutoUpdateService
 import com.jy.weather.util.AlertDialogUtil
-import com.jy.weather.util.DrawableUtil
-import com.jy.weather.util.NotificationUtil
 import com.jy.weather.util.SnackbarUtil
+import com.jy.weather.viewmodel.SettingViewModel
 
-class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnCheckedChangeListener {
+class SettingActivity : BaseActivity(), SettingNavigator {
 
     private lateinit var binding: ActivitySettingBinding
-
-    private var hasClearCache = false
-    private var hasChangeInterval = false
+    private lateinit var viewModel: SettingViewModel
+    private lateinit var snackbarCallback: Observable.OnPropertyChangedCallback
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStatusBarTrans()
         setStatusBarColor()
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_setting)
-        init()
+        viewModel = SettingViewModel()
+        binding.viewModel = viewModel
+
+        setupToolbar()
+
+        setupSnackbarCallback()
     }
 
-    /**
-     * 初始化
-     */
-    @SuppressLint("SetTextI18n")
-    private fun init() {
-        binding.sNotification.setOnCheckedChangeListener(this)
-        binding.sAutoUpdate.setOnCheckedChangeListener(this)
-        binding.llUpdateInterval.setOnClickListener(this)
-        binding.llClearCache.setOnClickListener(this)
+    override fun onResume() {
+        super.onResume()
 
-        hasClearCache = false
-        hasChangeInterval = false
+        viewModel.start(this)
+    }
 
+    private fun setupToolbar() {
         setSupportActionBar(binding.toolbar)
-        binding.toolbar.setNavigationOnClickListener { exitActivity() }
-
-        val spCode = JYApplication.cityDB.condCode
-        if (spCode != null) {
-            binding.rlSettingBackground.setBackgroundResource(DrawableUtil.getBackground(spCode))
-        }
-
-        binding.sNotification.isChecked = JYApplication.cityDB.notification
-        binding.sAutoUpdate.isChecked = JYApplication.cityDB.autoUpdate
-        changeUpdateColor(JYApplication.cityDB.autoUpdate)
-        binding.tvIntervalTime.text = "${JYApplication.cityDB.updateInterval} 小时"
-    }
-
-    override fun onClick(v: View) {
-        when (v.id) {
-            R.id.ll_clear_cache// 点击清除缓存
-            -> openClearCacheDialog()
-
-            R.id.ll_update_interval// 点击设置自动更新时间
-            -> openUpdateIntervalDialog()
+        binding.toolbar.setNavigationOnClickListener {
+            finish()
         }
     }
 
-    override fun onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
-        when (buttonView.id) {
-            R.id.s_notification// 通知栏开关
-            -> {
-                if (isChecked) {
-                    NotificationUtil.openNotification(this)
-                } else {
-                    NotificationUtil.cancelNotification(this)
-                }
-                JYApplication.cityDB.notification = isChecked
-            }
-
-            R.id.s_auto_update// 自动更新开关:
-            -> {
-                JYApplication.cityDB.autoUpdate = isChecked
-                changeUpdateColor(isChecked)
-            }
-
-            else -> {
+    private fun setupSnackbarCallback() {
+        snackbarCallback = object : Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                val snackbarObj = viewModel.snackbarObj.get() ?: return
+                SnackbarUtil.showSnackBar(
+                    window.decorView,
+                    snackbarObj.text,
+                    snackbarObj.action,
+                    snackbarObj.listener
+                )
             }
         }
+        viewModel.snackbarObj.addOnPropertyChangedCallback(snackbarCallback)
     }
 
-    private fun changeUpdateColor(autoUpdate: Boolean) {
-        if (autoUpdate) {
-            binding.tvUpdateInterval.setTextColor(getColorById(R.color.white))
-            binding.tvIntervalTime.setTextColor(getColorById(R.color.white))
-            binding.ivUpdateIcon.setImageResource(R.drawable.ic_goto)
-            binding.llUpdateInterval.isClickable = true
-        } else {
-            binding.tvUpdateInterval.setTextColor(getColorById(R.color.text_gray))
-            binding.tvIntervalTime.setTextColor(getColorById(R.color.text_gray))
-            binding.ivUpdateIcon.setImageResource(R.drawable.ic_goto_gray)
-            binding.llUpdateInterval.isClickable = false
-        }
+    override fun onDestroy() {
+        viewModel.snackbarObj.removeOnPropertyChangedCallback(snackbarCallback)
+        super.onDestroy()
     }
 
-    private fun openUpdateIntervalDialog() {
-        val updateTimeDialog = Dialog(this, R.style.SimpleDialogTheme)
-        val updateTimeView = layoutInflater.inflate(R.layout.dialog_update_interval, null)
-
-        val hours = intArrayOf(1, 2, 4, 8, 12)
-        val intervalTimes = resources.getStringArray(R.array.interval_time)
-        val lvIntervalTime = updateTimeView.findViewById<ListView>(R.id.lv_interval_time)
-        lvIntervalTime.adapter = IntervalTimeAdapter(this, intervalTimes)
-        lvIntervalTime.setOnItemClickListener { _, _, position, _ ->
-            hasChangeInterval = true
-            binding.tvIntervalTime.text = intervalTimes[position]
-            JYApplication.cityDB.updateInterval = hours[position]
-            updateTimeDialog.dismiss()
-        }
-        updateTimeView.findViewById<View>(R.id.tv_cancel).setOnClickListener { updateTimeDialog.dismiss() }
-
-        updateTimeDialog.setContentView(updateTimeView, getDialogParams(0.8))
-        updateTimeDialog.setCancelable(false)
-        updateTimeDialog.show()
+    override fun jumpToChooseCityActivity() {
+        startActivity(Intent(this, ChooseCityActivity::class.java))
     }
 
-    private fun openClearCacheDialog() {
+    override fun openAutoUpdateService() {
+        startService(Intent(this, AutoUpdateService::class.java))
+    }
+
+    override fun showIntervalDialog() {
+        AlertDialog.Builder(this, android.R.style.Theme_DeviceDefault_Dialog_Alert)
+            .setTitle(getString(R.string.update_interval))
+            .setSingleChoiceItems(viewModel.intervalTimes, viewModel.getChosenIndex()) { dialog, index ->
+                viewModel.onIntervalItemChoose(index)
+                dialog.dismiss()
+            }
+            .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .setCancelable(false)
+            .create()
+            .show()
+    }
+
+    override fun showClearCacheDialog() {
         AlertDialogUtil.showDialog(this,
-            resources.getString(R.string.confirm_clear_cache),
+            getString(R.string.confirm_clear_cache),
             {
-                JYApplication.cityDB.clearCache()
-                hasClearCache = true
-                SnackbarUtil.showSnackBar(window.decorView, resources.getString(R.string.clear_cache_success))
+                viewModel.onClearCacheClick()
             })
     }
 
-    private fun exitActivity() {
-        if (hasClearCache) {
-            startActivity(Intent(this@SettingActivity, ChooseCityActivity::class.java))
-        }
-        if (binding.sAutoUpdate.isChecked && hasChangeInterval) {
-            startService(Intent(this@SettingActivity, AutoUpdateService::class.java))
-        }
-        finish()
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-        exitActivity()
+    override fun finish() {
+        viewModel.finish()
+        super.finish()
     }
 }

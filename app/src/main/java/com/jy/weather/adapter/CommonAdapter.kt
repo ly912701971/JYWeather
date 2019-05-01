@@ -24,23 +24,21 @@ class CommonAdapter<T>(
             viewGroup,
             false
         )
-        val viewHolder = ViewHolder(binding.root)
-        viewHolder.binding = binding
-        return viewHolder
+        return ViewHolder(binding.root).apply {
+            this.binding = binding
+        }
     }
 
     override fun onBindViewHolder(viewHolder: CommonAdapter.ViewHolder, i: Int) {
-        viewHolder.binding.setVariable(dataId, dataList[i])
-        viewHolder.binding.executePendingBindings()// 防止闪烁
+        viewHolder.binding.apply {
+            setVariable(dataId, dataList[i])
+            executePendingBindings()// 防止闪烁
+        }
     }
 
-    override fun getItemCount(): Int {
-        return dataList.size
-    }
+    override fun getItemCount() = dataList.size
 
-    class ViewHolder(
-        itemView: View
-    ) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         lateinit var binding: ViewDataBinding
     }
 }

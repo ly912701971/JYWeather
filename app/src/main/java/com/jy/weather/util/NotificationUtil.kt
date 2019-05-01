@@ -63,7 +63,7 @@ object NotificationUtil {
             remoteViews.setTextViewText(R.id.sun_set_time,
                 weather.dailyForecasts[0].sunSet)// 日落时间
             remoteViews.setTextViewText(R.id.update_time,
-                weather.update.getLoc())// 更新时间
+                weather.update.loc)// 更新时间
         }
 
         val intent = Intent(context, WeatherActivity::class.java)

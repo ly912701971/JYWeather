@@ -19,30 +19,32 @@ import com.jy.weather.util.GpsUtil
 import com.jy.weather.util.NetworkUtil
 import com.jy.weather.util.SnackbarObj
 import java.lang.ref.WeakReference
-import java.util.*
 
 class ChooseCityViewModel {
 
     private val context = JYApplication.INSTANCE
+    private val db = JYApplication.cityDB
+
+    private val nationalCityList: Array<String> by lazy {
+        context.resources.getStringArray(R.array.national_cities_list)
+    }
     private val locateUnknown: String by lazy {
         context.getString(R.string.locate_unknown)
     }
 
     private lateinit var locationClient: LocationClient
-    private lateinit var nationalCityList: List<String>
     private lateinit var navigator: WeakReference<ChooseCityNavigator>
 
-    val bgResId: ObservableField<Int> = ObservableField()
+    val bgResId: ObservableField<Int> = ObservableField(DrawableUtil.getBackground(db.condCode))
     val location: ObservableField<String> = ObservableField(context.getString(R.string.locating))
     val searchResult: ObservableList<String> = ObservableArrayList()
     val hasSearch: ObservableBoolean = ObservableBoolean(false)
     val snackbarObj: ObservableField<SnackbarObj> = ObservableField()
+
     var hasGranted: Boolean = false
 
-    fun start() {
-        bgResId.set(DrawableUtil.getBackground(JYApplication.cityDB.condCode))
-
-        nationalCityList = Arrays.asList(*context.resources.getStringArray(R.array.national_cities_list))
+    fun start(navigator: ChooseCityNavigator) {
+        this.navigator = WeakReference(navigator)
     }
 
     fun afterTextChanged(editable: Editable) {
@@ -76,9 +78,7 @@ class ChooseCityViewModel {
         }
     }
 
-    fun permissionDenied() {
-        setLocation(locateUnknown)
-    }
+    fun permissionDenied() = setLocation(locateUnknown)
 
     fun cityClicked(v: View) {
         if (!NetworkUtil.isNetworkAvailable()) {
@@ -90,7 +90,7 @@ class ChooseCityViewModel {
             R.id.tv_location -> if (!hasGranted) {
                 snackbarObj.set(SnackbarObj(context.getString(R.string.permission_denied)))
                 return
-            } else if (!GpsUtil.isOpen(JYApplication.INSTANCE)) {
+            } else if (!GpsUtil.isOpen(context)) {
                 showGpsNotOpen()
                 return
             } else {
@@ -104,7 +104,8 @@ class ChooseCityViewModel {
             locate()
             return
         }
-        JYApplication.cityDB.addCity(city)
+
+        db.addCity(city)
         navigator.get()?.jumpToNewCity(city)
     }
 
@@ -116,13 +117,7 @@ class ChooseCityViewModel {
             }))
     }
 
-    fun setNavigator(navigator: ChooseCityNavigator) {
-        this.navigator = WeakReference(navigator)
-    }
-
-    private fun setLocation(city: String) {
-        location.set(city)
-    }
+    private fun setLocation(city: String) = location.set(city)
 
     private inner class MyLocationListener : BDAbstractLocationListener() {
 

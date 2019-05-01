@@ -37,38 +37,16 @@ class ChooseCityActivity : BaseActivity(), ChooseCityNavigator {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_choose_city)
         viewModel = ChooseCityViewModel()
-        viewModel.setNavigator(this)
         binding.viewModel = viewModel
 
-        init()
+        setupListener()
+
+        setupSnackbarCallback()
 
         requestPermission()
-
-        viewModel.start()
     }
 
-    private fun requestPermission() {
-        if (ContextCompat.checkSelfPermission(this, PERMISSION)
-            != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, PERMISSION)) {
-                AlertDialogUtil.showDialog(this,
-                    resources.getString(R.string.request_permission),
-                    {
-                        ActivityCompat.requestPermissions(this, arrayOf(PERMISSION), 0)
-                    },
-                    {
-                        viewModel.permissionDenied()
-                    })
-            } else {
-                ActivityCompat.requestPermissions(this, arrayOf(PERMISSION), 0)
-            }
-        } else {
-            viewModel.hasGranted = true
-            viewModel.locate()
-        }
-    }
-
-    private fun init() {
+    private fun setupListener() {
         // 返回图标点击事件
         binding.ivBack.setOnClickListener {
             when {
@@ -95,8 +73,9 @@ class ChooseCityActivity : BaseActivity(), ChooseCityNavigator {
 
         // adapter
         binding.lvSearchResult.adapter = CitySearchAdapter(this, this)
+    }
 
-        // snackbar
+    private fun setupSnackbarCallback() {
         snackbarCallback = object : Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 val snackbarObj = viewModel.snackbarObj.get() ?: return
@@ -109,6 +88,37 @@ class ChooseCityActivity : BaseActivity(), ChooseCityNavigator {
             }
         }
         viewModel.snackbarObj.addOnPropertyChangedCallback(snackbarCallback)
+    }
+
+    private fun requestPermission() {
+        if (ContextCompat.checkSelfPermission(this, PERMISSION)
+            != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, PERMISSION)) {
+                showPermissionDialog()
+            } else {
+                ActivityCompat.requestPermissions(this, arrayOf(PERMISSION), 0)
+            }
+        } else {
+            viewModel.hasGranted = true
+            viewModel.locate()
+        }
+    }
+
+    private fun showPermissionDialog() {
+        AlertDialogUtil.showDialog(this,
+            resources.getString(R.string.request_permission),
+            {
+                ActivityCompat.requestPermissions(this, arrayOf(PERMISSION), 0)
+            },
+            {
+                viewModel.permissionDenied()
+            })
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        viewModel.start(this)
     }
 
     override fun onDestroy() {
@@ -127,12 +137,11 @@ class ChooseCityActivity : BaseActivity(), ChooseCityNavigator {
         }
     }
 
-    override fun jumpToOpenGps() {
+    override fun jumpToOpenGps() =
         startActivity(Intent("com.jy.weather").apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
             component = ComponentName("com.huawei.systemmanager", "com.huawei.permissionmanager.ui.MainActivity")
         })
-    }
 
     override fun jumpToNewCity(city: String) {
         startActivity(Intent(this, WeatherActivity::class.java).apply {

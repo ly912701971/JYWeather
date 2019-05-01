@@ -23,6 +23,7 @@
 
     <!-- setting -->
     <string name="setting">设置</string>
+    <string name="confirm">确认</string>
     <string name="cancel">取消</string>
     <string name="weather_push">开启智能提醒</string>
     <string name="notification_bar">通知栏常驻</string>

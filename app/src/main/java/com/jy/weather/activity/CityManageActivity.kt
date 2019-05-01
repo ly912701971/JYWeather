@@ -22,7 +22,6 @@ class CityManageActivity : BaseActivity(), CityManageNavigator {
     private lateinit var binding: ActivityCityManageBinding
     private lateinit var viewModel: CityManageViewModel
     private lateinit var snackbarCallback: Observable.OnPropertyChangedCallback
-    private lateinit var adapter: CityListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +29,7 @@ class CityManageActivity : BaseActivity(), CityManageNavigator {
         setStatusBarColor()
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_city_manage)
-        viewModel = CityManageViewModel(this)
+        viewModel = CityManageViewModel()
         binding.viewModel = viewModel
 
         setupToolbar()
@@ -38,8 +37,6 @@ class CityManageActivity : BaseActivity(), CityManageNavigator {
         setupSwipeMenuListView()
 
         setupSnackbarCallback()
-
-        viewModel.start()
     }
 
     private fun setupToolbar() {
@@ -48,30 +45,27 @@ class CityManageActivity : BaseActivity(), CityManageNavigator {
     }
 
     private fun setupSwipeMenuListView() {
-        adapter = CityListAdapter(this)
-        binding.smlvCityList.adapter = adapter
+        binding.smlvCityList.adapter = CityListAdapter(this)
 
         // SwipeMenuListView构造器
         binding.smlvCityList.setMenuCreator { menu ->
             // "常驻"item
-            val defaultItem = SwipeMenuItem(this@CityManageActivity).apply {
+            menu.addMenuItem(SwipeMenuItem(this@CityManageActivity).apply {
                 title = "常驻"
                 titleSize = 16
                 setBackground(R.color.item_default)
                 titleColor = Color.WHITE
                 width = 240
-            }
-            menu.addMenuItem(defaultItem)
+            })
 
             // "删除城市"item
-            val deleteItem = SwipeMenuItem(this@CityManageActivity).apply {
+            menu.addMenuItem(SwipeMenuItem(this@CityManageActivity).apply {
                 title = "删除"
                 titleSize = 16
                 setBackground(R.color.item_delete)
                 titleColor = Color.WHITE
                 width = 240
-            }
-            menu.addMenuItem(deleteItem)
+            })
         }
 
         // SwipeMenuListView向左滑动
@@ -103,6 +97,12 @@ class CityManageActivity : BaseActivity(), CityManageNavigator {
         viewModel.snackbarObj.addOnPropertyChangedCallback(snackbarCallback)
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        viewModel.start(this)
+    }
+
     override fun onDestroy() {
         viewModel.snackbarObj.removeOnPropertyChangedCallback(snackbarCallback)
         super.onDestroy()
@@ -120,9 +120,8 @@ class CityManageActivity : BaseActivity(), CityManageNavigator {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun jumpToCity(city: String) {
-        val intent = Intent(this, WeatherActivity::class.java)
-        intent.putExtra("city", city)
-        startActivity(intent)
-    }
+    override fun jumpToCity(city: String) =
+        startActivity(Intent(this, WeatherActivity::class.java).apply {
+            putExtra("city", city)
+        })
 }

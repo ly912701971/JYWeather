@@ -9,10 +9,12 @@ import com.google.gson.annotations.SerializedName
  */
 data class Update(
     @SerializedName("loc")
-    private val loc: String,    //当地时间
+    private val _loc: String,    //当地时间
 
     @SerializedName("utc")
     val utc: String             //UTC时间
 ) {
-    fun getLoc(): String = loc.split(" ".toRegex()).getOrElse(1) { "unknown" }
+
+    val loc
+        get() = _loc.split(" ".toRegex())[1]
 }

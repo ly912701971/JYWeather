@@ -5,9 +5,7 @@ import android.databinding.ObservableField
 import com.jy.weather.JYApplication
 import com.jy.weather.entity.CityData
 
-class CityListItemViewModel(
-    data: CityData
-) {
+class CityListItemViewModel(data: CityData) {
 
     private var defaultCity = JYApplication.cityDB.defaultCity
 

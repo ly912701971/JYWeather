@@ -8,7 +8,9 @@ import com.jy.weather.util.DrawableUtil
 
 class TodayViewModel {
 
-    val bgResId: ObservableField<Int> = ObservableField()
+    private val db = JYApplication.cityDB
+
+    val bgResId: ObservableField<Int> = ObservableField(DrawableUtil.getBackground(db.condCode))
     val location: ObservableField<String> = ObservableField()
     val updateTime: ObservableField<String> = ObservableField()
 
@@ -32,7 +34,6 @@ class TodayViewModel {
         updateTime: String,
         now: Now,
         dailyForecast: DailyForecast) {
-        bgResId.set(DrawableUtil.getBackground(JYApplication.cityDB.condCode))
         this.location.set(location)
         this.updateTime.set(updateTime)
 

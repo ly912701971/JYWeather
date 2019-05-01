@@ -13,45 +13,39 @@ import com.jy.weather.util.JsonUtil
 import com.jy.weather.util.SnackbarObj
 import java.lang.ref.WeakReference
 
-class CityManageViewModel(
-    navigator: CityManageNavigator
-) {
+class CityManageViewModel {
 
     private val context = JYApplication.INSTANCE
-    private val cityDB = JYApplication.cityDB
-    private val navigator = WeakReference<CityManageNavigator>(navigator)
+    private val db = JYApplication.cityDB
 
-    private lateinit var citySet: HashSet<String>
+    private val citySet = db.citySet
 
-    val bgResId: ObservableField<Int> = ObservableField()
+    private lateinit var navigator: WeakReference<CityManageNavigator>
+
+    val bgResId: ObservableField<Int> = ObservableField(DrawableUtil.getBackground(db.condCode))
     val cities: ObservableList<CityData> = ObservableArrayList()
     val snackbarObj: ObservableField<SnackbarObj> = ObservableField()
 
-    fun start() {
-        bgResId.set(DrawableUtil.getBackground(cityDB.condCode))
-        citySet = cityDB.citySet
+    fun start(navigator: CityManageNavigator) {
+        this.navigator = WeakReference(navigator)
 
-        var weatherData: String?
         var weather: Weather?
-        var cityData: CityData
         for (city in citySet) {
-            weatherData = cityDB.getCityData(city)
-            weather = JsonUtil.handleWeatherResponse(weatherData)
+            weather = JsonUtil.handleWeatherResponse(db.getCityData(city))
             if (weather != null) {
-                cityData = CityData(
-                    weather.basic.cityName,
-                    weather.now.nowIcon,
-                    "${weather.basic.parentCity} - ${weather.basic.adminArea}",
-                    "${weather.dailyForecasts[0].minTemp} ~ ${weather.dailyForecasts[0].maxTemp}C"
+                cities.add(
+                    CityData(
+                        weather.basic.cityName,
+                        weather.now.nowIcon,
+                        "${weather.basic.parentCity} - ${weather.basic.adminArea}",
+                        "${weather.dailyForecasts[0].minTemp} ~ ${weather.dailyForecasts[0].maxTemp}C"
+                    )
                 )
-                cities.add(cityData)
             }
         }
     }
 
-    fun onItemClick(index: Int) {
-        navigator.get()?.jumpToCity(cities[index].city)
-    }
+    fun onItemClick(index: Int) = navigator.get()?.jumpToCity(cities[index].city)
 
     fun onMenuItemClick(index: Int, position: Int): Boolean {
         val city = cities[index].city
@@ -79,7 +73,7 @@ class CityManageViewModel(
                         }
                     }
                     citySet.remove(city)
-                    cityDB.removeCity(city)
+                    db.removeCity(city)
                 }
             }
         }

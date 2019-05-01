@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ListView
 import com.baoyz.swipemenulistview.SwipeMenuAdapter
-import com.jy.weather.base.IBaseAdapter
+import com.jy.weather.adapter.IBaseAdapter
 
 /**
  * Created by liyang

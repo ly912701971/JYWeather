@@ -139,7 +139,7 @@ class WeatherActivity : BaseActivity(), View.OnClickListener {
 
         headerBinding.basic = basic
         nowBinding.now = now
-        nowBinding.updateTime = update.getLoc()
+        nowBinding.updateTime = update.loc
         weatherBinding.llMainBackground.setBackgroundResource(now.nowBackgroundId)
 
         // hourly_forecast
@@ -252,7 +252,7 @@ class WeatherActivity : BaseActivity(), View.OnClickListener {
             R.id.tv_now_temp, R.id.ll_brief -> {
                 val intent = Intent(this, TodayActivity::class.java)
                 intent.putExtra("location", basic.cityName)
-                intent.putExtra("update_time", update.getLoc())
+                intent.putExtra("update_time", update.loc)
                 intent.putExtra("now", now)
                 intent.putExtra("daily_forecast", dailyForecasts[0])
                 startActivity(intent)
