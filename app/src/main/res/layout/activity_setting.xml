@@ -116,7 +116,7 @@
                 android:layout_height="wrap_content"
                 android:clickable="@{viewModel.autoUpdateCheck}"
                 android:gravity="center_vertical"
-                android:onClick="@{() -> viewModel.openIntervalDialog()}"
+                android:onClick="@{() -> viewModel.showIntervalDialog()}"
                 android:orientation="horizontal"
                 android:padding="24dp">
 
@@ -152,7 +152,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:onClick="@{() -> viewModel.openClearCacheDialog()}"
+                android:onClick="@{() -> viewModel.showClearCacheDialog()}"
                 android:orientation="horizontal"
                 android:padding="24dp">
 

@@ -300,10 +300,7 @@ class WeatherActivity : BaseActivity(), View.OnClickListener {
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         // 返回桌面而不是退出应用
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            val home = Intent(Intent.ACTION_MAIN)
-            home.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-            home.addCategory(Intent.CATEGORY_HOME)
-            startActivity(home)
+            moveTaskToBack(false)
             return true
         }
         return super.onKeyDown(keyCode, event)
