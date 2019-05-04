@@ -30,15 +30,15 @@ class TodayViewModel {
     val moonSet: ObservableField<String> = ObservableField()
 
     fun start(
-        location: String,
+        city: String,
         updateTime: String,
         now: Now,
         dailyForecast: DailyForecast) {
-        this.location.set(location)
+        this.location.set(city)
         this.updateTime.set(updateTime)
 
         this.apply {
-            icon.set(now.nowIcon)
+            icon.set(now.nowIconId)
             temperature.set(now.temperature)
             feelTemp.set(now.feelTemp)
             relativeHum.set(now.relativeHum)

@@ -70,7 +70,7 @@ data class Now(
             _windScale
         }
 
-    val nowIcon
+    val nowIconId
         get() = DrawableUtil.getCondIcon(code)
 
     val nowBackgroundId

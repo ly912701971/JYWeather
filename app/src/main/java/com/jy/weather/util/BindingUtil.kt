@@ -1,10 +1,13 @@
 package com.jy.weather.util
 
 import android.databinding.BindingAdapter
+import android.support.v4.widget.SwipeRefreshLayout
+import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ListView
 import com.baoyz.swipemenulistview.SwipeMenuAdapter
+import com.jy.weather.adapter.CommonAdapter
 import com.jy.weather.adapter.IBaseAdapter
 
 /**
@@ -28,7 +31,16 @@ fun setData(listView: ListView, data: List<*>?) {
     } else {
         listView.adapter
     } as IBaseAdapter
-    if (data != null) {
-        adapter.setData(data)
-    }
+    adapter.setData(data ?: return)
+}
+
+@BindingAdapter("refresh")
+fun setRefresh(swipeRefreshLayout: SwipeRefreshLayout, refresh: Boolean) {
+    swipeRefreshLayout.isRefreshing = refresh
+}
+
+@BindingAdapter("items")
+fun <T> setItems(recyclerView: RecyclerView, items: List<T>) {
+    val adapter = recyclerView.adapter as CommonAdapter<T>
+    adapter.setItems(items)
 }

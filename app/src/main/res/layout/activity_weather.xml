@@ -1,22 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View"/>
+
+        <variable
+            name="viewModel"
+            type="com.jy.weather.viewmodel.WeatherViewModel"/>
+    </data>
 
     <RelativeLayout
         android:id="@+id/ll_main_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/ic_background_cloud"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="true"
+        app:backgroundId="@{viewModel.bgResId}">
 
-        <include
-            android:id="@+id/header_part"
-            layout="@layout/weather_header" />
+        <!-- header part -->
+        <RelativeLayout
+            android:id="@+id/rl_header"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:visibility="@{viewModel.isViewReady ? View.VISIBLE : View.INVISIBLE}">
+
+            <ImageView
+                android:id="@+id/iv_home"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{() -> viewModel.jumpToCityManageActivity()}"
+                android:src="@drawable/ic_home"/>
+
+            <TextView
+                android:id="@+id/tv_city"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_toEndOf="@id/iv_home"
+                android:onClick="@{() -> viewModel.jumpToCityManageActivity()}"
+                android:text="@{viewModel.currentCity}"
+                android:textSize="20sp"/>
+
+            <ImageView
+                android:id="@+id/iv_setting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:onClick="@{() -> viewModel.jumpToSettingActivity()}"
+                android:src="@drawable/ic_setting"/>
+        </RelativeLayout>
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/srl_refresh"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/header_part">
+            android:layout_below="@+id/rl_header"
+            app:refresh="@{viewModel.isRefresh}">
 
             <ScrollView
                 android:id="@+id/sv_scroll"
@@ -28,23 +72,434 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="@{viewModel.isViewReady ? View.VISIBLE : View.INVISIBLE}">
 
-                    <include
-                        android:id="@+id/now_part"
-                        layout="@layout/weather_now" />
+                    <!-- now part -->
+                    <RelativeLayout
+                        android:id="@+id/rl_now"
+                        android:layout_width="match_parent"
+                        android:layout_height="400dp"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp">
 
-                    <include
-                        android:id="@+id/hourly_forecast_part"
-                        layout="@layout/weather_hourly_forecast" />
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:gravity="end"
+                            android:paddingTop="8dp"
+                            android:paddingBottom="8dp">
 
-                    <include
-                        android:id="@+id/daily_forecast_part"
-                        layout="@layout/weather_daily_forecast" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/update_time"/>
 
-                    <include
-                        android:id="@+id/life_suggestion_part"
-                        layout="@layout/weather_life_suggestion" />
+                            <TextView
+                                android:id="@+id/tv_update_time"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="4dp"
+                                android:text="@{viewModel.updateTime}"/>
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/tv_now_temp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_above="@id/ll_brief"
+                            android:onClick="@{() -> viewModel.jumpToTodayActivity()}"
+                            android:text="@{viewModel.temperature}"
+                            android:textSize="80sp"/>
+
+                        <LinearLayout
+                            android:id="@+id/ll_brief"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:gravity="center_vertical"
+                            android:onClick="@{() -> viewModel.jumpToTodayActivity()}"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:id="@+id/iv_now_icon"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                app:imageId="@{viewModel.iconId}"/>
+
+                            <TextView
+                                android:id="@+id/tv_now_cond"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:text="@{viewModel.condText}"
+                                android:textSize="16sp"/>
+
+                            <View
+                                android:layout_width="1px"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="8dp"
+                                android:background="@color/white"/>
+
+                            <TextView
+                                android:id="@+id/tv_now_wind_dir"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:text="@{viewModel.windDirection}"
+                                android:textSize="16sp"/>
+
+                            <TextView
+                                android:id="@+id/tv_now_wind_sc"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:text="@{viewModel.windScale}"
+                                android:textSize="16sp"/>
+
+                            <TextView
+                                android:id="@+id/tv_now_hum"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:drawableEnd="@drawable/ic_goto"
+                                android:text="@{@string/relative_hum + viewModel.relativeHum}"
+                                android:textSize="16sp"/>
+                        </LinearLayout>
+                    </RelativeLayout>
+
+                    <!-- hourly forecast part -->
+                    <LinearLayout
+                        android:id="@+id/ll_hourly_forecast"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:background="@color/background_dark"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="8dp"
+                            android:text="@string/hourly_forecast"
+                            android:textSize="16sp"/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1px"
+                            android:background="@color/dark_gray"/>
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/rv_hourly"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="8dp"
+                            app:items="@{viewModel.hourlyForecasts}"/>
+                    </LinearLayout>
+
+                    <!-- daily forecast part -->
+                    <LinearLayout
+                        android:id="@+id/ll_daily_forecast"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:background="@color/background_dark"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="8dp"
+                            android:text="@string/daily_forecast"
+                            android:textSize="16sp"/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1px"
+                            android:background="@color/dark_gray"/>
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/rv_daily"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:items="@{viewModel.dailyForecasts}"/>
+                    </LinearLayout>
+
+                    <!-- life suggestion part -->
+                    <LinearLayout
+                        android:id="@+id/ll_life_suggestion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:background="@color/background_dark"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="8dp"
+                            android:text="@string/sug"
+                            android:textSize="16sp"/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1px"
+                            android:background="@color/dark_gray"/>
+
+                        <GridLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:columnCount="4"
+                            android:orientation="horizontal"
+                            android:padding="8dp"
+                            android:rowCount="2">
+
+                            <LinearLayout
+                                android:id="@+id/ll_air"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_columnWeight="1"
+                                android:gravity="center"
+                                android:onClick="@{() -> viewModel.showLifestyleDialog(`air`)}"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="48dp"
+                                    android:layout_height="48dp"
+                                    android:src="@drawable/ic_air"/>
+
+                                <TextView
+                                    android:id="@+id/tv_air"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:text="@{viewModel.styleMap[`air`].first}"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:text="@string/sug_air"
+                                    android:textColor="@color/dark_gray"
+                                    android:textSize="13sp"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/ll_comfort"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_columnWeight="1"
+                                android:gravity="center"
+                                android:onClick="@{() -> viewModel.showLifestyleDialog(`comf`)}"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="48dp"
+                                    android:layout_height="48dp"
+                                    android:src="@drawable/ic_comfort"/>
+
+                                <TextView
+                                    android:id="@+id/tv_comfort"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:text="@{viewModel.styleMap[`comf`].first}"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:text="@string/sug_comfort"
+                                    android:textColor="@color/dark_gray"
+                                    android:textSize="13sp"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/ll_car_wash"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_columnWeight="1"
+                                android:gravity="center"
+                                android:onClick="@{() -> viewModel.showLifestyleDialog(`cw`)}"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="48dp"
+                                    android:layout_height="48dp"
+                                    android:src="@drawable/ic_wash_car"/>
+
+                                <TextView
+                                    android:id="@+id/tv_car_wash"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:text="@{viewModel.styleMap[`cw`].first}"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:text="@string/sug_car_wash"
+                                    android:textColor="@color/dark_gray"
+                                    android:textSize="13sp"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/ll_dress"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_columnWeight="1"
+                                android:gravity="center"
+                                android:onClick="@{() -> viewModel.showLifestyleDialog(`drsg`)}"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="48dp"
+                                    android:layout_height="48dp"
+                                    android:src="@drawable/ic_dress"/>
+
+                                <TextView
+                                    android:id="@+id/tv_dress"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:text="@{viewModel.styleMap[`drsg`].first}"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:text="@string/sug_dress"
+                                    android:textColor="@color/dark_gray"
+                                    android:textSize="13sp"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/ll_flu"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_columnWeight="1"
+                                android:layout_marginTop="16dp"
+                                android:gravity="center"
+                                android:onClick="@{() -> viewModel.showLifestyleDialog(`flu`)}"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="48dp"
+                                    android:layout_height="48dp"
+                                    android:src="@drawable/ic_flu"/>
+
+                                <TextView
+                                    android:id="@+id/tv_flu"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:text="@{viewModel.styleMap[`flu`].first}"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:text="@string/sug_flu"
+                                    android:textColor="@color/dark_gray"
+                                    android:textSize="13sp"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/ll_sport"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_columnWeight="1"
+                                android:layout_marginTop="16dp"
+                                android:gravity="center"
+                                android:onClick="@{() -> viewModel.showLifestyleDialog(`sport`)}"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="48dp"
+                                    android:layout_height="48dp"
+                                    android:src="@drawable/ic_sport"/>
+
+                                <TextView
+                                    android:id="@+id/tv_sport"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:text="@{viewModel.styleMap[`sport`].first}"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:text="@string/sug_sport"
+                                    android:textColor="@color/dark_gray"
+                                    android:textSize="13sp"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/ll_travel"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_columnWeight="1"
+                                android:layout_marginTop="16dp"
+                                android:gravity="center"
+                                android:onClick="@{() -> viewModel.showLifestyleDialog(`trav`)}"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="48dp"
+                                    android:layout_height="48dp"
+                                    android:src="@drawable/ic_travel"/>
+
+                                <TextView
+                                    android:id="@+id/tv_travel"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:text="@{viewModel.styleMap[`trav`].first}"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:text="@string/sug_travel"
+                                    android:textColor="@color/dark_gray"
+                                    android:textSize="13sp"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/ll_uv"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_columnWeight="1"
+                                android:layout_marginTop="16dp"
+                                android:gravity="center"
+                                android:onClick="@{() -> viewModel.showLifestyleDialog(`uv`)}"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="48dp"
+                                    android:layout_height="48dp"
+                                    android:src="@drawable/ic_uv"/>
+
+                                <TextView
+                                    android:id="@+id/tv_uv"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:text="@{viewModel.styleMap[`uv`].first}"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:text="@string/sug_ultraviolet"
+                                    android:textColor="@color/dark_gray"
+                                    android:textSize="13sp"/>
+                            </LinearLayout>
+                        </GridLayout>
+                    </LinearLayout>
                 </LinearLayout>
             </ScrollView>
         </android.support.v4.widget.SwipeRefreshLayout>

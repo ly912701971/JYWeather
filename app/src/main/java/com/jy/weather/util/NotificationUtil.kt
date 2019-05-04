@@ -49,7 +49,7 @@ object NotificationUtil {
         if (weather != null) {
             remoteViews.setTextViewText(R.id.city_name, defaultCity)// 常驻城市名称
             remoteViews.setImageViewResource(R.id.pic_bar,
-                weather.now.nowIcon) // 要显示的天气图片
+                weather.now.nowIconId) // 要显示的天气图片
             remoteViews.setTextViewText(R.id.now_Temp,
                 weather.now.temperature)// 当前温度
             remoteViews.setTextViewText(R.id.lowTemp,

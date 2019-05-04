@@ -30,10 +30,12 @@ class TodayActivity : BaseActivity() {
         setupToolbar()
 
         val intent = intent
-        viewModel.start(intent.getStringExtra("location"),
+        viewModel.start(
+            intent.getStringExtra("city"),
             intent.getStringExtra("update_time"),
             intent.getSerializableExtra("now") as Now,
-            intent.getSerializableExtra("daily_forecast") as DailyForecast)
+            intent.getSerializableExtra("daily_forecast") as DailyForecast
+        )
     }
 
     private fun setupToolbar() {

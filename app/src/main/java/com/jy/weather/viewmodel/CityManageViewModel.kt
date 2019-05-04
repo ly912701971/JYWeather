@@ -36,7 +36,7 @@ class CityManageViewModel {
                 cities.add(
                     CityData(
                         weather.basic.cityName,
-                        weather.now.nowIcon,
+                        weather.now.nowIconId,
                         "${weather.basic.parentCity} - ${weather.basic.adminArea}",
                         "${weather.dailyForecasts[0].minTemp} ~ ${weather.dailyForecasts[0].maxTemp}C"
                     )

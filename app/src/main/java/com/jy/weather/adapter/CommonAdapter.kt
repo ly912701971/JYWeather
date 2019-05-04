@@ -12,7 +12,7 @@ import android.view.ViewGroup
  * on 2018/12/28
  */
 class CommonAdapter<T>(
-    private val dataList: List<T>,
+    private var dataList: List<T>,
     private val layoutId: Int,
     private val dataId: Int
 ) : RecyclerView.Adapter<CommonAdapter.ViewHolder>() {
@@ -37,6 +37,11 @@ class CommonAdapter<T>(
     }
 
     override fun getItemCount() = dataList.size
+
+    fun setItems(items: List<T>) {
+        dataList = items
+        notifyDataSetChanged()
+    }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         lateinit var binding: ViewDataBinding
