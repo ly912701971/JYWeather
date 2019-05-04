@@ -7,12 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
-/**
- * Created by liyang
- * on 2018/12/28
- */
-class CommonAdapter<T>(
-    private var dataList: List<T>,
+class CommonAdapter(
+    private var dataList: List<*>,
     private val layoutId: Int,
     private val dataId: Int
 ) : RecyclerView.Adapter<CommonAdapter.ViewHolder>() {
@@ -38,7 +34,7 @@ class CommonAdapter<T>(
 
     override fun getItemCount() = dataList.size
 
-    fun setItems(items: List<T>) {
+    fun setItems(items: List<*>) {
         dataList = items
         notifyDataSetChanged()
     }

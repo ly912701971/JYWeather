@@ -10,10 +10,6 @@ import com.baoyz.swipemenulistview.SwipeMenuAdapter
 import com.jy.weather.adapter.CommonAdapter
 import com.jy.weather.adapter.IBaseAdapter
 
-/**
- * Created by liyang
- * on 2018/12/28
- */
 @BindingAdapter("imageId")
 fun setImage(view: ImageView, resId: Int) {
     view.setImageResource(resId)
@@ -25,13 +21,13 @@ fun setBackground(viewGroup: ViewGroup, bgId: Int) {
 }
 
 @BindingAdapter("data")
-fun setData(listView: ListView, data: List<*>?) {
+fun setData(listView: ListView, data: List<*>) {
     val adapter = if (listView.adapter is SwipeMenuAdapter) {
         (listView.adapter as SwipeMenuAdapter).wrappedAdapter
     } else {
         listView.adapter
     } as IBaseAdapter
-    adapter.setData(data ?: return)
+    adapter.setData(data)
 }
 
 @BindingAdapter("refresh")
@@ -40,7 +36,7 @@ fun setRefresh(swipeRefreshLayout: SwipeRefreshLayout, refresh: Boolean) {
 }
 
 @BindingAdapter("items")
-fun <T> setItems(recyclerView: RecyclerView, items: List<T>) {
-    val adapter = recyclerView.adapter as CommonAdapter<T>
+fun setItems(recyclerView: RecyclerView, items: List<*>) {
+    val adapter = recyclerView.adapter as CommonAdapter
     adapter.setItems(items)
 }
