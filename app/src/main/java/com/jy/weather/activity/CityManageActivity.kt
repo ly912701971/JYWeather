@@ -37,6 +37,8 @@ class CityManageActivity : BaseActivity(), CityManageNavigator {
         setupSwipeMenuListView()
 
         setupSnackbarCallback()
+
+        viewModel.initData()
     }
 
     private fun setupToolbar() {

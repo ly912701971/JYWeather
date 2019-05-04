@@ -28,7 +28,9 @@ class CityManageViewModel {
 
     fun start(navigator: CityManageNavigator) {
         this.navigator = WeakReference(navigator)
+    }
 
+    fun initData() {
         var weather: Weather?
         for (city in citySet) {
             weather = JsonUtil.handleWeatherResponse(db.getCityData(city))

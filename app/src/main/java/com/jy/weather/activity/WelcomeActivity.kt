@@ -1,12 +1,9 @@
 package com.jy.weather.activity
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import com.jy.weather.JYApplication
-import io.reactivex.Observable
-import io.reactivex.disposables.Disposable
-import java.util.concurrent.TimeUnit
 
 /**
  * 启动界面
@@ -15,17 +12,16 @@ import java.util.concurrent.TimeUnit
  */
 class WelcomeActivity : BaseActivity() {
 
-    private lateinit var disposable: Disposable
-
-    @SuppressLint("CheckResult")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStatusBarTrans()
 
-        disposable = Observable.timer(1, TimeUnit.SECONDS)
-            .subscribe {
+        Handler().postDelayed(
+            {
                 jumpActivity()
-            }
+            },
+            1000
+        )
     }
 
     private fun jumpActivity() {
@@ -38,10 +34,5 @@ class WelcomeActivity : BaseActivity() {
             })
         }
         finish()
-    }
-
-    override fun onDestroy() {
-        disposable.dispose()
-        super.onDestroy()
     }
 }

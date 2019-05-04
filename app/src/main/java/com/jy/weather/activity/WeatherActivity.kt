@@ -162,14 +162,16 @@ class WeatherActivity : BaseActivity(), WeatherNavigator {
 
     override fun onDataRefresh() {
         // 刷新数据动画
-        ValueAnimator.ofInt(binding.svScroll.height, 0).apply {
-            duration = 1000
-            interpolator = DecelerateInterpolator()
-            addUpdateListener { valueAnimator ->
-                val currentValue = valueAnimator.animatedValue as Int
-                binding.svScroll.smoothScrollTo(0, currentValue)
+        runOnUiThread {
+            ValueAnimator.ofInt(binding.svScroll.height, 0).apply {
+                duration = 1000
+                interpolator = DecelerateInterpolator()
+                addUpdateListener { valueAnimator ->
+                    val currentValue = valueAnimator.animatedValue as Int
+                    binding.svScroll.smoothScrollTo(0, currentValue)
+                }
+                start()
             }
-            start()
         }
     }
 }

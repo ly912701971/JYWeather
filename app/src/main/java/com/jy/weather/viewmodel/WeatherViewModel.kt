@@ -78,12 +78,10 @@ class WeatherViewModel {
             snackbarObj.set(SnackbarObj(context.getString(R.string.network_unavailable)))
             handleData(db.getCityData(city))
         } else {
-            NetworkInterface.queryWeatherData(
+            NetworkInterface.queryWeatherDataAsync(
                 city,
                 {
-                    if (it != null) {
-                        handleData(it)
-                    }
+                    handleData(it)
                 },
                 {
                     it.printStackTrace()
