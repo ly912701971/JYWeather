@@ -9,10 +9,6 @@ import android.os.IBinder
 import android.os.SystemClock
 import com.jy.weather.JYApplication
 import com.jy.weather.network.NetworkInterface
-import okhttp3.Call
-import okhttp3.Callback
-import okhttp3.Response
-import java.io.IOException
 
 class AutoUpdateService : Service() {
 
@@ -23,7 +19,7 @@ class AutoUpdateService : Service() {
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         updateWeather()
         val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val updateInterval = JYApplication.cityDB.updateInterval * 60 * 60 * 1000
+        val updateInterval = JYApplication.cityDB.updateInterval * 1000 * 60 * 60
         val triggerAtTime = SystemClock.elapsedRealtime() + updateInterval
         val i = Intent(this, AutoUpdateService::class.java)
         val pendingIntent = PendingIntent.getService(this, 0, i, 0)

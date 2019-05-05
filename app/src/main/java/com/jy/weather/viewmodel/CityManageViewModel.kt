@@ -54,20 +54,19 @@ class CityManageViewModel {
         val defaultCity = JYApplication.cityDB.defaultCity
         when (position) {
             // 点击"常驻"
-            0 -> if (city != defaultCity) {
-                JYApplication.cityDB.defaultCity = city
-                cities[0] = cities[0]// 模仿一次数据改变，触发notifyDataSetChanged()
-            } else {
-                snackbarObj.set(SnackbarObj(context.getString(R.string.already_resident_city)))
-            }
+            0 ->
+                if (city != defaultCity) {
+                    JYApplication.cityDB.defaultCity = city
+                    cities[0] = cities[0]// 模仿一次数据改变，触发notifyDataSetChanged()
+                } else {
+                    snackbarObj.set(SnackbarObj(context.getString(R.string.already_resident_city)))
+                }
 
             // 点击"删除"
-            1 -> when {
-                city == defaultCity ->
+            1 ->
+                if (city == defaultCity) {
                     snackbarObj.set(SnackbarObj(context.getString(R.string.keep_resident_city)))
-                citySet.size == 1 ->
-                    snackbarObj.set(SnackbarObj(context.getString(R.string.keep_one_city)))
-                else -> {
+                } else {
                     for (data in cities) {
                         if (data.city == city) {
                             cities.remove(data)
@@ -77,7 +76,6 @@ class CityManageViewModel {
                     citySet.remove(city)
                     db.removeCity(city)
                 }
-            }
         }
         return false// 关闭菜单
     }

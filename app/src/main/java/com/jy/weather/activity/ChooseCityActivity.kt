@@ -32,8 +32,6 @@ class ChooseCityActivity : BaseActivity(), ChooseCityNavigator {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStatusBarTrans()
-        setStatusBarColor()
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_choose_city)
         viewModel = ChooseCityViewModel()

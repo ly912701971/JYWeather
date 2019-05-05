@@ -21,8 +21,6 @@ class SettingActivity : BaseActivity(), SettingNavigator {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStatusBarTrans()
-        setStatusBarColor()
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_setting)
         viewModel = SettingViewModel()

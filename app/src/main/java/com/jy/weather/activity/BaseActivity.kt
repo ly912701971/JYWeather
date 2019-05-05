@@ -25,34 +25,28 @@ open class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        setStatusBarBackgroundDark()
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT//强制竖屏
     }
 
     /**
-     * 设置状态栏透明
+     * 设置状态栏颜色
      * 必须在setContentView()前调用
      */
-    fun setStatusBarTrans() {
-        if (Build.VERSION.SDK_INT >= 21) {
-            val decorView = window.decorView
-            decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-            window.statusBarColor = Color.TRANSPARENT
-        }
+    private fun setStatusBarColor(color: Int) {
+        window.decorView.systemUiVisibility =
+            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+        window.statusBarColor = color
     }
 
     /**
-     * 设置状态栏为背景色
-     * 必须在setContentView()前调用
+     * 设置状态栏透明
      */
-    fun setStatusBarColor() {
-        if (Build.VERSION.SDK_INT >= 21) {
-            val decorView = window.decorView
-            decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-            window.statusBarColor = getColorById(R.color.background_dark)
-        }
-    }
+    fun setStatusBarTrans() = setStatusBarColor(Color.TRANSPARENT)
 
-    fun getColorById(resId: Int): Int =
+    private fun setStatusBarBackgroundDark() = setStatusBarColor(getColorById(R.color.background_dark))
+
+    private fun getColorById(resId: Int): Int =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             resources.getColor(resId, null)
         } else {
@@ -65,7 +59,5 @@ open class BaseActivity : AppCompatActivity() {
         return LayoutParams((metrics.widthPixels * percentWidth).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
-    fun showToast(text: String) {
-        Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
-    }
+    fun showToast(text: String) = Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
 }

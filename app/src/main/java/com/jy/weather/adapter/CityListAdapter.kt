@@ -20,17 +20,11 @@ class CityListAdapter(context: Context) : BaseAdapter(), IBaseAdapter {
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var cityList: List<CityData> = listOf()
 
-    override fun getCount(): Int {
-        return cityList.size
-    }
+    override fun getCount() = cityList.size
 
-    override fun getItem(i: Int): CityData {
-        return cityList[i]
-    }
+    override fun getItem(i: Int) = cityList[i]
 
-    override fun getItemId(i: Int): Long {
-        return i.toLong()
-    }
+    override fun getItemId(i: Int) = i.toLong()
 
     override fun getView(i: Int, convertView: View?, viewGroup: ViewGroup): View {
         var view = convertView

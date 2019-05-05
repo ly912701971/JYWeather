@@ -1,5 +1,6 @@
 package com.jy.weather.network
 
+import com.jy.weather.JYApplication
 import com.jy.weather.util.HttpUtil
 import okhttp3.Call
 import okhttp3.Callback
@@ -25,7 +26,9 @@ object NetworkInterface {
     ) {
         HttpUtil.sendAsyncOkHttpRequest(BASE + LOCATION + city + KEY, object : Callback {
             override fun onResponse(call: Call, response: Response) {
-                onSuccess((response.body() ?: return).string())
+                val data = (response.body() ?: return).string()
+                JYApplication.cityDB.setCityData(city, data)
+                onSuccess(data)
             }
 
             override fun onFailure(call: Call, e: IOException) {

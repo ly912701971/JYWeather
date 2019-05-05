@@ -79,7 +79,6 @@
     <string name="clear_cache_success">清除缓存成功</string>
     <string name="already_resident_city">该城市已是常驻城市</string>
     <string name="keep_resident_city">您不能删除常驻城市</string>
-    <string name="keep_one_city">请至少保留一个城市</string>
 
     <!-- 热门城市 -->
     <string name="beijing">北京市</string>
