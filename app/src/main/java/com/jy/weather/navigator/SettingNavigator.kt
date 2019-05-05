@@ -1,8 +1,8 @@
 package com.jy.weather.navigator
 
 interface SettingNavigator {
-    fun jumpToChooseCityActivity()
-    fun openAutoUpdateService()
+    fun startChooseCityActivity()
+    fun startAutoUpdateService()
     fun showIntervalDialog()
     fun showClearCacheDialog()
 }

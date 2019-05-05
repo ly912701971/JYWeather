@@ -64,16 +64,16 @@ class SettingActivity : BaseActivity(), SettingNavigator {
         super.onDestroy()
     }
 
-    override fun jumpToChooseCityActivity() {
+    override fun startChooseCityActivity() {
         startActivity(Intent(this, ChooseCityActivity::class.java))
     }
 
-    override fun openAutoUpdateService() {
+    override fun startAutoUpdateService() {
         startService(Intent(this, AutoUpdateService::class.java))
     }
 
     override fun showIntervalDialog() {
-        AlertDialog.Builder(this, android.R.style.Theme_DeviceDefault_Dialog_Alert)
+        AlertDialog.Builder(this, AlertDialogUtil.getTheme())
             .setTitle(getString(R.string.update_interval))
             .setSingleChoiceItems(viewModel.intervalTimes, viewModel.getChosenIndex()) { dialog, index ->
                 viewModel.onIntervalItemChoose(index)

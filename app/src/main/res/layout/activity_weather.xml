@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        app:backgroundId="@{viewModel.bgResId}">
+        app:backgroundId="@{safeUnbox(viewModel.bgResId)}">
 
         <!-- header part -->
         <RelativeLayout
@@ -32,7 +32,7 @@
                 android:id="@+id/iv_home"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> viewModel.jumpToCityManageActivity()}"
+                android:onClick="@{() -> viewModel.startCityManageActivity()}"
                 android:src="@drawable/ic_home"/>
 
             <TextView
@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_toEndOf="@id/iv_home"
-                android:onClick="@{() -> viewModel.jumpToCityManageActivity()}"
+                android:onClick="@{() -> viewModel.startCityManageActivity()}"
                 android:text="@{viewModel.currentCity}"
                 android:textSize="20sp"/>
 
@@ -48,7 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:onClick="@{() -> viewModel.jumpToSettingActivity()}"
+                android:onClick="@{() -> viewModel.startSettingActivity()}"
                 android:src="@drawable/ic_setting"/>
         </RelativeLayout>
 
@@ -103,7 +103,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_above="@id/ll_brief"
-                            android:onClick="@{() -> viewModel.jumpToTodayActivity()}"
+                            android:onClick="@{() -> viewModel.startTodayActivity()}"
                             android:text="@{viewModel.temperature}"
                             android:textSize="80sp"/>
 
@@ -113,13 +113,13 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentBottom="true"
                             android:gravity="center_vertical"
-                            android:onClick="@{() -> viewModel.jumpToTodayActivity()}"
+                            android:onClick="@{() -> viewModel.startTodayActivity()}"
                             android:orientation="horizontal">
 
                             <ImageView
                                 android:layout_width="32dp"
                                 android:layout_height="32dp"
-                                app:imageId="@{viewModel.iconId}"/>
+                                app:imageId="@{safeUnbox(viewModel.iconId)}"/>
 
                             <TextView
                                 android:layout_width="wrap_content"

@@ -47,7 +47,7 @@ class CityManageViewModel {
         }
     }
 
-    fun onItemClick(index: Int) = navigator.get()?.jumpToCity(cities[index].city)
+    fun onItemClick(index: Int) = navigator.get()?.startWeatherActivity(cities[index].city)
 
     fun onMenuItemClick(index: Int, position: Int): Boolean {
         val city = cities[index].city

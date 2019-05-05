@@ -38,6 +38,7 @@ class WeatherActivity : BaseActivity(), WeatherNavigator {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_weather)
         viewModel = WeatherViewModel()
+        viewModel.start(this)
         binding.viewModel = viewModel
 
         setupListener()
@@ -142,7 +143,7 @@ class WeatherActivity : BaseActivity(), WeatherNavigator {
             }
         }
 
-    override fun jumpToTodayActivity() =
+    override fun startTodayActivity() =
         startActivity(Intent(this, TodayActivity::class.java).apply {
             putExtra("city", viewModel.currentCity.get())
             putExtra("update_time", viewModel.updateTime.get())
@@ -150,17 +151,17 @@ class WeatherActivity : BaseActivity(), WeatherNavigator {
             putExtra("daily_forecast", viewModel.dailyForecasts[0])
         })
 
-    override fun jumpToCityManageActivity() =
+    override fun startCityManageActivity() =
         startActivity(Intent(this, CityManageActivity::class.java))
 
-    override fun jumpToSettingActivity() =
+    override fun startSettingActivity() =
         startActivity(Intent(this, SettingActivity::class.java))
 
     override fun startAutoUpdateService() {
         startService(Intent(this, AutoUpdateService::class.java))
     }
 
-    override fun onDataRefresh() {
+    override fun startDataRefreshAnimator() {
         // 刷新数据动画
         runOnUiThread {
             ValueAnimator.ofInt(binding.svScroll.height, 0).apply {

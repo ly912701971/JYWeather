@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        app:backgroundId="@{viewModel.bgResId}">
+        app:backgroundId="@{safeUnbox(viewModel.bgResId)}">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -75,7 +75,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:checked="@{viewModel.notificationCheck}"
-                    android:onCheckedChanged="@{viewModel.onNotificationCheck}"
+                    android:onCheckedChanged="@{viewModel::onNotificationCheck}"
                     android:thumb="@drawable/shape_switch_thumb"
                     android:track="@drawable/selector_switch_track"/>
             </RelativeLayout>
@@ -100,7 +100,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:checked="@{viewModel.autoUpdateCheck}"
-                    android:onCheckedChanged="@{viewModel.onAutoUpdateCheck}"
+                    android:onCheckedChanged="@{viewModel::onAutoUpdateCheck}"
                     android:thumb="@drawable/shape_switch_thumb"
                     android:track="@drawable/selector_switch_track"/>
             </RelativeLayout>

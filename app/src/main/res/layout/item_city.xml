@@ -28,7 +28,7 @@
                 android:id="@+id/iv_weather_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:imageId="@{viewModel.iconId}"/>
+                app:imageId="@{safeUnbox(viewModel.iconId)}"/>
 
             <TextView
                 android:id="@+id/tv_city"

@@ -120,7 +120,7 @@ class CityManageActivity : BaseActivity(), CityManageNavigator {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun jumpToCity(city: String) =
+    override fun startWeatherActivity(city: String) =
         startActivity(Intent(this, WeatherActivity::class.java).apply {
             putExtra("city", city)
         })

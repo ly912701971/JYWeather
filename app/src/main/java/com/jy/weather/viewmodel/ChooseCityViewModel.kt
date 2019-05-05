@@ -80,7 +80,7 @@ class ChooseCityViewModel {
 
     fun permissionDenied() = setLocation(locateUnknown)
 
-    fun cityClicked(v: View) {
+    fun onCityClick(v: View) {
         if (!NetworkUtil.isNetworkAvailable()) {
             snackbarObj.set(SnackbarObj(context.getString(R.string.network_unavailable)))
             return
@@ -101,21 +101,31 @@ class ChooseCityViewModel {
         }.replace(Regex("[市县区]"), "")
 
         if (city == locateUnknown) {
-            locate()
             return
         }
 
         db.addCity(city)
-        navigator.get()?.jumpToNewCity(city)
+        navigator.get()?.startWeatherActivity(city)
     }
 
-    private fun showGpsNotOpen() {
+    fun onSearchResultItemClick(index: Int) {
+        val city = searchResult[index].split(Regex(" - "))[0]
+        db.addCity(city)
+        navigator.get()?.startWeatherActivity(city)
+    }
+
+    fun onActivityResult() {
+        if (GpsUtil.isOpen(context)) {
+            locate()
+        }
+    }
+
+    private fun showGpsNotOpen() =
         snackbarObj.set(SnackbarObj(context.getString(R.string.locate_failed),
             context.getString(R.string.goto_open),
             View.OnClickListener {
-                navigator.get()?.jumpToOpenGps()
+                navigator.get()?.startOpenGpsActivity()
             }))
-    }
 
     private fun setLocation(city: String) = location.set(city)
 

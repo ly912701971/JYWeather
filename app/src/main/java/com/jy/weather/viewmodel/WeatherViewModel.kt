@@ -51,18 +51,16 @@ class WeatherViewModel {
     }
 
     fun onRefreshListener() {
-        if (!NetworkUtil.isNetworkAvailable()) {
-            snackbarObj.set(SnackbarObj(context.getString(R.string.network_unavailable)))
-        } else {
-            queryData(currentCity.get())
-        }
+        isRefresh.set(true)
+        isViewReady.set(false)
+        queryData(currentCity.get())
     }
 
-    fun jumpToTodayActivity() = navigator.get()?.jumpToTodayActivity()
+    fun startTodayActivity() = navigator.get()?.startTodayActivity()
 
-    fun jumpToCityManageActivity() = navigator.get()?.jumpToCityManageActivity()
+    fun startCityManageActivity() = navigator.get()?.startCityManageActivity()
 
-    fun jumpToSettingActivity() = navigator.get()?.jumpToSettingActivity()
+    fun startSettingActivity() = navigator.get()?.startSettingActivity()
 
     fun showLifestyleDialog(type: String) {
         dialogText = (styleMap[type] ?: return).second
@@ -71,8 +69,6 @@ class WeatherViewModel {
 
     private fun queryData(city: String?) {
         city ?: return
-        isRefresh.set(true)
-        isViewReady.set(false)
         if (!NetworkUtil.isNetworkAvailable()) {// 无网使用缓存数据
             isRefresh.set(false)
             snackbarObj.set(SnackbarObj(context.getString(R.string.network_unavailable)))
@@ -123,7 +119,7 @@ class WeatherViewModel {
         }
         isRefresh.set(false)
         isViewReady.set(true)
-        navigator.get()?.onDataRefresh()
+        navigator.get()?.startDataRefreshAnimator()
     }
 
     private fun handleNow(now: Now) {

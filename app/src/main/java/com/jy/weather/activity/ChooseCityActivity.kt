@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.databinding.DataBindingUtil
 import android.databinding.Observable
 import android.os.Bundle
+import android.provider.Settings
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.text.Editable
@@ -24,6 +25,7 @@ class ChooseCityActivity : BaseActivity(), ChooseCityNavigator {
 
     companion object {
         private const val PERMISSION = Manifest.permission.ACCESS_FINE_LOCATION
+        private const val LOCATION_REQUEST_CODE = 0
     }
 
     private lateinit var binding: ActivityChooseCityBinding
@@ -51,7 +53,7 @@ class ChooseCityActivity : BaseActivity(), ChooseCityNavigator {
                 binding.etSearch.text.isNotEmpty() -> binding.etSearch.setText("")
                 JYApplication.cityDB.defaultCity == null -> {// 默认城市北京
                     JYApplication.cityDB.addCity(resources.getString(R.string.default_city))
-                    jumpToNewCity(resources.getString(R.string.default_city))
+                    startWeatherActivity(resources.getString(R.string.default_city))
                     finish()
                 }
                 else -> finish()
@@ -70,7 +72,10 @@ class ChooseCityActivity : BaseActivity(), ChooseCityNavigator {
         })
 
         // adapter
-        binding.lvSearchResult.adapter = CitySearchAdapter(this, this)
+        binding.lvSearchResult.adapter = CitySearchAdapter(this)
+        binding.lvSearchResult.setOnItemClickListener { _, _, index, _ ->
+            viewModel.onSearchResultItemClick(index)
+        }
     }
 
     private fun setupSnackbarCallback() {
@@ -135,13 +140,18 @@ class ChooseCityActivity : BaseActivity(), ChooseCityNavigator {
         }
     }
 
-    override fun jumpToOpenGps() =
-        startActivity(Intent("com.jy.weather").apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            component = ComponentName("com.huawei.systemmanager", "com.huawei.permissionmanager.ui.MainActivity")
-        })
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
 
-    override fun jumpToNewCity(city: String) {
+        if (requestCode == LOCATION_REQUEST_CODE) {
+            viewModel.onActivityResult()
+        }
+    }
+
+    override fun startOpenGpsActivity() =
+        startActivityForResult(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), Companion.LOCATION_REQUEST_CODE)
+
+    override fun startWeatherActivity(city: String) {
         startActivity(Intent(this, WeatherActivity::class.java).apply {
             putExtra("city", city)
         })

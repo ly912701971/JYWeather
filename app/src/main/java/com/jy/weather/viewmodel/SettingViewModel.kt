@@ -54,7 +54,7 @@ class SettingViewModel {
         autoUpdateCheck.set(isChecked)
         db.autoUpdate = isChecked
 
-        navigator.get()?.openAutoUpdateService()
+        navigator.get()?.startAutoUpdateService()
     }
 
     fun showIntervalDialog() = navigator.get()?.showIntervalDialog()
@@ -79,10 +79,10 @@ class SettingViewModel {
 
     fun finish() {
         if (hasClearCache) {
-            navigator.get()?.jumpToChooseCityActivity()
+            navigator.get()?.startChooseCityActivity()
         }
         if (autoUpdateCheck.get() && hasChangeInterval) {
-            navigator.get()?.openAutoUpdateService()
+            navigator.get()?.startAutoUpdateService()
         }
     }
 }
