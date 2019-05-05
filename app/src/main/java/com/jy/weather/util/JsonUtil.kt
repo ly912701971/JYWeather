@@ -16,10 +16,10 @@ object JsonUtil {
     fun handleWeatherResponse(response: String?): Weather? {
         response ?: return null
         try {
-            val jsonObject = JSONObject(response)
-            val jsonArray = jsonObject.getJSONArray("HeWeather6")
-            val weatherContent = jsonArray.getJSONObject(0).toString()
-            return Gson().fromJson(weatherContent, Weather::class.java)
+            return Gson().fromJson(
+                JSONObject(response).getJSONArray("HeWeather6").getJSONObject(0).toString(),
+                Weather::class.java
+            )
         } catch (e: JsonSyntaxException) {
             e.printStackTrace()
         }

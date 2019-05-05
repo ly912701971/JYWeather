@@ -12,11 +12,12 @@ object SnackbarUtil {
         action: String? = null,
         listener: View.OnClickListener? = null
     ) {
-        val snackbar = Snackbar.make(view, text, Snackbar.LENGTH_LONG)
-        if (action != null && listener != null) {
-            snackbar.setAction(action, listener)
+        Snackbar.make(view, text, Snackbar.LENGTH_LONG).apply {
+            if (action != null && listener != null) {
+                setAction(action, listener)
+            }
+            show()
         }
-        snackbar.show()
     }
 }
 

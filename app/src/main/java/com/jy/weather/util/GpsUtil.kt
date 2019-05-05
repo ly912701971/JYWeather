@@ -16,8 +16,7 @@ object GpsUtil {
      */
     fun isOpen(context: Context): Boolean {
         val manager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        val gps = manager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-        val network = manager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
-        return gps || network
+        return manager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
+            manager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
     }
 }

@@ -17,7 +17,7 @@ object StringUtil {
     /**
      * 用于查看text是否含有数字
      */
-    fun hasNumber(text: String): Boolean = Pattern.compile("[0-9]").matcher(text).find()
+    fun hasNumber(text: String) = Pattern.compile("[0-9]").matcher(text).find()
 
     /**
      * 返回紫外线强弱等级
@@ -40,10 +40,7 @@ object StringUtil {
         } catch (e: ParseException) {
             e.printStackTrace()
         }
-
-        val calendar = Calendar.getInstance()
-        calendar.time = date
-        return weekdays[calendar.get(Calendar.DAY_OF_WEEK) - 1]
+        return weekdays[Calendar.getInstance().apply { time = date }.get(Calendar.DAY_OF_WEEK) - 1]
     }
 
     fun getTime(): String = SimpleDateFormat("HH:mm", Locale.CHINA).format(Date())

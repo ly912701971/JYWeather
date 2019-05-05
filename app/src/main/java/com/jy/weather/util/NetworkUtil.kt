@@ -11,17 +11,7 @@ object NetworkUtil {
      *
      * @return true:网络正常，false:网络异常
      */
-    fun isNetworkAvailable(): Boolean {
-        val connectivityManager = JYApplication.INSTANCE
-            .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val networkInfo = connectivityManager.allNetworkInfo
-        if (networkInfo != null && networkInfo.isNotEmpty()) {
-            for (info in networkInfo) {
-                if (info.isConnected) {
-                    return true
-                }
-            }
-        }
-        return false
-    }
+    fun isNetworkAvailable() =
+        (JYApplication.INSTANCE.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager)
+            .allNetworkInfo.find { it.isConnected } != null
 }
