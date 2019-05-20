@@ -2,13 +2,10 @@ package com.jy.weather.activity
 
 import android.Manifest
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.databinding.DataBindingUtil
 import android.databinding.Observable
 import android.os.Bundle
 import android.provider.Settings
-import android.support.v4.app.ActivityCompat
-import android.support.v4.content.ContextCompat
 import android.text.Editable
 import android.text.TextWatcher
 import com.jy.weather.JYApplication
@@ -17,6 +14,7 @@ import com.jy.weather.adapter.CitySearchAdapter
 import com.jy.weather.databinding.ActivityChooseCityBinding
 import com.jy.weather.navigator.ChooseCityNavigator
 import com.jy.weather.util.AlertDialogUtil
+import com.jy.weather.util.PermissionUtil
 import com.jy.weather.util.SnackbarUtil
 import com.jy.weather.viewmodel.ChooseCityViewModel
 
@@ -91,30 +89,28 @@ class ChooseCityActivity : BaseActivity(), ChooseCityNavigator {
         viewModel.snackbarObj.addOnPropertyChangedCallback(snackbarCallback)
     }
 
-    private fun requestPermission() {
-        if (ContextCompat.checkSelfPermission(this, PERMISSION)
-            != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, PERMISSION)) {
-                showPermissionDialog()
-            } else {
-                ActivityCompat.requestPermissions(this, arrayOf(PERMISSION), 0)
+    private fun requestPermission() =
+        PermissionUtil.checkPermissionAndRequest(
+            this,
+            PERMISSION,
+            {
+                viewModel.permissionGranted()
+            },
+            {
+                showPermissionHintDialog()
             }
-        } else {
-            viewModel.hasGranted = true
-            viewModel.locate()
-        }
-    }
+        )
 
-    private fun showPermissionDialog() {
+    private fun showPermissionHintDialog() =
         AlertDialogUtil.showDialog(this,
             resources.getString(R.string.request_permission),
             {
-                ActivityCompat.requestPermissions(this, arrayOf(PERMISSION), 0)
+                PermissionUtil.requestPermission(this, PERMISSION)
             },
             {
                 viewModel.permissionDenied()
-            })
-    }
+            }
+        )
 
     override fun onResume() {
         super.onResume()
@@ -130,12 +126,15 @@ class ChooseCityActivity : BaseActivity(), ChooseCityNavigator {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
-        if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            viewModel.hasGranted = true
-            viewModel.locate()
-        } else {
-            viewModel.permissionDenied()
-        }
+        PermissionUtil.onPermissionResult(
+            grantResults,
+            {
+                viewModel.permissionGranted()
+            },
+            {
+                viewModel.permissionDenied()
+            }
+        )
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

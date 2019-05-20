@@ -1,22 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.jy.weather">
-
     <!-- 网络权限 -->
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <!-- 这个权限用于进行网络定位 -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <!-- 这个权限用于访问GPS定位 -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <!-- 用于访问wifi网络信息，wifi信息会用于进行网络定位 -->
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <!-- 获取运营商信息，用于支持提供运营商信息相关的接口 -->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <!-- 这个权限用于获取wifi的获取权限，wifi信息会用来进行网络定位 -->
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
-    <!-- 用于读取手机当前的状态 -->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <!-- 写入扩展存储，向扩展卡写入数据，用于写入离线定位数据 -->
+    <uses-permission android:name="android.permission.INTERNET"/> <!-- 这个权限用于进行网络定位 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/> <!-- 这个权限用于访问GPS定位 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/> <!-- 用于访问wifi网络信息，wifi信息会用于进行网络定位 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/> <!-- 获取运营商信息，用于支持提供运营商信息相关的接口 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/> <!-- 这个权限用于获取wifi的获取权限，wifi信息会用来进行网络定位 -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/> <!-- 用于读取手机当前的状态 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/> <!-- 写入扩展存储，向扩展卡写入数据，用于写入离线定位数据 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
@@ -27,18 +19,16 @@
         android:roundIcon="@mipmap/ic_icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".activity.CommentActivity">
+        </activity>
 
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="s2pabXG8O2DUrWHgyZqEFeGGVnVHG7dO"/>
-
-        <!-- Bugly:Activity配置 -->
+            android:value="s2pabXG8O2DUrWHgyZqEFeGGVnVHG7dO"/> <!-- Bugly:Activity配置 -->
         <activity
             android:name="com.tencent.bugly.beta.ui.BetaActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|locale"
-            android:theme="@android:style/Theme.Translucent"/>
-
-        <!-- Bugly:兼容Android N或者以上的设备 -->
+            android:theme="@android:style/Theme.Translucent"/> <!-- Bugly:兼容Android N或者以上的设备 -->
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="${applicationId}.fileProvider"
@@ -47,9 +37,7 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths"/>
-        </provider>
-
-        <!-- 桌面插件 -->
+        </provider> <!-- 桌面插件 -->
         <receiver
             android:name=".widget.WeatherWidget51"
             android:label="卷云天气">
@@ -64,9 +52,7 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/weather_info41"/>
-        </receiver>
-
-        <!-- 百度定位 -->
+        </receiver> <!-- 百度定位 -->
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
@@ -97,4 +83,5 @@
             android:exported="true">
         </service>
     </application>
+
 </manifest>

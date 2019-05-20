@@ -22,8 +22,8 @@
             android:id="@+id/rl_header"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
+            android:paddingStart="18dp"
+            android:paddingEnd="18dp"
             android:visibility="@{viewModel.isViewReady ? View.VISIBLE : View.INVISIBLE}">
 
             <ImageView
@@ -38,11 +38,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="32dp"
+                android:layout_marginStart="34dp"
                 android:layout_toEndOf="@id/iv_home"
                 android:onClick="@{() -> viewModel.startCityManageActivity()}"
                 android:text="@{viewModel.currentCity}"
-                android:textSize="20sp"/>
+                android:textSize="18sp"/>
 
             <ImageView
                 android:layout_width="wrap_content"

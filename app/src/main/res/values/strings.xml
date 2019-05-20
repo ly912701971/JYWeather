@@ -83,6 +83,10 @@
 
     <string name="live_weather">实景天气</string>
     <string name="please_choose">请选择</string>
+    <string name="comment">评论</string>
+    <string name="preview">预览</string>
+    <string name="publish">发表</string>
+    <string name="comment_hint">美景配好文~</string>
     <string-array name="choose_photo_mode">
         <item>从相册选取</item>
         <item>现在拍照</item>

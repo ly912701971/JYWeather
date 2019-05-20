@@ -1,18 +1,19 @@
 package com.jy.weather.util
 
-import android.content.Context
 import android.graphics.Bitmap
 import android.renderscript.Allocation
 import android.renderscript.Element
 import android.renderscript.RenderScript
 import android.renderscript.ScriptIntrinsicBlur
+import com.jy.weather.JYApplication
 
 object GaussianBlurUtil {
 
-    private lateinit var renderScript: RenderScript
+    private val renderScript: RenderScript by lazy {
+        RenderScript.create(JYApplication.INSTANCE)
+    }
 
-    public fun gaussianBlur(context: Context, radius: Float, origin: Bitmap): Bitmap {
-        renderScript = RenderScript.create(context)
+    fun gaussianBlur(radius: Float, origin: Bitmap): Bitmap {
         val input = Allocation.createFromBitmap(renderScript, origin)
         val output = Allocation.createTyped(renderScript, input.type)
         ScriptIntrinsicBlur.create(renderScript, Element.U8_4(renderScript)).apply {

@@ -18,6 +18,7 @@ class ChooseCityViewModel {
     private val context = JYApplication.INSTANCE
     private val db = JYApplication.cityDB
 
+    private var hasGranted: Boolean = false
     private val locationHelper: LocationHelper by lazy {
         LocationHelper(context)
     }
@@ -36,10 +37,13 @@ class ChooseCityViewModel {
     val hasSearch: ObservableBoolean = ObservableBoolean(false)
     val snackbarObj: ObservableField<SnackbarObj> = ObservableField()
 
-    var hasGranted: Boolean = false
-
     fun start(navigator: ChooseCityNavigator) {
         this.navigator = WeakReference(navigator)
+    }
+
+    fun permissionGranted() {
+        hasGranted = true
+        locate()
     }
 
     fun afterTextChanged(editable: Editable) {

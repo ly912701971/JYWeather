@@ -9,12 +9,18 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ListView
 import com.baoyz.swipemenulistview.SwipeMenuAdapter
+import com.bumptech.glide.Glide
 import com.jy.weather.adapter.CommonAdapter
 import com.jy.weather.adapter.IBaseAdapter
 
 @BindingAdapter("imageId")
 fun setImage(view: ImageView, resId: Int) {
     view.setImageResource(resId)
+}
+
+@BindingAdapter("imageUri")
+fun setImageUri(view: ImageView, imageUri: String) {
+    Glide.with(view.context).load(imageUri).into(view)
 }
 
 @BindingAdapter("backgroundBitmap")

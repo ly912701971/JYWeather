@@ -1,10 +1,14 @@
 package com.jy.weather.activity
 
+import android.app.Activity
 import android.app.AlertDialog
+import android.content.ContentUris
 import android.content.Intent
 import android.databinding.DataBindingUtil
+import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.view.Menu
 import android.view.MenuItem
@@ -20,7 +24,7 @@ class LiveWeatherActivity : BaseActivity(), LiveWeatherNavigator {
 
     private lateinit var binding: ActivityLiveWeatherBinding
     private lateinit var viewModel: LiveWeatherViewModel
-    private lateinit var photoPath: String
+    private lateinit var imageUri: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,7 +100,7 @@ class LiveWeatherActivity : BaseActivity(), LiveWeatherNavigator {
         }
 
         val photoFile = File(photoDir, "${System.currentTimeMillis()}.jpg")
-        photoPath = photoFile.absolutePath
+        imageUri = photoFile.absolutePath
         startActivityForResult(
             Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
                 putExtra(MediaStore.EXTRA_OUTPUT,
@@ -105,4 +109,63 @@ class LiveWeatherActivity : BaseActivity(), LiveWeatherNavigator {
             viewModel.SHOOT_MODE
         )
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                viewModel.ALBUM_MODE -> {
+                    getPhotoPath(data?.data ?: return)
+                    startCommentActivity()
+                }
+                viewModel.SHOOT_MODE -> {
+                    startCommentActivity()
+                }
+                viewModel.COMMENT_ACTIVITY -> {
+
+                }
+            }
+        }
+    }
+
+    private fun getPhotoPath(uri: Uri) {
+        imageUri = when {
+            DocumentsContract.isDocumentUri(this, uri) -> {
+                val docId = DocumentsContract.getDocumentId(uri)
+                when (uri.authority) {
+                    "com.android.providers.media.documents" -> {
+                        val id = docId.split(Regex(":"))[1]// 解析出数字格式id
+                        val selection = "${MediaStore.Images.Media._ID}=$id"
+                        getImagePath(uri, selection)
+                    }
+                    "com.android.providers.downloads.documents" -> {
+                        val contentUri =
+                            ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), docId.toLong())
+                        getImagePath(contentUri, null)
+                    }
+                    else -> ""
+                }
+            }
+            uri.scheme.equals("content", true) -> getImagePath(uri, null)
+            uri.scheme.equals("file", true) -> uri.path ?: return
+            else -> ""
+        }
+    }
+
+    private fun getImagePath(uri: Uri, selection: String?): String {
+        val cursor = contentResolver.query(uri, null, selection, null, null)
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                return cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA))
+            }
+        }
+        cursor?.close()
+        return ""
+    }
+
+    private fun startCommentActivity() =
+        startActivityForResult(Intent(this, CommentActivity::class.java).apply {
+            putExtra("image_uri", imageUri)
+        }, viewModel.COMMENT_ACTIVITY)
 }
