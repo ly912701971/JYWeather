@@ -142,7 +142,7 @@ class ChooseCityActivity : BaseActivity(), ChooseCityNavigator {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == LOCATION_REQUEST_CODE) {
-            viewModel.onActivityResult()
+            viewModel.locate()
         }
     }
 

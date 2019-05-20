@@ -7,17 +7,10 @@ import android.databinding.ObservableList
 import android.text.Editable
 import android.view.View
 import android.widget.TextView
-import com.baidu.location.BDAbstractLocationListener
-import com.baidu.location.BDLocation
-import com.baidu.location.LocationClient
-import com.baidu.location.LocationClientOption
 import com.jy.weather.JYApplication
 import com.jy.weather.R
 import com.jy.weather.navigator.ChooseCityNavigator
-import com.jy.weather.util.DrawableUtil
-import com.jy.weather.util.GpsUtil
-import com.jy.weather.util.NetworkUtil
-import com.jy.weather.util.SnackbarObj
+import com.jy.weather.util.*
 import java.lang.ref.WeakReference
 
 class ChooseCityViewModel {
@@ -25,6 +18,9 @@ class ChooseCityViewModel {
     private val context = JYApplication.INSTANCE
     private val db = JYApplication.cityDB
 
+    private val locationHelper: LocationHelper by lazy {
+        LocationHelper(context)
+    }
     private val nationalCityList: Array<String> by lazy {
         context.resources.getStringArray(R.array.national_cities_list)
     }
@@ -32,7 +28,6 @@ class ChooseCityViewModel {
         context.getString(R.string.locate_unknown)
     }
 
-    private lateinit var locationClient: LocationClient
     private lateinit var navigator: WeakReference<ChooseCityNavigator>
 
     val bgResId: ObservableField<Int> = ObservableField(DrawableUtil.getBackground(db.condCode))
@@ -49,7 +44,7 @@ class ChooseCityViewModel {
 
     fun afterTextChanged(editable: Editable) {
         if (editable.isNotEmpty()) {
-            searchResult.run {
+            searchResult.apply {
                 clear()
                 addAll(nationalCityList.filter {
                     it.contains(editable)
@@ -63,14 +58,8 @@ class ChooseCityViewModel {
 
     fun locate() {
         if (GpsUtil.isOpen(context)) {
-            locationClient = LocationClient(context).apply {
-                registerLocationListener(MyLocationListener())
-                locOption = LocationClientOption().apply {
-                    setIsNeedAddress(true)
-                    isOpenGps = true
-                    timeOut = 4000
-                }
-                start()
+            locationHelper.locate {
+                setLocation(it ?: locateUnknown)
             }
         } else {
             setLocation(locateUnknown)
@@ -107,31 +96,18 @@ class ChooseCityViewModel {
         navigator.get()?.startWeatherActivity(city)
     }
 
-    fun onSearchResultItemClick(index: Int) {
-        val city = searchResult[index].split(Regex(" - "))[0]
-        navigator.get()?.startWeatherActivity(city)
-    }
-
-    fun onActivityResult() {
-        if (GpsUtil.isOpen(context)) {
-            locate()
-        }
-    }
+    fun onSearchResultItemClick(index: Int) =
+        navigator.get()?.startWeatherActivity(searchResult[index].split(Regex(" - "))[0])
 
     private fun showGpsNotOpen() =
-        snackbarObj.set(SnackbarObj(context.getString(R.string.locate_failed),
-            context.getString(R.string.goto_open),
-            View.OnClickListener {
-                navigator.get()?.startOpenGpsActivity()
-            }))
+        snackbarObj.set(
+            SnackbarObj(context.getString(R.string.locate_failed),
+                context.getString(R.string.goto_open),
+                View.OnClickListener {
+                    navigator.get()?.startOpenGpsActivity()
+                }
+            )
+        )
 
     private fun setLocation(city: String) = location.set(city)
-
-    private inner class MyLocationListener : BDAbstractLocationListener() {
-
-        override fun onReceiveLocation(location: BDLocation) {
-            locationClient.stop()
-            setLocation(location.city ?: locateUnknown)
-        }
-    }
 }

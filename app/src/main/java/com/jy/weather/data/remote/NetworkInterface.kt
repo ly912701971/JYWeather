@@ -24,7 +24,7 @@ object NetworkInterface {
         onSuccess: (String) -> Unit = {},
         onFailure: (Exception) -> Unit = {}
     ) {
-        HttpUtil.sendAsyncOkHttpRequest(BASE + LOCATION + city + KEY, object : Callback {
+        HttpUtil.sendAsyncOkHttpRequest("$BASE$LOCATION$city$KEY", object : Callback {
             override fun onResponse(call: Call, response: Response) {
                 val data = (response.body() ?: return).string()
                 JYApplication.cityDB.setCityDataToDB(city, data)
