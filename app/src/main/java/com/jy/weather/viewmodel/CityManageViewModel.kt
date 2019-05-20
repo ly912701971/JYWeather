@@ -18,7 +18,7 @@ class CityManageViewModel {
     private val context = JYApplication.INSTANCE
     private val db = JYApplication.cityDB
 
-    private val citySet = db.citySet
+    private val cityData = db.getAllCityDataFromDB()
 
     private lateinit var navigator: WeakReference<CityManageNavigator>
 
@@ -32,12 +32,12 @@ class CityManageViewModel {
 
     fun initData() {
         var weather: Weather?
-        for (city in citySet) {
-            weather = JsonUtil.handleWeatherResponse(db.getCityData(city))
+        for ((cityName, weatherData) in cityData) {
+            weather = JsonUtil.handleWeatherResponse(weatherData)
             if (weather != null) {
                 cities.add(
                     CityData(
-                        weather.basic.cityName,
+                        cityName,
                         weather.now.nowIconId,
                         "${weather.basic.parentCity} - ${weather.basic.adminArea}",
                         "${weather.dailyForecasts[0].minTemp} ~ ${weather.dailyForecasts[0].maxTemp}C"
@@ -73,8 +73,13 @@ class CityManageViewModel {
                             break
                         }
                     }
-                    citySet.remove(city)
-                    db.removeCity(city)
+                    for (data in cityData) {
+                        if (data.cityName == city) {
+                            cityData.remove(data)
+                            break
+                        }
+                    }
+                    db.removeCityFromDB(city)
                 }
         }
         return false// 关闭菜单

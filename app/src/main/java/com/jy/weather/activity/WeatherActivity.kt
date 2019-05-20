@@ -157,6 +157,9 @@ class WeatherActivity : BaseActivity(), WeatherNavigator {
     override fun startSettingActivity() =
         startActivity(Intent(this, SettingActivity::class.java))
 
+    override fun startLiveWeatherActivity() =
+        startActivity(Intent(this, LiveWeatherActivity::class.java))
+
     override fun startAutoUpdateService() {
         startService(Intent(this, AutoUpdateService::class.java))
     }

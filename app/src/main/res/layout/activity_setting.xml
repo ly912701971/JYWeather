@@ -92,6 +92,29 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@string/smart_remind"
+                    android:textSize="16sp"/>
+
+                <Switch
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:thumb="@drawable/shape_switch_thumb"
+                    android:track="@drawable/selector_switch_track"/>
+            </RelativeLayout>
+
+            <include layout="@layout/divider"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="24dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="@string/auto_update"
                     android:textSize="16sp"/>
 

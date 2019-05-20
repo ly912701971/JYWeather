@@ -104,13 +104,11 @@ class ChooseCityViewModel {
             return
         }
 
-        db.addCity(city)
         navigator.get()?.startWeatherActivity(city)
     }
 
     fun onSearchResultItemClick(index: Int) {
         val city = searchResult[index].split(Regex(" - "))[0]
-        db.addCity(city)
         navigator.get()?.startWeatherActivity(city)
     }
 

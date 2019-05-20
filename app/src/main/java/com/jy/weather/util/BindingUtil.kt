@@ -1,6 +1,8 @@
 package com.jy.weather.util
 
 import android.databinding.BindingAdapter
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
@@ -13,6 +15,11 @@ import com.jy.weather.adapter.IBaseAdapter
 @BindingAdapter("imageId")
 fun setImage(view: ImageView, resId: Int) {
     view.setImageResource(resId)
+}
+
+@BindingAdapter("backgroundBitmap")
+fun setBackgroundBitmap(viewGroup: ViewGroup, bitmap: Bitmap) {
+    viewGroup.background = BitmapDrawable(viewGroup.context.resources, bitmap)
 }
 
 @BindingAdapter("backgroundId")

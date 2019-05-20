@@ -7,7 +7,7 @@ import com.jy.weather.entity.DailyForecast
 import com.jy.weather.entity.HourlyForecast
 import com.jy.weather.entity.Now
 import com.jy.weather.navigator.WeatherNavigator
-import com.jy.weather.network.NetworkInterface
+import com.jy.weather.data.remote.NetworkInterface
 import com.jy.weather.util.*
 import java.lang.ref.WeakReference
 
@@ -62,6 +62,8 @@ class WeatherViewModel {
 
     fun startSettingActivity() = navigator.get()?.startSettingActivity()
 
+    fun startLiveWeatherActivity() = navigator.get()?.startLiveWeatherActivity()
+
     fun showLifestyleDialog(type: String) {
         dialogText = (styleMap[type] ?: return).second
         navigator.get()?.showLifestyleDialog()
@@ -72,7 +74,7 @@ class WeatherViewModel {
         if (!NetworkUtil.isNetworkAvailable()) {// 无网使用缓存数据
             isRefresh.set(false)
             snackbarObj.set(SnackbarObj(context.getString(R.string.network_unavailable)))
-            handleData(db.getCityData(city))
+            handleData(db.getCityDataFromDB(city))
         } else {
             NetworkInterface.queryWeatherDataAsync(
                 city,
@@ -84,7 +86,7 @@ class WeatherViewModel {
 
                     isRefresh.set(false)
                     snackbarObj.set(SnackbarObj(context.getString(R.string.data_unavailable)))
-                    handleData(db.getCityData(city))
+                    handleData(db.getCityDataFromDB(city))
                 }
             )
         }

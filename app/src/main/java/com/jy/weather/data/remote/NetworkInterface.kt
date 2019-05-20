@@ -1,4 +1,4 @@
-package com.jy.weather.network
+package com.jy.weather.data.remote
 
 import com.jy.weather.JYApplication
 import com.jy.weather.util.HttpUtil
@@ -27,7 +27,7 @@ object NetworkInterface {
         HttpUtil.sendAsyncOkHttpRequest(BASE + LOCATION + city + KEY, object : Callback {
             override fun onResponse(call: Call, response: Response) {
                 val data = (response.body() ?: return).string()
-                JYApplication.cityDB.setCityData(city, data)
+                JYApplication.cityDB.setCityDataToDB(city, data)
                 onSuccess(data)
             }
 

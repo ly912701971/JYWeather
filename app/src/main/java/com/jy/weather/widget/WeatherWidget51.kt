@@ -8,7 +8,6 @@ import android.widget.RemoteViews
 import com.jy.weather.JYApplication
 import com.jy.weather.R
 import com.jy.weather.activity.WeatherActivity
-import com.jy.weather.entity.Weather
 import com.jy.weather.util.DrawableUtil
 import com.jy.weather.util.JsonUtil
 import com.jy.weather.util.StringUtil
@@ -31,7 +30,8 @@ class WeatherWidget51 : WeatherWidget() {
         val city = JYApplication.cityDB.defaultCity ?: "北京"
         if (city != defaultCity) {// 城市变化
             defaultCity = city
-            val weather = JsonUtil.handleWeatherResponse(JYApplication.cityDB.getCityData(city)) as Weather
+            val weather = JsonUtil.handleWeatherResponse(JYApplication.cityDB.getCityDataFromDB(city))
+                ?: return
             view.setTextViewText(R.id.tv_city, city)
             view.setImageViewResource(R.id.iv_weather_icon, DrawableUtil.getCondIcon(weather.now.code))
             view.setTextViewText(R.id.tv_cond, weather.now.condText)

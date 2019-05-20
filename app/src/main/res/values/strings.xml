@@ -27,6 +27,7 @@
     <string name="cancel">取消</string>
     <string name="weather_push">开启智能提醒</string>
     <string name="notification_bar">通知栏常驻</string>
+    <string name="smart_remind">智能提醒</string>
     <string name="auto_update">自动更新</string>
     <string name="update_interval">更新间隔</string>
     <string name="default_update_interval">2 小时</string>
@@ -79,6 +80,13 @@
     <string name="clear_cache_success">清除缓存成功</string>
     <string name="already_resident_city">该城市已是常驻城市</string>
     <string name="keep_resident_city">您不能删除常驻城市</string>
+
+    <string name="live_weather">实景天气</string>
+    <string name="please_choose">请选择</string>
+    <string-array name="choose_photo_mode">
+        <item>从相册选取</item>
+        <item>现在拍照</item>
+    </string-array>
 
     <!-- 热门城市 -->
     <string name="beijing">北京市</string>

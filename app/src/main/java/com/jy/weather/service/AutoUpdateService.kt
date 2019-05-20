@@ -8,7 +8,7 @@ import android.content.Intent
 import android.os.IBinder
 import android.os.SystemClock
 import com.jy.weather.JYApplication
-import com.jy.weather.network.NetworkInterface
+import com.jy.weather.data.remote.NetworkInterface
 import com.jy.weather.util.NetworkUtil
 
 class AutoUpdateService : Service() {
@@ -30,10 +30,10 @@ class AutoUpdateService : Service() {
     }
 
     private fun updateWeather() {
-        val citySet = JYApplication.cityDB.citySet
+        val citySet = JYApplication.cityDB.getAllCityDataFromDB()
         if (NetworkUtil.isNetworkAvailable()) {
-            for (city in citySet) {
-                NetworkInterface.queryWeatherDataAsync(city)
+            for ((cityName, _) in citySet) {
+                NetworkInterface.queryWeatherDataAsync(cityName)
             }
         }
     }

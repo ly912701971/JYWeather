@@ -4,9 +4,10 @@ import android.app.Application
 import android.content.Context
 import android.support.multidex.MultiDex
 
-import com.jy.weather.db.CityDB
+import com.jy.weather.data.local.CityDB
 import com.tencent.bugly.Bugly
 import com.tendcloud.tenddata.TCAgent
+import org.litepal.LitePal
 
 /**
  * 整个应用的启动文件
@@ -27,6 +28,9 @@ class JYApplication : Application() {
 
         INSTANCE = this
         cityDB = CityDB(this)
+
+        // litepal数据库
+        LitePal.initialize(this)
 
         // Bugly初始化
         Bugly.init(applicationContext, "dfbeff5d40", true)

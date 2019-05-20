@@ -1,12 +1,14 @@
-package com.jy.weather.db
+package com.jy.weather.data.local
 
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.SharedPreferences.Editor
+import com.jy.weather.data.tables.Weather
+import org.litepal.LitePal
 
 /**
- * 伪城市数据库
- * 利用SharedPreferences实现
+ * 城市数据库
+ * 利用SharedPreferences、Litepal实现
  *
  * Created by Yang on 2018/1/9.
  */
@@ -14,7 +16,6 @@ class CityDB(context: Context) {
 
     companion object {
         private const val DB_BASE_PATH = "city_database"
-        private const val DB_CITY_SET = "city_set"
         private const val DB_DEFAULT_CITY = "default_city"
         private const val DB_COND_CODE = "cond_code"
         private const val DB_NOTIFICATION = "notification"
@@ -29,13 +30,6 @@ class CityDB(context: Context) {
         sp = context.getSharedPreferences(DB_BASE_PATH, Context.MODE_PRIVATE)
         editor = sp.edit()
     }
-
-    var citySet: HashSet<String>
-        get() = HashSet(sp.getStringSet(DB_CITY_SET, emptySet()))
-        set(citySet) {
-            editor.putStringSet(DB_CITY_SET, citySet)
-            editor.apply()
-        }
 
     var defaultCity: String?
         get() = sp.getString(DB_DEFAULT_CITY, null)
@@ -75,34 +69,26 @@ class CityDB(context: Context) {
             editor.apply()
         }
 
-    fun getCityData(city: String): String? {
-        return sp.getString(city, null)
-    }
+    fun getCityDataFromDB(city: String) =
+        LitePal.where("name = ?", city).find(Weather::class.java)[0].weatherData
 
-    fun setCityData(city: String, value: String) {
-        editor.putString(city, value)
-        editor.apply()
-    }
+    fun getAllCityDataFromDB(): MutableList<Weather> = LitePal.findAll(Weather::class.java)
 
-    fun addCity(city: String) {
-        citySet = citySet.apply {
-            add(city)
-        }
-        if (citySet.size == 1) {
-            defaultCity = city
+    fun setCityDataToDB(city: String, weatherData: String) {
+        Weather(city, weatherData).save()
+        LitePal.findAllAsync(Weather::class.java).listen {
+            if (it.size == 1) {
+                defaultCity = city
+            }
         }
     }
 
-    fun removeCity(city: String) {
-        editor.remove(city)
-        editor.apply()
-
-        citySet = citySet.apply {
-            remove(city)
-        }
-    }
+    fun removeCityFromDB(city: String) =
+        LitePal.deleteAll(Weather::class.java, "cityName = ?", city)
 
     fun clearCache() {
+        LitePal.deleteAllAsync(Weather::class.java)
+
         editor.clear()
         editor.apply()
     }

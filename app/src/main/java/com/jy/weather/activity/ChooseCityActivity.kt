@@ -1,7 +1,6 @@
 package com.jy.weather.activity
 
 import android.Manifest
-import android.content.ComponentName
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.databinding.DataBindingUtil
@@ -52,7 +51,6 @@ class ChooseCityActivity : BaseActivity(), ChooseCityNavigator {
             when {
                 binding.etSearch.text.isNotEmpty() -> binding.etSearch.setText("")
                 JYApplication.cityDB.defaultCity == null -> {// 默认城市北京
-                    JYApplication.cityDB.addCity(resources.getString(R.string.default_city))
                     startWeatherActivity(resources.getString(R.string.default_city))
                     finish()
                 }
