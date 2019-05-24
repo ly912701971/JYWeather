@@ -23,9 +23,6 @@ class LiveWeatherViewModel {
             BitmapFactory.decodeResource(context.resources, DrawableUtil.getBackground(db.condCode))
         ))
 
-    val ALBUM_MODE = 0
-    val SHOOT_MODE = 1
-    val COMMENT_ACTIVITY = 2
     val choosePhotoMode: Array<String> by lazy {
         context.resources.getStringArray(R.array.choose_photo_mode)
     }

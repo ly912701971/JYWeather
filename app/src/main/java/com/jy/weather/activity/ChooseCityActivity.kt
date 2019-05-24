@@ -6,8 +6,6 @@ import android.databinding.DataBindingUtil
 import android.databinding.Observable
 import android.os.Bundle
 import android.provider.Settings
-import android.text.Editable
-import android.text.TextWatcher
 import com.jy.weather.JYApplication
 import com.jy.weather.R
 import com.jy.weather.adapter.CitySearchAdapter
@@ -56,17 +54,6 @@ class ChooseCityActivity : BaseActivity(), ChooseCityNavigator {
             }
         }
 
-        // 搜索输入监听
-        binding.etSearch.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-
-            override fun afterTextChanged(editable: Editable) {
-                viewModel.afterTextChanged(editable)
-            }
-        })
-
         // adapter
         binding.lvSearchResult.adapter = CitySearchAdapter(this)
         binding.lvSearchResult.setOnItemClickListener { _, _, index, _ ->
@@ -94,7 +81,7 @@ class ChooseCityActivity : BaseActivity(), ChooseCityNavigator {
             this,
             PERMISSION,
             {
-                viewModel.permissionGranted()
+                viewModel.onPermissionGranted()
             },
             {
                 showPermissionHintDialog()
@@ -102,13 +89,14 @@ class ChooseCityActivity : BaseActivity(), ChooseCityNavigator {
         )
 
     private fun showPermissionHintDialog() =
-        AlertDialogUtil.showDialog(this,
-            resources.getString(R.string.request_permission),
+        AlertDialogUtil.showDialog(
+            this,
+            resources.getString(R.string.request_location_permission),
             {
                 PermissionUtil.requestPermission(this, PERMISSION)
             },
             {
-                viewModel.permissionDenied()
+                viewModel.onPermissionDenied()
             }
         )
 
@@ -129,10 +117,10 @@ class ChooseCityActivity : BaseActivity(), ChooseCityNavigator {
         PermissionUtil.onPermissionResult(
             grantResults,
             {
-                viewModel.permissionGranted()
+                viewModel.onPermissionGranted()
             },
             {
-                viewModel.permissionDenied()
+                viewModel.onPermissionDenied()
             }
         )
     }
@@ -146,7 +134,7 @@ class ChooseCityActivity : BaseActivity(), ChooseCityNavigator {
     }
 
     override fun startOpenGpsActivity() =
-        startActivityForResult(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), Companion.LOCATION_REQUEST_CODE)
+        startActivityForResult(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), LOCATION_REQUEST_CODE)
 
     override fun startWeatherActivity(city: String) {
         startActivity(Intent(this, WeatherActivity::class.java).apply {

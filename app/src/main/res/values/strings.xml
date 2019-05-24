@@ -75,7 +75,8 @@
     <string name="data_unavailable">由于未知原因获取数据失败，请稍后重试</string>
     <string name="permission_denied">定位权限获取失败，请手动授权后重试</string>
     <string name="goto_open">前往打开</string>
-    <string name="request_permission">您需要同意以下权限方可使用定位功能</string>
+    <string name="request_location_permission">您需要同意以下权限方可使用定位功能</string>
+    <string name="request_write_permission">该功能需要获取访问储存权限</string>
     <string name="confirm_clear_cache">确定清除缓存</string>
     <string name="clear_cache_success">清除缓存成功</string>
     <string name="already_resident_city">该城市已是常驻城市</string>

@@ -65,6 +65,7 @@
                     android:id="@+id/et_comment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:afterTextChanged="@{viewModel.afterTextChanged}"
                     android:background="@null"
                     android:gravity="top"
                     android:hint="@string/comment_hint"
@@ -79,7 +80,7 @@
                     android:layout_below="@+id/et_comment"
                     android:layout_alignParentEnd="true"
                     android:layout_margin="4dp"
-                    android:text="(0/160)"
+                    android:text="@{viewModel.textNumber}"
                     android:textColor="@color/light_gray"
                     android:textSize="13sp"/>
             </RelativeLayout>
@@ -112,7 +113,8 @@
                     android:layout_marginStart="4dp"
                     android:layout_toEndOf="@+id/cb_upload_location"
                     android:drawableStart="@drawable/ic_location"
-                    android:text="四川 - 绵阳 - 涪城区"
+                    android:onClick="@{() -> viewModel.onLocationClick()}"
+                    android:text="@{viewModel.location}"
                     android:textSize="13sp"/>
             </RelativeLayout>
         </LinearLayout>

@@ -28,10 +28,11 @@ object PermissionUtil {
         ActivityCompat.requestPermissions(activity, arrayOf(permission), 0)
     }
 
+    @JvmOverloads
     fun onPermissionResult(
         grantResults: IntArray,
         permissionGranted: () -> Unit,
-        permissionDenied: () -> Unit) {
+        permissionDenied: () -> Unit = {}) {
         if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             permissionGranted()
         } else {

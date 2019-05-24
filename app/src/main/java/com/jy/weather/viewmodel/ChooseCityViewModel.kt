@@ -19,9 +19,6 @@ class ChooseCityViewModel {
     private val db = JYApplication.cityDB
 
     private var hasGranted: Boolean = false
-    private val locationHelper: LocationHelper by lazy {
-        LocationHelper(context)
-    }
     private val nationalCityList: Array<String> by lazy {
         context.resources.getStringArray(R.array.national_cities_list)
     }
@@ -41,7 +38,7 @@ class ChooseCityViewModel {
         this.navigator = WeakReference(navigator)
     }
 
-    fun permissionGranted() {
+    fun onPermissionGranted() {
         hasGranted = true
         locate()
     }
@@ -62,8 +59,8 @@ class ChooseCityViewModel {
 
     fun locate() {
         if (GpsUtil.isOpen(context)) {
-            locationHelper.locate {
-                setLocation(it ?: locateUnknown)
+            LocationUtil.locate {
+                setLocation(it.city ?: locateUnknown)
             }
         } else {
             setLocation(locateUnknown)
@@ -71,7 +68,7 @@ class ChooseCityViewModel {
         }
     }
 
-    fun permissionDenied() = setLocation(locateUnknown)
+    fun onPermissionDenied() = setLocation(locateUnknown)
 
     fun onCityClick(v: View) {
         if (!NetworkUtil.isNetworkAvailable()) {

@@ -1,5 +1,6 @@
 package com.jy.weather.activity
 
+import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.ContentUris
@@ -16,11 +17,19 @@ import com.jy.weather.R
 import com.jy.weather.databinding.ActivityLiveWeatherBinding
 import com.jy.weather.navigator.LiveWeatherNavigator
 import com.jy.weather.util.AlertDialogUtil
+import com.jy.weather.util.PermissionUtil
 import com.jy.weather.util.Provider7Util
 import com.jy.weather.viewmodel.LiveWeatherViewModel
 import java.io.File
 
 class LiveWeatherActivity : BaseActivity(), LiveWeatherNavigator {
+
+    companion object {
+        private const val PERMISSION = Manifest.permission.WRITE_EXTERNAL_STORAGE
+        private const val ALBUM_CODE = 0
+        private const val SHOOT_CODE = 1
+        private const val COMMENT_ACTIVITY_CODE = 2
+    }
 
     private lateinit var binding: ActivityLiveWeatherBinding
     private lateinit var viewModel: LiveWeatherViewModel
@@ -36,17 +45,17 @@ class LiveWeatherActivity : BaseActivity(), LiveWeatherNavigator {
         setupToolbar()
     }
 
-    override fun onResume() {
-        super.onResume()
-
-        viewModel.start(this)
-    }
-
     private fun setupToolbar() {
         setSupportActionBar(binding.toolbar)
         binding.toolbar.setNavigationOnClickListener {
             finish()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        viewModel.start(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -56,12 +65,25 @@ class LiveWeatherActivity : BaseActivity(), LiveWeatherNavigator {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_take_photo) {
-            showChoosePhotoMode()
+            requestPermission()
         }
         return super.onOptionsItemSelected(item)
     }
 
-    private fun showChoosePhotoMode() {
+    private fun requestPermission() {
+        PermissionUtil.checkPermissionAndRequest(
+            this,
+            PERMISSION,
+            {
+                showChooseImageDialog()
+            },
+            {
+                showPermissionHintDialog()
+            }
+        )
+    }
+
+    override fun showChooseImageDialog() {
         AlertDialog.Builder(this, AlertDialogUtil.getTheme())
             .setTitle(getString(R.string.please_choose))
             .setSingleChoiceItems(viewModel.choosePhotoMode, -1) { dialog, index ->
@@ -79,6 +101,15 @@ class LiveWeatherActivity : BaseActivity(), LiveWeatherNavigator {
             .show()
     }
 
+    private fun showPermissionHintDialog() =
+        AlertDialogUtil.showDialog(
+            this,
+            getString(R.string.request_write_permission),
+            {
+                PermissionUtil.requestPermission(this, PERMISSION)
+            }
+        )
+
     /**
      * 打开相册
      */
@@ -87,7 +118,7 @@ class LiveWeatherActivity : BaseActivity(), LiveWeatherNavigator {
             Intent(Intent.ACTION_PICK, null).apply {
                 setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*")
             },
-            viewModel.ALBUM_MODE
+            ALBUM_CODE
         )
 
     /**
@@ -106,7 +137,18 @@ class LiveWeatherActivity : BaseActivity(), LiveWeatherNavigator {
                 putExtra(MediaStore.EXTRA_OUTPUT,
                     Provider7Util.getUriForFile(this@LiveWeatherActivity, photoFile))
             },
-            viewModel.SHOOT_MODE
+            SHOOT_CODE
+        )
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        PermissionUtil.onPermissionResult(
+            grantResults,
+            {
+                showChooseImageDialog()
+            }
         )
     }
 
@@ -115,14 +157,14 @@ class LiveWeatherActivity : BaseActivity(), LiveWeatherNavigator {
 
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
-                viewModel.ALBUM_MODE -> {
+                ALBUM_CODE -> {
                     getPhotoPath(data?.data ?: return)
                     startCommentActivity()
                 }
-                viewModel.SHOOT_MODE -> {
+                SHOOT_CODE -> {
                     startCommentActivity()
                 }
-                viewModel.COMMENT_ACTIVITY -> {
+                COMMENT_ACTIVITY_CODE -> {
 
                 }
             }
@@ -165,7 +207,10 @@ class LiveWeatherActivity : BaseActivity(), LiveWeatherNavigator {
     }
 
     private fun startCommentActivity() =
-        startActivityForResult(Intent(this, CommentActivity::class.java).apply {
-            putExtra("image_uri", imageUri)
-        }, viewModel.COMMENT_ACTIVITY)
+        startActivityForResult(
+            Intent(this, CommentActivity::class.java).apply {
+                putExtra("image_uri", imageUri)
+            },
+            COMMENT_ACTIVITY_CODE
+        )
 }
