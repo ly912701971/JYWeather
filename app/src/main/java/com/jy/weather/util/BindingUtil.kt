@@ -20,7 +20,9 @@ fun setImage(view: ImageView, resId: Int) {
 
 @BindingAdapter("imageUri")
 fun setImageUri(view: ImageView, imageUri: String) {
-    Glide.with(view.context).load(imageUri).into(view)
+    if (imageUri != "") {
+        Glide.with(view.context).load(imageUri).into(view)
+    }
 }
 
 @BindingAdapter("backgroundBitmap")

@@ -3,11 +3,11 @@ package com.jy.weather.viewmodel
 import android.databinding.*
 import com.jy.weather.JYApplication
 import com.jy.weather.R
+import com.jy.weather.data.remote.NetworkInterface
 import com.jy.weather.entity.DailyForecast
 import com.jy.weather.entity.HourlyForecast
 import com.jy.weather.entity.Now
 import com.jy.weather.navigator.WeatherNavigator
-import com.jy.weather.data.remote.NetworkInterface
 import com.jy.weather.util.*
 import java.lang.ref.WeakReference
 
@@ -82,8 +82,6 @@ class WeatherViewModel {
                     handleData(it)
                 },
                 {
-                    it.printStackTrace()
-
                     isRefresh.set(false)
                     snackbarObj.set(SnackbarObj(context.getString(R.string.data_unavailable)))
                     handleData(db.getCityDataFromDB(city))

@@ -22,13 +22,38 @@
             android:background="@color/background_dark"
             android:orientation="vertical">
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:navigationIcon="@drawable/ic_set_back"
-                app:title="@string/live_weather"
-                app:titleTextAppearance="@style/Toolbar.TitleText"/>
+                android:paddingStart="18dp"
+                android:paddingEnd="18dp">
+
+                <ImageView
+                    android:id="@+id/iv_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_set_back"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="34dp"
+                    android:layout_toEndOf="@+id/iv_back"
+                    android:text="@string/live_weather"
+                    android:textSize="18sp"/>
+
+                <com.jy.weather.widget.CircleImageView
+                    android:id="@+id/civ_portrait"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:onClick="@{() -> viewModel.showLoginDialog()}"
+                    android:src="@drawable/ic_user_logout"
+                    app:imageUri="@{viewModel.portraitUrl}"/>
+            </RelativeLayout>
 
             <include layout="@layout/divider"/>
 
@@ -39,5 +64,17 @@
                 android:divider="@color/divider"
                 android:dividerHeight="1px"/>
         </LinearLayout>
+
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="#aa323232"
+            android:onClick="@{() -> viewModel.requestPermission()}"
+            android:src="@drawable/ic_take_photo"
+            app:borderWidth="0dp"/>
     </RelativeLayout>
 </layout>

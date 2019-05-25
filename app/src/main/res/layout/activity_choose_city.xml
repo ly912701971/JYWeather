@@ -23,37 +23,38 @@
             android:background="@color/background_dark"
             android:orientation="vertical">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp">
+                android:paddingLeft="18dp"
+                android:paddingRight="18dp">
 
                 <ImageView
                     android:id="@+id/iv_back"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:src="@drawable/ic_set_back"/>
 
                 <EditText
                     android:id="@+id/et_search"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginStart="16dp"
+                    android:layout_toEndOf="@+id/iv_back"
                     android:afterTextChanged="@{viewModel.afterTextChanged}"
                     android:background="@drawable/shape_search"
                     android:hint="@string/search_hint"
                     android:maxLength="12"
                     android:maxLines="1"
-                    android:paddingLeft="16dp"
+                    android:paddingStart="16dp"
                     android:paddingTop="8dp"
-                    android:paddingRight="16dp"
+                    android:paddingEnd="16dp"
                     android:paddingBottom="8dp"
                     android:textColor="@color/white"
                     android:textSize="15sp"/>
-            </LinearLayout>
+            </RelativeLayout>
 
             <GridLayout
                 android:layout_width="match_parent"
@@ -367,25 +368,14 @@
                     android:textSize="15sp"/>
             </GridLayout>
 
-            <LinearLayout
+            <ListView
+                android:id="@+id/lv_search_result"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="@{viewModel.hasSearch ? View.VISIBLE : View.GONE}">
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1px"
-                    android:background="@color/divider"/>
-
-                <ListView
-                    android:id="@+id/lv_search_result"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:divider="@color/divider"
-                    android:dividerHeight="1px"
-                    app:data="@{viewModel.searchResult}"/>
-            </LinearLayout>
+                android:divider="@color/divider"
+                android:dividerHeight="1px"
+                android:visibility="@{viewModel.hasSearch ? View.VISIBLE : View.GONE}"
+                app:data="@{viewModel.searchResult}"/>
         </LinearLayout>
     </RelativeLayout>
 </layout>

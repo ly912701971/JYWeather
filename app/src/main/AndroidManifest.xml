@@ -19,16 +19,18 @@
         android:roundIcon="@mipmap/ic_icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.CommentActivity">
-        </activity>
 
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="s2pabXG8O2DUrWHgyZqEFeGGVnVHG7dO"/> <!-- Bugly:Activity配置 -->
+            android:value="s2pabXG8O2DUrWHgyZqEFeGGVnVHG7dO"/>
+
+        <!-- Bugly:Activity配置 -->
         <activity
             android:name="com.tencent.bugly.beta.ui.BetaActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|locale"
-            android:theme="@android:style/Theme.Translucent"/> <!-- Bugly:兼容Android N或者以上的设备 -->
+            android:theme="@android:style/Theme.Translucent"/>
+
+        <!-- Bugly:兼容Android N或者以上的设备 -->
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="${applicationId}.fileProvider"
@@ -37,7 +39,62 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths"/>
-        </provider> <!-- 桌面插件 -->
+        </provider>
+
+        <!-- 百度定位 -->
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote"/>
+
+        <!-- QQ三方登陆 -->
+        <activity
+            android:name="com.tencent.tauth.AuthActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data android:scheme="1109139576"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.tencent.connect.common.AssistActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="behind"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+
+        <activity
+            android:name=".activity.WelcomeActivity"
+            android:theme="@style/WelcomeTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.WeatherActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".activity.SettingActivity"/>
+        <activity android:name=".activity.BaseActivity"/>
+        <activity android:name=".activity.TodayActivity"/>
+        <activity android:name=".activity.CityManageActivity"/>
+        <activity android:name=".activity.ChooseCityActivity"/>
+        <activity android:name=".activity.CommentActivity"/>
+        <activity android:name=".activity.LiveWeatherActivity"/>
+
+        <service
+            android:name=".service.AutoUpdateService"
+            android:enabled="true"
+            android:exported="true">
+        </service>
+
+        <!-- 桌面插件 -->
         <receiver
             android:name=".widget.WeatherWidget51"
             android:label="卷云天气">
@@ -52,36 +109,6 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/weather_info41"/>
-        </receiver> <!-- 百度定位 -->
-        <service
-            android:name="com.baidu.location.f"
-            android:enabled="true"
-            android:process=":remote"/>
-
-        <activity
-            android:name=".activity.WeatherActivity"
-            android:launchMode="singleTask"/>
-        <activity android:name=".activity.SettingActivity"/>
-        <activity android:name=".activity.BaseActivity"/>
-        <activity android:name=".activity.TodayActivity"/>
-        <activity android:name=".activity.CityManageActivity"/>
-        <activity android:name=".activity.ChooseCityActivity"/>
-        <activity
-            android:name=".activity.WelcomeActivity"
-            android:theme="@style/WelcomeTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
-        <activity android:name=".activity.LiveWeatherActivity"/>
-
-        <service
-            android:name=".service.AutoUpdateService"
-            android:enabled="true"
-            android:exported="true">
-        </service>
+        </receiver>
     </application>
-
 </manifest>

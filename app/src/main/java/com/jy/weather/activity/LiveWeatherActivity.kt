@@ -1,24 +1,17 @@
 package com.jy.weather.activity
 
 import android.Manifest
-import android.app.Activity
 import android.app.AlertDialog
-import android.content.ContentUris
 import android.content.Intent
 import android.databinding.DataBindingUtil
-import android.net.Uri
+import android.databinding.Observable
 import android.os.Bundle
 import android.os.Environment
-import android.provider.DocumentsContract
 import android.provider.MediaStore
-import android.view.Menu
-import android.view.MenuItem
 import com.jy.weather.R
 import com.jy.weather.databinding.ActivityLiveWeatherBinding
 import com.jy.weather.navigator.LiveWeatherNavigator
-import com.jy.weather.util.AlertDialogUtil
-import com.jy.weather.util.PermissionUtil
-import com.jy.weather.util.Provider7Util
+import com.jy.weather.util.*
 import com.jy.weather.viewmodel.LiveWeatherViewModel
 import java.io.File
 
@@ -33,6 +26,7 @@ class LiveWeatherActivity : BaseActivity(), LiveWeatherNavigator {
 
     private lateinit var binding: ActivityLiveWeatherBinding
     private lateinit var viewModel: LiveWeatherViewModel
+    private lateinit var snackbarCallback: Observable.OnPropertyChangedCallback
     private lateinit var imageUri: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,15 +35,32 @@ class LiveWeatherActivity : BaseActivity(), LiveWeatherNavigator {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_live_weather)
         viewModel = LiveWeatherViewModel()
         binding.viewModel = viewModel
+        viewModel.autoLogin()
 
-        setupToolbar()
+        setupListener()
+
+        setupSnackbarCallback()
     }
 
-    private fun setupToolbar() {
-        setSupportActionBar(binding.toolbar)
-        binding.toolbar.setNavigationOnClickListener {
+    private fun setupListener() {
+        binding.ivBack.setOnClickListener {
             finish()
         }
+    }
+
+    private fun setupSnackbarCallback() {
+        snackbarCallback = object : Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                val snackbarObj = viewModel.snackbarObj.get() ?: return
+                SnackbarUtil.showSnackBar(
+                    window.decorView,
+                    snackbarObj.text,
+                    snackbarObj.action,
+                    snackbarObj.listener
+                )
+            }
+        }
+        viewModel.snackbarObj.addOnPropertyChangedCallback(snackbarCallback)
     }
 
     override fun onResume() {
@@ -58,19 +69,12 @@ class LiveWeatherActivity : BaseActivity(), LiveWeatherNavigator {
         viewModel.start(this)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_live_weather, menu)
-        return true
+    override fun onDestroy() {
+        viewModel.snackbarObj.removeOnPropertyChangedCallback(snackbarCallback)
+        super.onDestroy()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.action_take_photo) {
-            requestPermission()
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
-    private fun requestPermission() {
+    override fun requestPermission() {
         PermissionUtil.checkPermissionAndRequest(
             this,
             PERMISSION,
@@ -83,7 +87,7 @@ class LiveWeatherActivity : BaseActivity(), LiveWeatherNavigator {
         )
     }
 
-    override fun showChooseImageDialog() {
+    private fun showChooseImageDialog() =
         AlertDialog.Builder(this, AlertDialogUtil.getTheme())
             .setTitle(getString(R.string.please_choose))
             .setSingleChoiceItems(viewModel.choosePhotoMode, -1) { dialog, index ->
@@ -99,7 +103,6 @@ class LiveWeatherActivity : BaseActivity(), LiveWeatherNavigator {
             .setCancelable(false)
             .create()
             .show()
-    }
 
     private fun showPermissionHintDialog() =
         AlertDialogUtil.showDialog(
@@ -141,6 +144,48 @@ class LiveWeatherActivity : BaseActivity(), LiveWeatherNavigator {
         )
     }
 
+    override fun showLoginDialog() {
+        AlertDialog.Builder(this, AlertDialogUtil.getTheme())
+            .setTitle(getString(R.string.please_choose))
+            .setSingleChoiceItems(viewModel.loginType, -1) { dialog, index ->
+                when (index) {
+                    0 -> loginViaQQ()
+                    1 -> viewModel.loginViaWX()
+                }
+                dialog.dismiss()
+            }
+            .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .setCancelable(false)
+            .create()
+            .show()
+    }
+
+    private fun loginViaQQ() {
+        if (!UserUtil.hasLogin()) {
+            UserUtil.login(this,
+                {
+                    viewModel.onLoginSucceed()
+                },
+                {
+                    viewModel.onLoginFailed()
+                }
+            )
+        } else {
+            showToast("${UserUtil.accessToken}\n${UserUtil.openId}")
+        }
+    }
+
+    override fun showLogoutDialog() =
+        AlertDialogUtil.showDialog(
+            this,
+            getString(R.string.confirm_logout),
+            {
+                UserUtil.logout()
+            }
+        )
+
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
@@ -153,57 +198,22 @@ class LiveWeatherActivity : BaseActivity(), LiveWeatherNavigator {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when (requestCode) {
+            ALBUM_CODE -> {
+                imageUri = viewModel.getPhotoPath(data?.data ?: return)
+                startCommentActivity()
+            }
+
+            SHOOT_CODE -> startCommentActivity()
+
+            COMMENT_ACTIVITY_CODE -> {
+                // TODO 发表评论以后
+            }
+
+            UserUtil.REQUEST_LOGIN -> UserUtil.onActivityResultData(requestCode, resultCode, data)
+        }
+
         super.onActivityResult(requestCode, resultCode, data)
-
-        if (resultCode == Activity.RESULT_OK) {
-            when (requestCode) {
-                ALBUM_CODE -> {
-                    getPhotoPath(data?.data ?: return)
-                    startCommentActivity()
-                }
-                SHOOT_CODE -> {
-                    startCommentActivity()
-                }
-                COMMENT_ACTIVITY_CODE -> {
-
-                }
-            }
-        }
-    }
-
-    private fun getPhotoPath(uri: Uri) {
-        imageUri = when {
-            DocumentsContract.isDocumentUri(this, uri) -> {
-                val docId = DocumentsContract.getDocumentId(uri)
-                when (uri.authority) {
-                    "com.android.providers.media.documents" -> {
-                        val id = docId.split(Regex(":"))[1]// 解析出数字格式id
-                        val selection = "${MediaStore.Images.Media._ID}=$id"
-                        getImagePath(uri, selection)
-                    }
-                    "com.android.providers.downloads.documents" -> {
-                        val contentUri =
-                            ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), docId.toLong())
-                        getImagePath(contentUri, null)
-                    }
-                    else -> ""
-                }
-            }
-            uri.scheme.equals("content", true) -> getImagePath(uri, null)
-            uri.scheme.equals("file", true) -> uri.path ?: return
-            else -> ""
-        }
-    }
-
-    private fun getImagePath(uri: Uri, selection: String?): String {
-        val cursor = contentResolver.query(uri, null, selection, null, null)
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                return cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA))
-            }
-        }
-        cursor?.close()
-        return ""
     }
 
     private fun startCommentActivity() =

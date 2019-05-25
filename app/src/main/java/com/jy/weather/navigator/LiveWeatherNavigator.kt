@@ -1,5 +1,7 @@
 package com.jy.weather.navigator
 
 interface LiveWeatherNavigator {
-    fun showChooseImageDialog()
+    fun requestPermission()
+    fun showLoginDialog()
+    fun showLogoutDialog()
 }
