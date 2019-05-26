@@ -24,11 +24,14 @@ object UserUtil {
     var nickname = ""
     var portraitUrl = ""
 
-    fun autoLogin() {
+    fun autoLogin(
+        onLoginSucceed: () -> Unit
+    ) {
         if (tencent.checkSessionValid(APP_ID)) {
             val jsonObject = tencent.loadSession(APP_ID)
             tencent.initSessionCache(jsonObject)
             setupUserInfo(jsonObject)
+            onLoginSucceed()
         }
     }
 
@@ -59,6 +62,8 @@ object UserUtil {
         tencent.logout(JYApplication.INSTANCE)
         accessToken = LOGOUT
         openId = LOGOUT
+        nickname = ""
+        portraitUrl = ""
     }
 
     fun onActivityResultData(
@@ -75,7 +80,7 @@ object UserUtil {
 
     fun hasLogin() = accessToken != LOGOUT
 
-    private fun setupUserInfo(jsonObject: JSONObject) {
+    fun setupUserInfo(jsonObject: JSONObject) {
         if (jsonObject.optInt("ret") == 0) {
             accessToken = jsonObject.optString("access_token", LOGOUT)
             openId = jsonObject.optString("openid", LOGOUT)

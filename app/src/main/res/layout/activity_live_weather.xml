@@ -62,7 +62,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:divider="@color/divider"
-                android:dividerHeight="1px"/>
+                android:dividerHeight="1px"
+                android:scrollbars="none"
+                app:data="@{viewModel.liveWeathers}"/>
         </LinearLayout>
 
         <android.support.design.widget.FloatingActionButton

@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.ListView
 import com.baoyz.swipemenulistview.SwipeMenuAdapter
 import com.bumptech.glide.Glide
+import com.jy.weather.R
 import com.jy.weather.adapter.CommonAdapter
 import com.jy.weather.adapter.IBaseAdapter
 
@@ -22,6 +23,8 @@ fun setImage(view: ImageView, resId: Int) {
 fun setImageUri(view: ImageView, imageUri: String) {
     if (imageUri != "") {
         Glide.with(view.context).load(imageUri).into(view)
+    } else {
+        view.setImageResource(R.drawable.ic_user_logout)
     }
 }
 

@@ -51,6 +51,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
+                    android:onClick="@{() -> viewModel.onPublishClick()}"
                     android:text="@string/publish"
                     android:textColor="@color/light_blue"
                     android:textSize="18sp"/>
@@ -104,7 +105,8 @@
                     android:id="@+id/cb_upload_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="true"/>
+                    android:checked="@{viewModel.locationCheck}"
+                    android:onCheckedChanged="@{viewModel::onCheckChangedListener}"/>
 
                 <TextView
                     android:layout_width="wrap_content"

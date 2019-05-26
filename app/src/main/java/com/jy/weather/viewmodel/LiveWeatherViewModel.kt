@@ -1,7 +1,9 @@
 package com.jy.weather.viewmodel
 
 import android.content.ContentUris
+import android.databinding.ObservableArrayList
 import android.databinding.ObservableField
+import android.databinding.ObservableList
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -10,6 +12,7 @@ import android.provider.MediaStore
 import com.jy.weather.JYApplication
 import com.jy.weather.R
 import com.jy.weather.data.remote.NetworkInterface
+import com.jy.weather.entity.LiveWeather
 import com.jy.weather.navigator.LiveWeatherNavigator
 import com.jy.weather.util.DrawableUtil
 import com.jy.weather.util.GaussianBlurUtil
@@ -31,6 +34,7 @@ class LiveWeatherViewModel {
         ))
     val snackbarObj: ObservableField<SnackbarObj> = ObservableField()
     val portraitUrl: ObservableField<String> = ObservableField("")
+    val liveWeathers: ObservableList<LiveWeather> = ObservableArrayList()
 
     val choosePhotoMode: Array<String> by lazy {
         context.resources.getStringArray(R.array.choose_photo_mode)
@@ -43,9 +47,35 @@ class LiveWeatherViewModel {
         this.navigator = WeakReference(navigator)
     }
 
-    fun autoLogin() = UserUtil.autoLogin()
+    fun autoLogin() {
+        UserUtil.autoLogin {
+            NetworkInterface.queryQQUserInfo(
+                UserUtil.accessToken,
+                UserUtil.openId,
+                {
+                    portraitUrl.set(it)
+                }
+            )
+        }
+    }
+
+    fun queryLiveWeather() {
+        NetworkInterface.queryLiveWeather(
+            {
+                liveWeathers.addAll(it)
+            }
+        )
+    }
 
     fun requestPermission() = navigator.get()?.requestPermission()
+
+    fun onPermissionGranted() {
+        if (UserUtil.hasLogin()) {
+            navigator.get()?.showChooseImageDialog()
+        } else {
+            navigator.get()?.showLoginHintDialog()
+        }
+    }
 
     fun showLoginDialog() =
         if (!UserUtil.hasLogin()) {
@@ -65,7 +95,8 @@ class LiveWeatherViewModel {
                     UserUtil.nickname,
                     UserUtil.portraitUrl
                 )
-            })
+            }
+        )
     }
 
     fun onLoginFailed() =
@@ -73,6 +104,10 @@ class LiveWeatherViewModel {
 
     fun loginViaWX() =
         snackbarObj.set(SnackbarObj(context.getString(R.string.function_under_developing)))
+
+    fun logout() {
+        portraitUrl.set("")
+    }
 
     fun getPhotoPath(uri: Uri) =
         when {

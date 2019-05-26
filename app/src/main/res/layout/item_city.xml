@@ -30,29 +30,37 @@
                 android:layout_height="wrap_content"
                 app:imageId="@{safeUnbox(viewModel.iconId)}"/>
 
-            <TextView
-                android:id="@+id/tv_city"
+            <RelativeLayout
+                android:id="@+id/rl_city"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_toEndOf="@+id/iv_weather_icon"
-                android:text="@{viewModel.cityName}"
-                android:textSize="16sp"/>
+                android:layout_toEndOf="@+id/iv_weather_icon">
 
-            <ImageView
-                android:id="@+id/iv_default_city"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_toEndOf="@id/tv_city"
-                android:src="@drawable/ic_default_city"
-                android:visibility="@{viewModel.isDefaultCity ? View.VISIBLE : View.GONE}"/>
+                <TextView
+                    android:id="@+id/tv_city"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@{viewModel.cityName}"
+                    android:textSize="16sp"/>
+
+                <ImageView
+                    android:id="@+id/iv_default_city"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="8dp"
+                    android:layout_toEndOf="@id/tv_city"
+                    android:src="@drawable/ic_default_city"
+                    android:visibility="@{viewModel.isDefaultCity ? View.VISIBLE : View.GONE}"/>
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/tv_admin_area"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tv_city"
+                android:layout_below="@id/rl_city"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="4dp"
                 android:layout_toEndOf="@id/iv_weather_icon"

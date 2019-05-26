@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import com.jy.weather.R
+import com.jy.weather.adapter.LiveWeatherAdapter
 import com.jy.weather.databinding.ActivityLiveWeatherBinding
 import com.jy.weather.navigator.LiveWeatherNavigator
 import com.jy.weather.util.*
@@ -35,17 +36,21 @@ class LiveWeatherActivity : BaseActivity(), LiveWeatherNavigator {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_live_weather)
         viewModel = LiveWeatherViewModel()
         binding.viewModel = viewModel
-        viewModel.autoLogin()
 
-        setupListener()
+        setupView()
 
         setupSnackbarCallback()
+
+        viewModel.autoLogin()
+        viewModel.queryLiveWeather()
     }
 
-    private fun setupListener() {
+    private fun setupView() {
         binding.ivBack.setOnClickListener {
             finish()
         }
+
+        binding.lvLiveWeather.adapter = LiveWeatherAdapter(this)
     }
 
     private fun setupSnackbarCallback() {
@@ -79,7 +84,7 @@ class LiveWeatherActivity : BaseActivity(), LiveWeatherNavigator {
             this,
             PERMISSION,
             {
-                showChooseImageDialog()
+                viewModel.onPermissionGranted()
             },
             {
                 showPermissionHintDialog()
@@ -87,7 +92,7 @@ class LiveWeatherActivity : BaseActivity(), LiveWeatherNavigator {
         )
     }
 
-    private fun showChooseImageDialog() =
+    override fun showChooseImageDialog() =
         AlertDialog.Builder(this, AlertDialogUtil.getTheme())
             .setTitle(getString(R.string.please_choose))
             .setSingleChoiceItems(viewModel.choosePhotoMode, -1) { dialog, index ->
@@ -103,6 +108,16 @@ class LiveWeatherActivity : BaseActivity(), LiveWeatherNavigator {
             .setCancelable(false)
             .create()
             .show()
+
+    override fun showLoginHintDialog() {
+        AlertDialogUtil.showDialog(
+            this,
+            getString(R.string.login_hint),
+            {
+                showLoginDialog()
+            }
+        )
+    }
 
     private fun showPermissionHintDialog() =
         AlertDialogUtil.showDialog(
@@ -163,18 +178,14 @@ class LiveWeatherActivity : BaseActivity(), LiveWeatherNavigator {
     }
 
     private fun loginViaQQ() {
-        if (!UserUtil.hasLogin()) {
-            UserUtil.login(this,
-                {
-                    viewModel.onLoginSucceed()
-                },
-                {
-                    viewModel.onLoginFailed()
-                }
-            )
-        } else {
-            showToast("${UserUtil.accessToken}\n${UserUtil.openId}")
-        }
+        UserUtil.login(this,
+            {
+                viewModel.onLoginSucceed()
+            },
+            {
+                viewModel.onLoginFailed()
+            }
+        )
     }
 
     override fun showLogoutDialog() =
@@ -183,6 +194,7 @@ class LiveWeatherActivity : BaseActivity(), LiveWeatherNavigator {
             getString(R.string.confirm_logout),
             {
                 UserUtil.logout()
+                viewModel.logout()
             }
         )
 

@@ -1,12 +1,15 @@
 package com.jy.weather.viewmodel
 
+import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.text.Editable
 import android.view.View
+import android.widget.CompoundButton
 import com.jy.weather.JYApplication
 import com.jy.weather.R
+import com.jy.weather.data.remote.NetworkInterface
 import com.jy.weather.navigator.CommentNavigator
 import com.jy.weather.util.*
 import java.lang.ref.WeakReference
@@ -17,6 +20,7 @@ class CommentViewModel {
     private val db = JYApplication.cityDB
 
     private var hasGranted = false
+    private var liveText = ""
     private val locationUnknown: String by lazy {
         context.getString(R.string.locate_unknown)
     }
@@ -30,6 +34,7 @@ class CommentViewModel {
         ))
     val imageUri: ObservableField<String> = ObservableField()
     val location: ObservableField<String> = ObservableField(context.getString(R.string.locating))
+    val locationCheck: ObservableBoolean = ObservableBoolean(true)
     val snackbarObj: ObservableField<SnackbarObj> = ObservableField()
     val textNumber: ObservableField<String> = ObservableField("(0/160)")
 
@@ -41,7 +46,10 @@ class CommentViewModel {
         this.imageUri.set(imageUri)
     }
 
-    fun afterTextChanged(editable: Editable) = textNumber.set("(${editable.length}/160)")
+    fun afterTextChanged(editable: Editable) {
+        textNumber.set("(${editable.length}/160)")
+        liveText = editable.toString()
+    }
 
     fun onPermissionGranted() {
         hasGranted = true
@@ -58,10 +66,21 @@ class CommentViewModel {
         }
     }
 
+    fun onPublishClick() {
+        NetworkInterface.uploadLiveWeather(
+            UserUtil.openId,
+            liveText,
+            if (locationCheck.get()) location.get()!! else locationUnknown,
+            imageUri.get()!!
+        )
+    }
+
+    fun onCheckChangedListener(button: CompoundButton, checked: Boolean) = locationCheck.set(checked)
+
     fun locate() {
         if (GpsUtil.isOpen(context)) {
             LocationUtil.locate {
-                location.set(it.address.address ?: locationUnknown)
+                location.set(it.address.address.replace(Regex("中国"), ""))
             }
         } else {
             setLocation(locationUnknown)

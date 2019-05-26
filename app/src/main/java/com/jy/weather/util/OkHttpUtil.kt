@@ -16,10 +16,14 @@ object OkHttpUtil {
     fun sendAsyncOkHttpRequest(url: String, callback: Callback) =
         client.newCall(buildGetRequest(url)).enqueue(callback)
 
-    fun uploadUserInfo(url: String, json: String) {
+    fun uploadJson(url: String, json: String) {
         val requestBody =
             FormBody.create(MediaType.parse("application/json; charset=utf-8"), json)
         client.newCall(buildPostRequest(url, requestBody)).execute()
+    }
+
+    fun uploadLiveWeather(url: String, multipartBody: MultipartBody, callback: Callback) {
+        client.newCall(buildPostRequest(url, multipartBody)).enqueue(callback)
     }
 
     private fun buildGetRequest(url: String) = Request.Builder().url(url).build()

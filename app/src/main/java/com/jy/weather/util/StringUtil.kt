@@ -44,4 +44,6 @@ object StringUtil {
     }
 
     fun getTime(): String = SimpleDateFormat("HH:mm", Locale.CHINA).format(Date())
+
+    fun getDateTime(): String = SimpleDateFormat("yy-MM-dd HH:mm", Locale.CHINA).format(Date())
 }

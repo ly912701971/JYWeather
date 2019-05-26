@@ -70,7 +70,7 @@ class CityDB(context: Context) {
         }
 
     fun getCityDataFromDB(city: String) =
-        LitePal.where("name = ?", city).find(Weather::class.java)[0].weatherData
+        LitePal.where("cityName = ?", city).find(Weather::class.java)[0].weatherData
 
     fun getAllCityDataFromDB(): MutableList<Weather> = LitePal.findAll(Weather::class.java)
 
