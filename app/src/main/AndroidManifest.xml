@@ -85,7 +85,7 @@
         <activity android:name=".activity.TodayActivity"/>
         <activity android:name=".activity.CityManageActivity"/>
         <activity android:name=".activity.ChooseCityActivity"/>
-        <activity android:name=".activity.CommentActivity"/>
+        <activity android:name=".activity.PublishLiveActivity"/>
         <activity android:name=".activity.LiveWeatherActivity"/>
 
         <service

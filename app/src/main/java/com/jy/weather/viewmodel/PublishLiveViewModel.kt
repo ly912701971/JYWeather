@@ -14,7 +14,7 @@ import com.jy.weather.navigator.CommentNavigator
 import com.jy.weather.util.*
 import java.lang.ref.WeakReference
 
-class CommentViewModel {
+class PublishLiveViewModel {
 
     private val context = JYApplication.INSTANCE
     private val db = JYApplication.cityDB

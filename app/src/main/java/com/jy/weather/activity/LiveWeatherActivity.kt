@@ -1,19 +1,25 @@
 package com.jy.weather.activity
 
 import android.Manifest
+import android.app.Activity
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.databinding.Observable
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.view.Gravity
+import android.view.inputmethod.InputMethodManager
+import android.widget.FrameLayout.LayoutParams
 import com.jy.weather.R
 import com.jy.weather.adapter.LiveWeatherAdapter
 import com.jy.weather.databinding.ActivityLiveWeatherBinding
 import com.jy.weather.navigator.LiveWeatherNavigator
 import com.jy.weather.util.*
 import com.jy.weather.viewmodel.LiveWeatherViewModel
+import com.jy.weather.widget.BigImageDialogFragment
 import java.io.File
 
 class LiveWeatherActivity : BaseActivity(), LiveWeatherNavigator {
@@ -29,6 +35,14 @@ class LiveWeatherActivity : BaseActivity(), LiveWeatherNavigator {
     private lateinit var viewModel: LiveWeatherViewModel
     private lateinit var snackbarCallback: Observable.OnPropertyChangedCallback
     private lateinit var imageUri: String
+    private val bigImageDialog by lazy { BigImageDialogFragment() }
+    private val softInputManager by lazy {
+        getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    }
+    private val inputView by lazy {
+        layoutInflater.inflate(R.layout.view_comment_input, null)
+    }
+    private var softInputHeight = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +56,7 @@ class LiveWeatherActivity : BaseActivity(), LiveWeatherNavigator {
         setupSnackbarCallback()
 
         viewModel.autoLogin()
+
         viewModel.queryLiveWeather()
     }
 
@@ -50,7 +65,7 @@ class LiveWeatherActivity : BaseActivity(), LiveWeatherNavigator {
             finish()
         }
 
-        binding.lvLiveWeather.adapter = LiveWeatherAdapter(this)
+        binding.lvLiveWeather.adapter = LiveWeatherAdapter(this, this)
     }
 
     private fun setupSnackbarCallback() {
@@ -198,6 +213,18 @@ class LiveWeatherActivity : BaseActivity(), LiveWeatherNavigator {
             }
         )
 
+    override fun showBigImageDialog(url: String) {
+        bigImageDialog.setImageUrl(url)
+        bigImageDialog.show(supportFragmentManager, url)
+    }
+
+    override fun showCommmentsSoftInput() {
+        val params = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT).apply {
+            gravity = Gravity.BOTTOM
+        }
+        addContentView(inputView, params)
+    }
+
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
@@ -210,19 +237,21 @@ class LiveWeatherActivity : BaseActivity(), LiveWeatherNavigator {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        when (requestCode) {
-            ALBUM_CODE -> {
-                imageUri = viewModel.getPhotoPath(data?.data ?: return)
-                startCommentActivity()
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                ALBUM_CODE -> {
+                    imageUri = viewModel.getPhotoPath(data?.data ?: return)
+                    startCommentActivity()
+                }
+
+                SHOOT_CODE -> startCommentActivity()
+
+                COMMENT_ACTIVITY_CODE -> {
+                    // TODO 发表评论以后
+                }
+
+                UserUtil.REQUEST_LOGIN -> UserUtil.onActivityResultData(requestCode, resultCode, data)
             }
-
-            SHOOT_CODE -> startCommentActivity()
-
-            COMMENT_ACTIVITY_CODE -> {
-                // TODO 发表评论以后
-            }
-
-            UserUtil.REQUEST_LOGIN -> UserUtil.onActivityResultData(requestCode, resultCode, data)
         }
 
         super.onActivityResult(requestCode, resultCode, data)
@@ -230,7 +259,7 @@ class LiveWeatherActivity : BaseActivity(), LiveWeatherNavigator {
 
     private fun startCommentActivity() =
         startActivityForResult(
-            Intent(this, CommentActivity::class.java).apply {
+            Intent(this, PublishLiveActivity::class.java).apply {
                 putExtra("image_uri", imageUri)
             },
             COMMENT_ACTIVITY_CODE

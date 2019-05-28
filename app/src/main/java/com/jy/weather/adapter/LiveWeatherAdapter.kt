@@ -8,9 +8,13 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import com.jy.weather.databinding.ItemLiveWeatherBinding
 import com.jy.weather.entity.LiveWeather
+import com.jy.weather.navigator.LiveWeatherNavigator
 import com.jy.weather.viewmodel.LiveWeatherItemViewModel
 
-class LiveWeatherAdapter(context: Context) : BaseAdapter(), IBaseAdapter {
+class LiveWeatherAdapter(
+    context: Context,
+    private val navigator: LiveWeatherNavigator
+) : BaseAdapter(), IBaseAdapter {
 
     private val inflater = LayoutInflater.from(context)
     private var liveWeathers: List<LiveWeather> = listOf()
@@ -31,7 +35,7 @@ class LiveWeatherAdapter(context: Context) : BaseAdapter(), IBaseAdapter {
             binding = DataBindingUtil.getBinding(view)!!
         }
 
-        binding.viewModel = LiveWeatherItemViewModel(getItem(position))
+        binding.viewModel = LiveWeatherItemViewModel(getItem(position), navigator)
         return view
     }
 

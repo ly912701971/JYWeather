@@ -6,4 +6,6 @@ interface LiveWeatherNavigator {
     fun showLoginHintDialog()
     fun showLoginDialog()
     fun showLogoutDialog()
+    fun showBigImageDialog(url: String)
+    fun showCommmentsSoftInput()
 }
