@@ -59,7 +59,7 @@ class WeatherActivity : BaseActivity(), WeatherNavigator {
     private fun setupRecyclerView() {
         // hourly_forecast
         binding.rvHourly.apply {
-            layoutManager = LinearLayoutManager(this@WeatherActivity).apply {
+            layoutManager = LinearLayoutManager(context).apply {
                 orientation = LinearLayoutManager.HORIZONTAL
             }
             setHasFixedSize(true)
@@ -72,8 +72,9 @@ class WeatherActivity : BaseActivity(), WeatherNavigator {
 
         // daily_forecast
         binding.rvDaily.apply {
-            layoutManager = object : LinearLayoutManager(this@WeatherActivity,
-                LinearLayoutManager.VERTICAL, false) {
+            layoutManager = object : LinearLayoutManager(
+                context,
+                VERTICAL, false) {
                 // 屏蔽RecyclerView的垂直滑动，否则与最外层ScrollView冲突，导致滑动卡顿
                 override fun canScrollVertically(): Boolean = false
             }

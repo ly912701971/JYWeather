@@ -26,11 +26,15 @@ object NetworkInterface {
     private const val QQ_USER_INFO_URL =
         "https://graph.qq.com/user/get_user_info?access_token=%s&oauth_consumer_key=1109139576&openid=%s"
 
-    private const val LIVE_WEATHER = "http://$TEST_SERVER_HOST/liveWeather.php?pageIndex=%d&pageSize=%d"
+    private const val LIVE_WEATHER = "http://$TEST_SERVER_HOST/liveWeather.php"
 
     private const val UPLOAD_USER_INFO = "http://$TEST_SERVER_HOST/uploadUserInfo.php"
 
     private const val UPLOAD_LIVE_WEATHER = "http://$TEST_SERVER_HOST/uploadLive.php"
+
+    private const val UPLOAD_COMMENT = "http://$TEST_SERVER_HOST/uploadComment.php"
+
+    private const val UPLOAD_LIKE = "http://$TEST_SERVER_HOST/uploadLike.php"
 
     fun queryWeatherDataAsync(
         city: String,
@@ -89,15 +93,20 @@ object NetworkInterface {
         pageIndex: Int = 0,
         pageSize: Int = 20,
         fromId: Int = 0,
+        openId: String = "",
         onSuccess: (List<LiveWeather>) -> Unit = {},
         onFailure: (Exception) -> Unit = {}
     ) {
-        var url = String.format(LIVE_WEATHER, pageIndex, pageSize)
-        if (fromId != 0) {
-            url += "&fromId=$fromId"
-        }
-        OkHttpUtil.sendAsyncOkHttpRequest(
-            url,
+        OkHttpUtil.uploadJsonAsync(
+            LIVE_WEATHER,
+            JSONObject(
+                mapOf(
+                    "pageIndex" to pageIndex,
+                    "pageSize" to pageSize,
+                    "fromId" to fromId,
+                    "openId" to openId
+                )
+            ).toString(),
             object : Callback {
                 override fun onResponse(call: Call, response: Response) {
                     val responseString = (response.body() ?: return).string()
@@ -115,8 +124,13 @@ object NetworkInterface {
         )
     }
 
-    fun uploadUserInfo(openId: String, userName: String, portraitUrl: String) {
-        OkHttpUtil.uploadJson(
+    fun uploadUserInfo(
+        openId: String,
+        userName: String,
+        portraitUrl: String,
+        onSuccess: () -> Unit = {},
+        onFailure: (Exception) -> Unit = {}) {
+        OkHttpUtil.uploadJsonAsync(
             UPLOAD_USER_INFO,
             JSONObject(
                 mapOf(
@@ -124,7 +138,17 @@ object NetworkInterface {
                     "userName" to userName,
                     "portraitUrl" to portraitUrl
                 )
-            ).toString()
+            ).toString(),
+            object : Callback {
+                override fun onResponse(call: Call, response: Response) {
+                    onSuccess()
+                }
+
+                override fun onFailure(call: Call, e: IOException) {
+                    e.printStackTrace()
+                    onFailure(e)
+                }
+            }
         )
     }
 
@@ -165,5 +189,62 @@ object NetworkInterface {
                 onFailure(e)
             }
         })
+    }
+
+    fun uploadComment(
+        openId: String,
+        liveId: String,
+        commentText: String,
+        onSuccess: () -> Unit = {},
+        onFailure: (Exception) -> Unit = {}
+    ) {
+        OkHttpUtil.uploadJsonAsync(
+            UPLOAD_COMMENT,
+            JSONObject(
+                mapOf(
+                    "openId" to openId,
+                    "liveId" to liveId,
+                    "commentText" to commentText
+                )
+            ).toString(),
+            object : Callback {
+                override fun onResponse(call: Call, response: Response) {
+                    onSuccess()
+                }
+
+                override fun onFailure(call: Call, e: IOException) {
+                    e.printStackTrace()
+                    onFailure(e)
+                }
+            }
+        )
+    }
+
+    fun uploadLike(
+        openId: String,
+        liveId: String,
+        onSuccess: () -> Unit = {},
+        onFailure: (Exception) -> Unit = {}
+    ) {
+        OkHttpUtil.uploadJsonAsync(
+            UPLOAD_LIKE,
+            JSONObject(
+                mapOf(
+                    "openId" to openId,
+                    "liveId" to liveId
+                )
+            ).toString(),
+            object : Callback {
+                override fun onResponse(call: Call, response: Response) {
+                    val responseString = (response.body() ?: return).string()
+                    onSuccess()
+                }
+
+                override fun onFailure(call: Call, e: IOException) {
+                    e.printStackTrace()
+                    onFailure(e)
+                }
+            }
+        )
     }
 }

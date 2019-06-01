@@ -13,7 +13,7 @@ class CommonAdapter(
     private val dataId: Int
 ) : RecyclerView.Adapter<CommonAdapter.ViewHolder>() {
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): CommonAdapter.ViewHolder {
+    override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
         val binding = DataBindingUtil.inflate<ViewDataBinding>(
             LayoutInflater.from(viewGroup.context),
             layoutId,
@@ -25,7 +25,7 @@ class CommonAdapter(
         }
     }
 
-    override fun onBindViewHolder(viewHolder: CommonAdapter.ViewHolder, i: Int) {
+    override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
         viewHolder.binding.apply {
             setVariable(dataId, dataList[i])
             executePendingBindings()// 防止闪烁

@@ -12,6 +12,7 @@ import android.provider.MediaStore
 import com.jy.weather.JYApplication
 import com.jy.weather.R
 import com.jy.weather.data.remote.NetworkInterface
+import com.jy.weather.entity.Comment
 import com.jy.weather.entity.LiveWeather
 import com.jy.weather.navigator.LiveWeatherNavigator
 import com.jy.weather.util.DrawableUtil
@@ -42,12 +43,13 @@ class LiveWeatherViewModel {
     val loginType: Array<String> by lazy {
         context.resources.getStringArray(R.array.login_type)
     }
+    var liveId = -1
 
     fun start(navigator: LiveWeatherNavigator) {
         this.navigator = WeakReference(navigator)
     }
 
-    fun autoLogin() {
+    fun autoLogin() =
         UserUtil.autoLogin {
             NetworkInterface.queryQQUserInfo(
                 UserUtil.accessToken,
@@ -57,15 +59,40 @@ class LiveWeatherViewModel {
                 }
             )
         }
-    }
 
-    fun queryLiveWeather() {
+    fun queryLiveWeather() =
         NetworkInterface.queryLiveWeather(
+            openId = UserUtil.openId,
             onSuccess = {
+                liveWeathers.clear()
                 liveWeathers.addAll(it)
             }
         )
-    }
+
+    fun uploadComment(commentText: String) =
+        if (commentText.isEmpty()) {
+            snackbarObj.set(SnackbarObj(context.getString(R.string.comment_is_empty)))
+        } else {
+            NetworkInterface.uploadComment(
+                UserUtil.openId,
+                liveId.toString(),
+                commentText,
+                {
+                    liveWeathers.forEach {
+                        if (it.liveId == liveId) {
+                            liveWeathers[liveWeathers.indexOf(it)] = it.apply {
+                                it.commentArray.add(Comment(UserUtil.nickname, commentText))
+                            }
+                        }
+                    }
+
+                    snackbarObj.set(SnackbarObj(context.getString(R.string.comment_success)))
+                },
+                {
+                    snackbarObj.set(SnackbarObj(context.getString(R.string.comment_failed)))
+                }
+            )
+        }
 
     fun requestPermission() = navigator.get()?.requestPermission()
 
@@ -93,7 +120,10 @@ class LiveWeatherViewModel {
                 NetworkInterface.uploadUserInfo(
                     UserUtil.openId,
                     UserUtil.nickname,
-                    UserUtil.portraitUrl
+                    UserUtil.portraitUrl,
+                    {
+                        queryLiveWeather()
+                    }
                 )
             }
         )
@@ -107,12 +137,14 @@ class LiveWeatherViewModel {
 
     fun logout() {
         portraitUrl.set("")
+        queryLiveWeather()
     }
 
     fun onUpdateLiveWeatherResult(status: String) {
         if (status == "Success") {
             NetworkInterface.queryLiveWeather(
                 fromId = liveWeathers[0].liveId,
+                openId = UserUtil.openId,
                 onSuccess = {
                     liveWeathers.addAll(0, it)
                     snackbarObj.set(SnackbarObj(context.getString(R.string.publish_success)))

@@ -3,14 +3,12 @@ package com.jy.weather.activity
 import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.Context
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.databinding.Observable
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.view.inputmethod.InputMethodManager
 import com.jy.weather.R
 import com.jy.weather.adapter.LiveWeatherAdapter
 import com.jy.weather.databinding.ActivityLiveWeatherBinding
@@ -35,13 +33,6 @@ class LiveWeatherActivity : BaseActivity(), LiveWeatherNavigator {
     private lateinit var snackbarCallback: Observable.OnPropertyChangedCallback
     private lateinit var imageUri: String
     private val bigImageDialog by lazy { BigImageDialogFragment() }
-    private val softInputManager by lazy {
-        getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-    }
-    private val inputView by lazy {
-        layoutInflater.inflate(R.layout.view_comment_input, null)
-    }
-    private var softInputHeight = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -245,7 +236,7 @@ class LiveWeatherActivity : BaseActivity(), LiveWeatherNavigator {
 
                 COMMENT_ACTIVITY_CODE -> {
                     val commentText = data?.extras?.get("comment_text").toString()
-                    showToast(commentText)
+                    viewModel.uploadComment(commentText)
                 }
 
                 UserUtil.REQUEST_LOGIN -> UserUtil.onActivityResultData(requestCode, resultCode, data)
@@ -263,9 +254,12 @@ class LiveWeatherActivity : BaseActivity(), LiveWeatherNavigator {
             PUBLISH_ACTIVITY_CODE
         )
 
-    override fun startCommentActivity() =
+    override fun startCommentActivity(liveId: Int) {
+        viewModel.liveId = liveId
         startActivityForResult(
-            Intent(this, CommentActivity::class.java),
+            Intent(this, CommentActivity::
+            class.java),
             COMMENT_ACTIVITY_CODE
         )
+    }
 }

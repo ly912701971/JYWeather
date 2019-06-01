@@ -7,5 +7,8 @@ data class LiveWeather(
     val liveTime: String,
     val liveText: String,
     val location: String,
-    val liveUrl: String
+    val liveUrl: String,
+    var likeNum: Int,
+    var hasLiked: Int,
+    val commentArray: MutableList<Comment>
 )

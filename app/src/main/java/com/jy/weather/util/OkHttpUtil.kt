@@ -22,6 +22,12 @@ object OkHttpUtil {
         client.newCall(buildPostRequest(url, requestBody)).execute()
     }
 
+    fun uploadJsonAsync(url: String, json: String, callback: Callback) {
+        val requestBody =
+            FormBody.create(MediaType.parse("application/json; charset=utf-8"), json)
+        client.newCall(buildPostRequest(url, requestBody)).enqueue(callback)
+    }
+
     fun uploadLiveWeather(url: String, multipartBody: MultipartBody, callback: Callback) {
         client.newCall(buildPostRequest(url, multipartBody)).enqueue(callback)
     }
