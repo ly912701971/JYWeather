@@ -17,24 +17,26 @@ object NetworkInterface {
 
     private val db = JYApplication.cityDB
 
-    private const val TEST_SERVER_HOST = "66.183.228.71"
+    // test server host
+//    private const val SERVER_HOST = "66.183.228.71"
 
-    private const val PUBLISH_SERVER_HOST = "47.102.221.69"
+    // publish server host
+    private const val SERVER_HOST = "47.102.221.69"
 
-    private const val WEATHER_URL = "http://$TEST_SERVER_HOST/weather.php?city=%s"
+    private const val WEATHER_URL = "http://$SERVER_HOST/weather.php?city=%s"
 
     private const val QQ_USER_INFO_URL =
         "https://graph.qq.com/user/get_user_info?access_token=%s&oauth_consumer_key=1109139576&openid=%s"
 
-    private const val LIVE_WEATHER = "http://$TEST_SERVER_HOST/liveWeather.php"
+    private const val LIVE_WEATHER = "http://$SERVER_HOST/liveWeather.php"
 
-    private const val UPLOAD_USER_INFO = "http://$TEST_SERVER_HOST/uploadUserInfo.php"
+    private const val UPLOAD_USER_INFO = "http://$SERVER_HOST/uploadUserInfo.php"
 
-    private const val UPLOAD_LIVE_WEATHER = "http://$TEST_SERVER_HOST/uploadLive.php"
+    private const val UPLOAD_LIVE_WEATHER = "http://$SERVER_HOST/uploadLive.php"
 
-    private const val UPLOAD_COMMENT = "http://$TEST_SERVER_HOST/uploadComment.php"
+    private const val UPLOAD_COMMENT = "http://$SERVER_HOST/uploadComment.php"
 
-    private const val UPLOAD_LIKE = "http://$TEST_SERVER_HOST/uploadLike.php"
+    private const val UPLOAD_LIKE = "http://$SERVER_HOST/uploadLike.php"
 
     fun queryWeatherDataAsync(
         city: String,
@@ -112,7 +114,9 @@ object NetworkInterface {
                     val responseString = (response.body() ?: return).string()
                     val jsonObject = JSONObject(responseString)
                     if (jsonObject.optInt("code") == 0) {
-                        onSuccess(JsonUtil.handleLiveWeatherResponse(jsonObject.optString("data")))
+                        val data = jsonObject.optString("data")
+                        db.liveWeatherCache = data
+                        onSuccess(JsonUtil.handleLiveWeatherResponse(data))
                     }
                 }
 

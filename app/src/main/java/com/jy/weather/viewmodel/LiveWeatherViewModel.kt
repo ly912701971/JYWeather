@@ -1,7 +1,9 @@
 package com.jy.weather.viewmodel
 
+import android.app.Activity
 import android.content.ContentUris
 import android.databinding.ObservableArrayList
+import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
 import android.databinding.ObservableList
 import android.graphics.Bitmap
@@ -15,10 +17,7 @@ import com.jy.weather.data.remote.NetworkInterface
 import com.jy.weather.entity.Comment
 import com.jy.weather.entity.LiveWeather
 import com.jy.weather.navigator.LiveWeatherNavigator
-import com.jy.weather.util.DrawableUtil
-import com.jy.weather.util.GaussianBlurUtil
-import com.jy.weather.util.SnackbarObj
-import com.jy.weather.util.UserUtil
+import com.jy.weather.util.*
 import java.lang.ref.WeakReference
 
 class LiveWeatherViewModel {
@@ -36,6 +35,7 @@ class LiveWeatherViewModel {
     val snackbarObj: ObservableField<SnackbarObj> = ObservableField()
     val portraitUrl: ObservableField<String> = ObservableField("")
     val liveWeathers: ObservableList<LiveWeather> = ObservableArrayList()
+    val isRefresh: ObservableBoolean = ObservableBoolean(false)
 
     val choosePhotoMode: Array<String> by lazy {
         context.resources.getStringArray(R.array.choose_photo_mode)
@@ -60,38 +60,56 @@ class LiveWeatherViewModel {
             )
         }
 
-    fun queryLiveWeather() =
-        NetworkInterface.queryLiveWeather(
-            openId = UserUtil.openId,
-            onSuccess = {
-                liveWeathers.clear()
-                liveWeathers.addAll(it)
-            }
-        )
+    fun queryLiveWeather() {
+        isRefresh.set(true)
+        if (!NetworkUtil.isNetworkAvailable()) {
+            onQueryLiveWeatherResult(JsonUtil.handleLiveWeatherResponse(db.liveWeatherCache))
+            snackbarObj.set(SnackbarObj(context.getString(R.string.network_unavailable)))
+        } else {
+            NetworkInterface.queryLiveWeather(
+                openId = UserUtil.openId,
+                onSuccess = {
+                    onQueryLiveWeatherResult(it)
+                }
+            )
+        }
+    }
+
+    private fun onQueryLiveWeatherResult(data: List<LiveWeather>) {
+        liveWeathers.apply {
+            clear()
+            addAll(data)
+        }
+        isRefresh.set(false)
+    }
 
     fun uploadComment(commentText: String) =
         if (commentText.isEmpty()) {
             snackbarObj.set(SnackbarObj(context.getString(R.string.comment_is_empty)))
         } else {
-            NetworkInterface.uploadComment(
-                UserUtil.openId,
-                liveId.toString(),
-                commentText,
-                {
-                    liveWeathers.forEach {
-                        if (it.liveId == liveId) {
-                            liveWeathers[liveWeathers.indexOf(it)] = it.apply {
-                                it.commentArray.add(Comment(UserUtil.nickname, commentText))
+            if (!NetworkUtil.isNetworkAvailable()) {
+                snackbarObj.set(SnackbarObj(context.getString(R.string.network_unavailable)))
+            } else {
+                NetworkInterface.uploadComment(
+                    UserUtil.openId,
+                    liveId.toString(),
+                    commentText,
+                    {
+                        liveWeathers.forEach {
+                            if (it.liveId == liveId) {
+                                liveWeathers[liveWeathers.indexOf(it)] = it.apply {
+                                    it.commentArray.add(Comment(UserUtil.nickname, commentText))
+                                }
                             }
                         }
-                    }
 
-                    snackbarObj.set(SnackbarObj(context.getString(R.string.comment_success)))
-                },
-                {
-                    snackbarObj.set(SnackbarObj(context.getString(R.string.comment_failed)))
-                }
-            )
+                        snackbarObj.set(SnackbarObj(context.getString(R.string.comment_success)))
+                    },
+                    {
+                        snackbarObj.set(SnackbarObj(context.getString(R.string.comment_failed)))
+                    }
+                )
+            }
         }
 
     fun requestPermission() = navigator.get()?.requestPermission()
@@ -111,26 +129,19 @@ class LiveWeatherViewModel {
             navigator.get()?.showLogoutDialog()
         }
 
-    fun onLoginSucceed() {
-        NetworkInterface.queryQQUserInfo(
-            UserUtil.accessToken,
-            UserUtil.openId,
-            {
-                portraitUrl.set(it)
-                NetworkInterface.uploadUserInfo(
-                    UserUtil.openId,
-                    UserUtil.nickname,
-                    UserUtil.portraitUrl,
-                    {
-                        queryLiveWeather()
-                    }
-                )
-            }
-        )
-    }
-
-    fun onLoginFailed() =
-        snackbarObj.set(SnackbarObj(context.getString(R.string.login_failed)))
+    fun loginViaQQ(activity: Activity) =
+        if (!NetworkUtil.isNetworkAvailable()) {
+            snackbarObj.set(SnackbarObj(context.getString(R.string.network_unavailable)))
+        } else {
+            UserUtil.login(activity,
+                {
+                    onLoginSucceed()
+                },
+                {
+                    onLoginFailed()
+                }
+            )
+        }
 
     fun loginViaWX() =
         snackbarObj.set(SnackbarObj(context.getString(R.string.function_under_developing)))
@@ -140,19 +151,47 @@ class LiveWeatherViewModel {
         queryLiveWeather()
     }
 
-    fun onUpdateLiveWeatherResult(status: String) {
-        if (status == "Success") {
-            NetworkInterface.queryLiveWeather(
-                fromId = liveWeathers[0].liveId,
-                openId = UserUtil.openId,
-                onSuccess = {
-                    liveWeathers.addAll(0, it)
-                    snackbarObj.set(SnackbarObj(context.getString(R.string.publish_success)))
-                },
-                onFailure = {
-                    snackbarObj.set(SnackbarObj(context.getString(R.string.publish_failed)))
+    private fun onLoginSucceed() =
+        if (!NetworkUtil.isNetworkAvailable()) {
+            snackbarObj.set(SnackbarObj(context.getString(R.string.network_unavailable)))
+        } else {
+            NetworkInterface.queryQQUserInfo(
+                UserUtil.accessToken,
+                UserUtil.openId,
+                {
+                    portraitUrl.set(it)
+                    NetworkInterface.uploadUserInfo(
+                        UserUtil.openId,
+                        UserUtil.nickname,
+                        UserUtil.portraitUrl,
+                        {
+                            queryLiveWeather()
+                        }
+                    )
                 }
             )
+        }
+
+    private fun onLoginFailed() =
+        snackbarObj.set(SnackbarObj(context.getString(R.string.login_failed)))
+
+    fun onUpdateLiveWeatherResult(status: String) {
+        if (status == "Success") {
+            if (!NetworkUtil.isNetworkAvailable()) {
+                snackbarObj.set(SnackbarObj(context.getString(R.string.network_unavailable)))
+            } else {
+                NetworkInterface.queryLiveWeather(
+                    fromId = liveWeathers[0].liveId,
+                    openId = UserUtil.openId,
+                    onSuccess = {
+                        liveWeathers.addAll(0, it)
+                        snackbarObj.set(SnackbarObj(context.getString(R.string.publish_success)))
+                    },
+                    onFailure = {
+                        snackbarObj.set(SnackbarObj(context.getString(R.string.publish_failed)))
+                    }
+                )
+            }
         } else {
             snackbarObj.set(SnackbarObj(context.getString(R.string.publish_failed)))
         }

@@ -66,20 +66,23 @@ class PublishLiveViewModel {
         }
     }
 
-    fun onPublishClick() {
-        NetworkInterface.uploadLiveWeather(
-            UserUtil.openId,
-            liveText,
-            if (locationCheck.get()) location.get()!! else locationUnknown,
-            imageUri.get()!!,
-            {
-                navigator.get()?.exitActivity(it)
-            },
-            {
-                navigator.get()?.exitActivity("failed")
-            }
-        )
-    }
+    fun onPublishClick() =
+        if (!NetworkUtil.isNetworkAvailable()) {
+            snackbarObj.set(SnackbarObj(context.getString(R.string.network_unavailable)))
+        } else {
+            NetworkInterface.uploadLiveWeather(
+                UserUtil.openId,
+                liveText,
+                if (locationCheck.get()) location.get()!! else locationUnknown,
+                imageUri.get()!!,
+                {
+                    navigator.get()?.exitActivity(it)
+                },
+                {
+                    navigator.get()?.exitActivity("failed")
+                }
+            )
+        }
 
     fun onCheckChangedListener(button: CompoundButton, checked: Boolean) = locationCheck.set(checked)
 

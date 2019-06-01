@@ -3,6 +3,7 @@ package com.jy.weather.util
 import android.databinding.BindingAdapter
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.ColorDrawable
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
@@ -22,7 +23,10 @@ fun setImage(view: ImageView, resId: Int) {
 @BindingAdapter("imageUri")
 fun setImageUri(view: ImageView, imageUri: String) {
     if (imageUri != "") {
-        Glide.with(view.context).load(imageUri).into(view)
+        Glide.with(view.context)
+            .load(imageUri)
+            .placeholder(ColorDrawable(view.context.resources.getColor(R.color.background_dark)))
+            .into(view)
     } else {
         view.setImageResource(R.drawable.ic_user_logout)
     }

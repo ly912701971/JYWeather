@@ -21,6 +21,7 @@ class CityDB(context: Context) {
         private const val DB_NOTIFICATION = "notification"
         private const val DB_AUTO_UPDATE = "auto_update"
         private const val DB_UPDATE_INTERVAL = "update_interval"
+        private const val DB_LIVE_WEATHER_CACHE = "live_weather_cache"
     }
 
     private val sp: SharedPreferences
@@ -66,6 +67,13 @@ class CityDB(context: Context) {
         get() = sp.getInt(DB_UPDATE_INTERVAL, 2)
         set(hour) {
             editor.putInt(DB_UPDATE_INTERVAL, hour)
+            editor.apply()
+        }
+
+    var liveWeatherCache: String
+        get() = sp.getString(DB_LIVE_WEATHER_CACHE, null) ?: ""
+        set(value) {
+            editor.putString(DB_LIVE_WEATHER_CACHE, value)
             editor.apply()
         }
 

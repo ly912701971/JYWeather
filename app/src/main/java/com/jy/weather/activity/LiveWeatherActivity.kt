@@ -55,6 +55,10 @@ class LiveWeatherActivity : BaseActivity(), LiveWeatherNavigator {
             finish()
         }
 
+        binding.srlRefresh.setOnRefreshListener {
+            viewModel.queryLiveWeather()
+        }
+
         binding.lvLiveWeather.adapter = LiveWeatherAdapter(this, this)
     }
 
@@ -169,7 +173,7 @@ class LiveWeatherActivity : BaseActivity(), LiveWeatherNavigator {
             .setTitle(getString(R.string.please_choose))
             .setSingleChoiceItems(viewModel.loginType, -1) { dialog, index ->
                 when (index) {
-                    0 -> loginViaQQ()
+                    0 -> viewModel.loginViaQQ(this)
                     1 -> viewModel.loginViaWX()
                 }
                 dialog.dismiss()
@@ -180,17 +184,6 @@ class LiveWeatherActivity : BaseActivity(), LiveWeatherNavigator {
             .setCancelable(false)
             .create()
             .show()
-    }
-
-    private fun loginViaQQ() {
-        UserUtil.login(this,
-            {
-                viewModel.onLoginSucceed()
-            },
-            {
-                viewModel.onLoginFailed()
-            }
-        )
     }
 
     override fun showLogoutDialog() =

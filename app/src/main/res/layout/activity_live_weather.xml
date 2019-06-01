@@ -57,14 +57,21 @@
 
             <include layout="@layout/divider"/>
 
-            <ListView
-                android:id="@+id/lv_live_weather"
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/srl_refresh"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:divider="@color/divider"
-                android:dividerHeight="1px"
-                android:scrollbars="none"
-                app:data="@{viewModel.liveWeathers}"/>
+                android:layout_height="wrap_content"
+                app:refresh="@{viewModel.isRefresh}">
+
+                <ListView
+                    android:id="@+id/lv_live_weather"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:divider="@color/divider"
+                    android:dividerHeight="1px"
+                    android:scrollbars="none"
+                    app:data="@{viewModel.liveWeathers}"/>
+            </android.support.v4.widget.SwipeRefreshLayout>
         </LinearLayout>
 
         <android.support.design.widget.FloatingActionButton

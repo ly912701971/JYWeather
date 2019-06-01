@@ -8,6 +8,7 @@ import com.jy.weather.data.remote.NetworkInterface
 import com.jy.weather.entity.Comment
 import com.jy.weather.entity.LiveWeather
 import com.jy.weather.navigator.LiveWeatherNavigator
+import com.jy.weather.util.NetworkUtil
 import com.jy.weather.util.UserUtil
 import java.lang.ref.WeakReference
 
@@ -40,19 +41,21 @@ class LiveWeatherItemViewModel(liveWeather: LiveWeather, navigator: LiveWeatherN
         if (!UserUtil.hasLogin()) {
             navigator.get()?.showLoginHintDialog()
         } else {
-            NetworkInterface.uploadLike(
-                UserUtil.openId,
-                liveId.toString(),
-                {
-                    if (hasLiked.get()) {
-                        likeNum.set(likeNum.get()?.minus(1))
-                        hasLiked.set(false)
-                    } else {
-                        likeNum.set(likeNum.get()?.plus(1))
-                        hasLiked.set(true)
+            if (NetworkUtil.isNetworkAvailable()) {
+                NetworkInterface.uploadLike(
+                    UserUtil.openId,
+                    liveId.toString(),
+                    {
+                        if (hasLiked.get()) {
+                            likeNum.set(likeNum.get()?.minus(1))
+                            hasLiked.set(false)
+                        } else {
+                            likeNum.set(likeNum.get()?.plus(1))
+                            hasLiked.set(true)
+                        }
                     }
-                }
-            )
+                )
+            }
         }
     }
 
