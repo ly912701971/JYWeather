@@ -23,6 +23,6 @@ class LiveWeatherItemViewModel(liveWeather: LiveWeather, navigator: LiveWeatherN
     }
 
     fun onCommentClick() {
-        navigator.get()?.showCommmentsSoftInput()
+        navigator.get()?.startCommentActivity()
     }
 }

@@ -105,6 +105,7 @@
                     android:id="@+id/cb_upload_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:checked="@{viewModel.locationCheck}"
                     android:onCheckedChanged="@{viewModel::onCheckChangedListener}"/>
 
@@ -115,6 +116,7 @@
                     android:layout_marginStart="4dp"
                     android:layout_toEndOf="@+id/cb_upload_location"
                     android:drawableStart="@drawable/ic_location"
+                    android:gravity="center_vertical"
                     android:onClick="@{() -> viewModel.onLocationClick()}"
                     android:text="@{viewModel.location}"
                     android:textSize="13sp"/>

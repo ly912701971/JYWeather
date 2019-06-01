@@ -61,8 +61,8 @@ class PublishLiveViewModel {
     fun onLocationClick() {
         if (!hasGranted) {
             snackbarObj.set(SnackbarObj(context.getString(R.string.permission_denied)))
-        } else if (!GpsUtil.isOpen(context)) {
-            showGpsNotOpen()
+        } else {
+            locate()
         }
     }
 
@@ -71,7 +71,13 @@ class PublishLiveViewModel {
             UserUtil.openId,
             liveText,
             if (locationCheck.get()) location.get()!! else locationUnknown,
-            imageUri.get()!!
+            imageUri.get()!!,
+            {
+                navigator.get()?.exitActivity(it)
+            },
+            {
+                navigator.get()?.exitActivity("failed")
+            }
         )
     }
 

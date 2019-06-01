@@ -7,5 +7,5 @@ interface LiveWeatherNavigator {
     fun showLoginDialog()
     fun showLogoutDialog()
     fun showBigImageDialog(url: String)
-    fun showCommmentsSoftInput()
+    fun startCommentActivity()
 }

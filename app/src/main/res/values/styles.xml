@@ -11,6 +11,11 @@
         <item name="android:textSize">14sp</item>
         <item name="android:textColorPrimary">@color/white</item>
     </style>
+    
+    <style name="Transparent" parent="@android:style/Theme.Translucent.NoTitleBar">
+        <item name="android:windowEnterAnimation">@anim/activity_enter_anim</item>
+        <item name="android:windowExitAnimation">@anim/activity_exit_anim</item>
+    </style>
 
     <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textSize">18sp</item>

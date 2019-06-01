@@ -61,7 +61,7 @@ class LiveWeatherViewModel {
 
     fun queryLiveWeather() {
         NetworkInterface.queryLiveWeather(
-            {
+            onSuccess = {
                 liveWeathers.addAll(it)
             }
         )
@@ -107,6 +107,23 @@ class LiveWeatherViewModel {
 
     fun logout() {
         portraitUrl.set("")
+    }
+
+    fun onUpdateLiveWeatherResult(status: String) {
+        if (status == "Success") {
+            NetworkInterface.queryLiveWeather(
+                fromId = liveWeathers[0].liveId,
+                onSuccess = {
+                    liveWeathers.addAll(0, it)
+                    snackbarObj.set(SnackbarObj(context.getString(R.string.publish_success)))
+                },
+                onFailure = {
+                    snackbarObj.set(SnackbarObj(context.getString(R.string.publish_failed)))
+                }
+            )
+        } else {
+            snackbarObj.set(SnackbarObj(context.getString(R.string.publish_failed)))
+        }
     }
 
     fun getPhotoPath(uri: Uri) =

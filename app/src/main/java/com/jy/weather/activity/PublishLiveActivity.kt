@@ -1,6 +1,7 @@
 package com.jy.weather.activity
 
 import android.Manifest
+import android.app.Activity
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.databinding.Observable
@@ -123,8 +124,8 @@ class PublishLiveActivity : BaseActivity(), CommentNavigator {
     override fun startOpenGpsActivity() =
         startActivityForResult(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), LOCATION_REQUEST_CODE)
 
-    override fun exitActivity() {
-        val intent = intent
-
+    override fun exitActivity(status: String) {
+        setResult(Activity.RESULT_OK, Intent().putExtra("update_status", status))
+        finish()
     }
 }

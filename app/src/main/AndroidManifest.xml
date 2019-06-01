@@ -87,6 +87,10 @@
         <activity android:name=".activity.ChooseCityActivity"/>
         <activity android:name=".activity.PublishLiveActivity"/>
         <activity android:name=".activity.LiveWeatherActivity"/>
+        <activity
+            android:name=".activity.CommentActivity"
+            android:theme="@style/Transparent"
+            android:windowSoftInputMode="adjustPan"/>
 
         <service
             android:name=".service.AutoUpdateService"

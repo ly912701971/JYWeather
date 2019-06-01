@@ -10,9 +10,7 @@ import android.databinding.Observable
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.view.Gravity
 import android.view.inputmethod.InputMethodManager
-import android.widget.FrameLayout.LayoutParams
 import com.jy.weather.R
 import com.jy.weather.adapter.LiveWeatherAdapter
 import com.jy.weather.databinding.ActivityLiveWeatherBinding
@@ -28,7 +26,8 @@ class LiveWeatherActivity : BaseActivity(), LiveWeatherNavigator {
         private const val PERMISSION = Manifest.permission.WRITE_EXTERNAL_STORAGE
         private const val ALBUM_CODE = 0
         private const val SHOOT_CODE = 1
-        private const val COMMENT_ACTIVITY_CODE = 2
+        private const val PUBLISH_ACTIVITY_CODE = 2
+        private const val COMMENT_ACTIVITY_CODE = 3
     }
 
     private lateinit var binding: ActivityLiveWeatherBinding
@@ -218,13 +217,6 @@ class LiveWeatherActivity : BaseActivity(), LiveWeatherNavigator {
         bigImageDialog.show(supportFragmentManager, url)
     }
 
-    override fun showCommmentsSoftInput() {
-        val params = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT).apply {
-            gravity = Gravity.BOTTOM
-        }
-        addContentView(inputView, params)
-    }
-
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
@@ -241,13 +233,19 @@ class LiveWeatherActivity : BaseActivity(), LiveWeatherNavigator {
             when (requestCode) {
                 ALBUM_CODE -> {
                     imageUri = viewModel.getPhotoPath(data?.data ?: return)
-                    startCommentActivity()
+                    startPublishActivity()
                 }
 
-                SHOOT_CODE -> startCommentActivity()
+                SHOOT_CODE -> startPublishActivity()
+
+                PUBLISH_ACTIVITY_CODE -> {
+                    val status = data?.extras?.get("update_status").toString()
+                    viewModel.onUpdateLiveWeatherResult(status)
+                }
 
                 COMMENT_ACTIVITY_CODE -> {
-                    // TODO 发表评论以后
+                    val commentText = data?.extras?.get("comment_text").toString()
+                    showToast(commentText)
                 }
 
                 UserUtil.REQUEST_LOGIN -> UserUtil.onActivityResultData(requestCode, resultCode, data)
@@ -257,11 +255,17 @@ class LiveWeatherActivity : BaseActivity(), LiveWeatherNavigator {
         super.onActivityResult(requestCode, resultCode, data)
     }
 
-    private fun startCommentActivity() =
+    private fun startPublishActivity() =
         startActivityForResult(
             Intent(this, PublishLiveActivity::class.java).apply {
                 putExtra("image_uri", imageUri)
             },
+            PUBLISH_ACTIVITY_CODE
+        )
+
+    override fun startCommentActivity() =
+        startActivityForResult(
+            Intent(this, CommentActivity::class.java),
             COMMENT_ACTIVITY_CODE
         )
 }

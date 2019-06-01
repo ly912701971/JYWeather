@@ -1,6 +1,7 @@
 package com.jy.weather.entity
 
 data class LiveWeather(
+    val liveId: Int,
     val userName: String,
     val userPortrait: String,
     val liveTime: String,

@@ -1,6 +1,5 @@
 package com.jy.weather.data.remote
 
-import android.util.Log
 import com.jy.weather.JYApplication
 import com.jy.weather.entity.LiveWeather
 import com.jy.weather.util.*
@@ -18,17 +17,20 @@ object NetworkInterface {
 
     private val db = JYApplication.cityDB
 
-    private const val WEATHER_URL = "http://66.183.225.124/weather.php?city=%s"
+    private const val TEST_SERVER_HOST = "66.183.228.71"
+
+    private const val PUBLISH_SERVER_HOST = "47.102.221.69"
+
+    private const val WEATHER_URL = "http://$TEST_SERVER_HOST/weather.php?city=%s"
 
     private const val QQ_USER_INFO_URL =
         "https://graph.qq.com/user/get_user_info?access_token=%s&oauth_consumer_key=1109139576&openid=%s"
 
-    private const val LIVE_WEATHER = "http://66.183.225.124/liveWeather.php"
+    private const val LIVE_WEATHER = "http://$TEST_SERVER_HOST/liveWeather.php?pageIndex=%d&pageSize=%d"
 
-    private const val UPLOAD_USER_INFO = "http://66.183.225.124/uploadJson.php"
+    private const val UPLOAD_USER_INFO = "http://$TEST_SERVER_HOST/uploadUserInfo.php"
 
-    private const val UPLOAD_LIVE_WEATHER = "http://66.183.225.124/uploadLive.php"
-
+    private const val UPLOAD_LIVE_WEATHER = "http://$TEST_SERVER_HOST/uploadLive.php"
 
     fun queryWeatherDataAsync(
         city: String,
@@ -84,11 +86,18 @@ object NetworkInterface {
     }
 
     fun queryLiveWeather(
+        pageIndex: Int = 0,
+        pageSize: Int = 20,
+        fromId: Int = 0,
         onSuccess: (List<LiveWeather>) -> Unit = {},
         onFailure: (Exception) -> Unit = {}
     ) {
+        var url = String.format(LIVE_WEATHER, pageIndex, pageSize)
+        if (fromId != 0) {
+            url += "&fromId=$fromId"
+        }
         OkHttpUtil.sendAsyncOkHttpRequest(
-            LIVE_WEATHER,
+            url,
             object : Callback {
                 override fun onResponse(call: Call, response: Response) {
                     val responseString = (response.body() ?: return).string()
@@ -119,7 +128,14 @@ object NetworkInterface {
         )
     }
 
-    fun uploadLiveWeather(openId: String, liveText: String?, location: String, imageUri: String) {
+    fun uploadLiveWeather(
+        openId: String,
+        liveText: String?,
+        location: String,
+        imageUri: String,
+        onSuccess: (String) -> Unit = {},
+        onFailure: (Exception) -> Unit = {}
+    ) {
         val file = File(ImageUtil.compress(imageUri))
         val fileBody = RequestBody.create(MediaType.parse("application/octet-stream"), file)
         val requestBody = MultipartBody.Builder()
@@ -131,12 +147,22 @@ object NetworkInterface {
             .addFormDataPart("liveImage", file.name, fileBody)
             .build()
         OkHttpUtil.uploadLiveWeather(UPLOAD_LIVE_WEATHER, requestBody, object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
+            override fun onResponse(call: Call, response: Response) {
+                if (file.exists() && file.isFile) {
+                    file.delete()
+                }
 
+                val responseString = (response.body() ?: return).string()
+                onSuccess(responseString)
             }
 
-            override fun onResponse(call: Call, response: Response) {
-                Log.e("NetworkInterface", response.body()?.string())
+            override fun onFailure(call: Call, e: IOException) {
+                if (file.exists() && file.isFile) {
+                    file.delete()
+                }
+
+                e.printStackTrace()
+                onFailure(e)
             }
         })
     }

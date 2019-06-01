@@ -68,6 +68,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_content"
             android:layout_marginTop="8dp"
+            android:adjustViewBounds="true"
             android:onClick="@{() -> viewModel.onImageClick()}"
             app:imageUri="@{viewModel.liveUrl}"/>
 
