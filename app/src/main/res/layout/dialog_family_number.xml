@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <EditText
+        android:id="@+id/et_call"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:background="@drawable/shape_family_number_edit"
+        android:hint="@string/call"
+        android:padding="8dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/text_gray"/>
+
+    <EditText
+        android:id="@+id/et_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:background="@drawable/shape_family_number_edit"
+        android:hint="@string/phone_number"
+        android:padding="8dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/text_gray"/>
+</LinearLayout>

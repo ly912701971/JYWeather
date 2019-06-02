@@ -21,11 +21,9 @@ object AlertDialogUtil {
             .setMessage(message)
             .setPositiveButton(positiveButtonText) { dialog, _ ->
                 positiveButtonCallback()
-                dialog.dismiss()
             }
             .setNegativeButton(negativeButtonText) { dialog, _ ->
                 negativeButtonCallback()
-                dialog.dismiss()
             }
             .setCancelable(cancelable)
             .create()

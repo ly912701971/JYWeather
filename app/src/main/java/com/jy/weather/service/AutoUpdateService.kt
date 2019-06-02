@@ -5,36 +5,24 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.os.IBinder
-import android.os.SystemClock
 import com.jy.weather.JYApplication
-import com.jy.weather.data.remote.NetworkInterface
-import com.jy.weather.util.NetworkUtil
+import com.jy.weather.receiver.AutoUpdateReceiver
 
 class AutoUpdateService : Service() {
 
-    override fun onBind(intent: Intent): IBinder? {
-        return null
-    }
+    override fun onBind(intent: Intent) = null
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        updateWeather()
-        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val updateInterval = JYApplication.cityDB.updateInterval * 1000 * 60 * 60
-        val triggerAtTime = SystemClock.elapsedRealtime() + updateInterval
-        val i = Intent(this, AutoUpdateService::class.java)
-        val pendingIntent = PendingIntent.getService(this, 0, i, 0)
-        alarmManager.cancel(pendingIntent)
-        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerAtTime, pendingIntent)
+        val triggerAtTime = System.currentTimeMillis() +
+            JYApplication.cityDB.updateInterval * 60 * 60 * 1000
+        val pi = PendingIntent.getBroadcast(
+            this,
+            0,
+            Intent(this, AutoUpdateReceiver::class.java),
+            0
+        )
+        (getSystemService(Context.ALARM_SERVICE) as AlarmManager)
+            .set(AlarmManager.RTC_WAKEUP, triggerAtTime, pi)
         return super.onStartCommand(intent, flags, startId)
-    }
-
-    private fun updateWeather() {
-        val citySet = JYApplication.cityDB.getAllCityDataFromDB()
-        if (NetworkUtil.isNetworkAvailable()) {
-            for ((cityName, _) in citySet) {
-                NetworkInterface.queryWeatherDataAsync(cityName)
-            }
-        }
     }
 }

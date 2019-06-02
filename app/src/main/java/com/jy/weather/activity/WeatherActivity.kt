@@ -17,6 +17,7 @@ import com.jy.weather.adapter.CommonAdapter
 import com.jy.weather.databinding.ActivityWeatherBinding
 import com.jy.weather.navigator.WeatherNavigator
 import com.jy.weather.service.AutoUpdateService
+import com.jy.weather.service.SendMessageService
 import com.jy.weather.util.SnackbarUtil
 import com.jy.weather.viewmodel.WeatherViewModel
 import kotlinx.android.synthetic.main.dialog_lifestyle.view.*
@@ -41,22 +42,18 @@ class WeatherActivity : BaseActivity(), WeatherNavigator {
         viewModel.start(this)
         binding.viewModel = viewModel
 
-        setupListener()
-
-        setupRecyclerView()
+        setupView()
 
         setupSnackbarCallback()
 
         viewModel.onNewIntent(intent.getStringExtra("city"))
     }
 
-    private fun setupListener() {
+    private fun setupView() {
         binding.srlRefresh.setOnRefreshListener {
             viewModel.onRefreshListener()
         }
-    }
 
-    private fun setupRecyclerView() {
         // hourly_forecast
         binding.rvHourly.apply {
             layoutManager = LinearLayoutManager(context).apply {
@@ -163,6 +160,10 @@ class WeatherActivity : BaseActivity(), WeatherNavigator {
 
     override fun startAutoUpdateService() {
         startService(Intent(this, AutoUpdateService::class.java))
+    }
+
+    override fun startSendMessageService() {
+        startService(Intent(this, SendMessageService::class.java))
     }
 
     override fun startDataRefreshAnimator() {

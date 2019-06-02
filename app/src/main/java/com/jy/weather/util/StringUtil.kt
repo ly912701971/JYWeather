@@ -46,4 +46,23 @@ object StringUtil {
     fun getTime(): String = SimpleDateFormat("HH:mm", Locale.CHINA).format(Date())
 
     fun getDateTime(): String = SimpleDateFormat("yy-MM-dd HH:mm", Locale.CHINA).format(Date())
+
+    fun getMessage(call: String, weatherData: String): String {
+        val endWord = "请留意天气变化，提前做好应对措施。\r\n[卷云天气]祝您生活愉快！"
+        val builder = StringBuilder()
+        if (call.contains(Regex("的"))) {
+            builder.append("${call}，")
+        } else {
+            builder.append("亲爱的$call，")
+        }
+        val weather = JsonUtil.handleWeatherResponse(weatherData)
+            ?: return builder.append(endWord).toString()
+        val city = weather.basic.cityName
+        val tempScope = "${weather.dailyForecasts[0].minTemp}~${weather.dailyForecasts[0].maxTemp}C"
+        val condText = weather.now.condText
+        val airBrief = weather.lifestyles.find { it.type == "air" }?.brief
+        val uvBrief = weather.lifestyles.find { it.type == "uv" }?.brief
+        return builder.append("${city}今日天气为：${condText}，${tempScope}，空气质量${airBrief}，紫外线${uvBrief}。")
+            .append(endWord).toString()
+    }
 }

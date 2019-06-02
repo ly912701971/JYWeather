@@ -12,19 +12,15 @@
     <string name="sug_ultraviolet">紫外线</string>
 
     <string name="humidity">湿度</string>
-    <string name="time">time</string>
     <string name="wind">风力</string>
     <string name="hourly_forecast">24小时预报</string>
-    <string name="city">绵阳</string>
-    <string name="content">content</string>
-    <string name="today">today</string>
-    <string name="tomorrow">tomorrow</string>
     <string name="daily_forecast">7天预报</string>
 
     <!-- setting -->
     <string name="setting">设置</string>
     <string name="confirm">确认</string>
     <string name="cancel">取消</string>
+    <string name="clear">清除</string>
     <string name="weather_push">开启智能提醒</string>
     <string name="notification_bar">通知栏常驻</string>
     <string name="smart_remind">智能提醒</string>
@@ -66,6 +62,15 @@
 
     <!-- 地点相关-->
     <string name="city_manage">城市管理</string>
+    <string name="resident">常驻</string>
+    <string name="family_number">亲情号码</string>
+    <string name="family_number_clear">亲情号码已清空</string>
+    <string name="family_number_associate_success">亲情号码关联成功</string>
+    <string name="call">称呼</string>
+    <string name="phone_number">手机号码</string>
+    <string name="call_empty">称呼不能为空</string>
+    <string name="phone_number_not_valid">手机号码不合法，请重新输入</string>
+    <string name="delete">删除</string>
     <string name="search_hint">搜索全国城市</string>
     <string name="hot_city">热门城市</string>
     <string name="locating">定位中</string>
@@ -78,6 +83,7 @@
     <string name="goto_open">前往打开</string>
     <string name="request_location_permission">您需要同意以下权限方可使用定位功能</string>
     <string name="request_write_permission">该功能需要获取访问储存权限</string>
+    <string name="send_message_permission">该功能需要获取发送短信权限</string>
     <string name="confirm_clear_cache">确定清除缓存</string>
     <string name="clear_cache_success">清除缓存成功</string>
     <string name="already_resident_city">该城市已是常驻城市</string>

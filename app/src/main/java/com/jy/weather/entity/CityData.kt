@@ -4,5 +4,7 @@ data class CityData(
     val city: String,
     val iconId: Int,
     val adminArea: String,
-    val tempScope: String
+    val tempScope: String,
+    var call: String,
+    var phoneNumber: String
 )

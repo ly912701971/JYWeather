@@ -6,5 +6,7 @@ import org.litepal.crud.LitePalSupport
 data class Weather(
     @Column(unique = true)
     val cityName: String,
-    val weatherData: String
+    var weatherData: String,
+    var call: String = "",
+    var phoneNumber: String = ""
 ) : LitePalSupport()

@@ -17,7 +17,7 @@ object JsonUtil {
     private val gson: Gson by lazy { Gson() }
 
     fun handleWeatherResponse(response: String?): Weather? {
-        response ?: return null
+        response?.isEmpty() ?: return null
         try {
             return gson.fromJson(
                 JSONObject(response).getJSONArray("HeWeather6").getJSONObject(0).toString(),

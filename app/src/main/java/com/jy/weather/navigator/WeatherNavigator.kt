@@ -6,6 +6,7 @@ interface WeatherNavigator {
     fun startSettingActivity()
     fun startLiveWeatherActivity()
     fun startAutoUpdateService()
+    fun startSendMessageService()
     fun showLifestyleDialog()
     fun startDataRefreshAnimator()
 }

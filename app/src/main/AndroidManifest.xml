@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/> <!-- 用于读取手机当前的状态 -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/> <!-- 写入扩展存储，向扩展卡写入数据，用于写入离线定位数据 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.SEND_SMS"/>
 
     <application
         android:name=".JYApplication"
@@ -92,11 +93,11 @@
             android:theme="@style/Transparent"
             android:windowSoftInputMode="adjustPan"/>
 
-        <service
-            android:name=".service.AutoUpdateService"
-            android:enabled="true"
-            android:exported="true">
-        </service>
+        <service android:name=".service.AutoUpdateService"/>
+        <service android:name=".service.SendMessageService"/>
+
+        <receiver android:name=".receiver.AutoUpdateReceiver"/>
+        <receiver android:name=".receiver.SendMessageReceiver"/>
 
         <!-- 桌面插件 -->
         <receiver
@@ -112,7 +113,7 @@
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/weather_info41"/>
+                android:resource="@xml/weather_info51"/>
         </receiver>
     </application>
 </manifest>

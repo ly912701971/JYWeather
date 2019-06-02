@@ -82,8 +82,26 @@ class CityDB(context: Context) {
 
     fun getAllCityDataFromDB(): MutableList<Weather> = LitePal.findAll(Weather::class.java)
 
-    fun setCityDataToDB(city: String, weatherData: String) {
-        Weather(city, weatherData).save()
+    fun setCityDataToDB(
+        city: String,
+        weatherData: String,
+        call: String? = null,
+        phoneNumber: String? = null
+    ) {
+        val weather = LitePal.where("cityName = ?", city)
+            .find(Weather::class.java).getOrNull(0)
+        if (weather == null) {
+            Weather(city, weatherData).save()
+        } else {
+            weather.weatherData = weatherData
+            if (call != null) {
+                weather.call = call
+            }
+            if (phoneNumber != null) {
+                weather.phoneNumber = phoneNumber
+            }
+            weather.saveOrUpdate("cityName = ?", city)
+        }
         LitePal.findAllAsync(Weather::class.java).listen {
             if (it.size == 1) {
                 defaultCity = city

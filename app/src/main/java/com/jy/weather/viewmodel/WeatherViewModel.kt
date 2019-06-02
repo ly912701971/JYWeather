@@ -76,7 +76,7 @@ class WeatherViewModel {
             snackbarObj.set(SnackbarObj(context.getString(R.string.network_unavailable)))
             handleData(db.getCityDataFromDB(city))
         } else {
-            NetworkInterface.queryWeatherDataAsync(
+            NetworkInterface.queryWeatherData(
                 city,
                 {
                     handleData(it)
@@ -101,11 +101,11 @@ class WeatherViewModel {
             weather.lifestyles.forEach {
                 styleMap[it.type] = Pair(it.brief, it.text)
             }
-            dailyForecasts.run {
+            dailyForecasts.apply {
                 clear()
                 addAll(weather.dailyForecasts)
             }
-            hourlyForecasts.run {
+            hourlyForecasts.apply {
                 clear()
                 addAll(weather.hourlyForecasts)
             }
@@ -116,6 +116,7 @@ class WeatherViewModel {
             if (db.autoUpdate) {// 打开自动更新服务
                 navigator.get()?.startAutoUpdateService()
             }
+            navigator.get()?.startSendMessageService()
         }
         isRefresh.set(false)
         isViewReady.set(true)

@@ -38,7 +38,7 @@ object NetworkInterface {
 
     private const val UPLOAD_LIKE = "http://$SERVER_HOST/uploadLike.php"
 
-    fun queryWeatherDataAsync(
+    fun queryWeatherData(
         city: String,
         onSuccess: (String) -> Unit = {},
         onFailure: (Exception) -> Unit = {}
