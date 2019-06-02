@@ -17,12 +17,12 @@ class AutoUpdateService : Service() {
             JYApplication.cityDB.updateInterval * 60 * 60 * 1000
         val pi = PendingIntent.getBroadcast(
             this,
-            0,
+            "AutoUpdateService".hashCode(),
             Intent(this, AutoUpdateReceiver::class.java),
-            0
+            PendingIntent.FLAG_UPDATE_CURRENT
         )
         (getSystemService(Context.ALARM_SERVICE) as AlarmManager)
-            .set(AlarmManager.RTC_WAKEUP, triggerAtTime, pi)
+            .setExact(AlarmManager.RTC_WAKEUP, triggerAtTime, pi)
         return super.onStartCommand(intent, flags, startId)
     }
 }

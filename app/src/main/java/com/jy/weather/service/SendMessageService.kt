@@ -27,9 +27,9 @@ class SendMessageService : Service() {
         }
         val pi = PendingIntent.getBroadcast(
             this,
-            0,
+            "SendMessageService".hashCode(),
             Intent(this, SendMessageReceiver::class.java),
-            0
+            PendingIntent.FLAG_UPDATE_CURRENT
         )
         (getSystemService(Context.ALARM_SERVICE) as AlarmManager)
             .setExact(AlarmManager.RTC_WAKEUP, targetTime.timeInMillis, pi)

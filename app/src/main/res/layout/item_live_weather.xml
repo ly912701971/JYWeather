@@ -74,28 +74,31 @@
             android:onClick="@{() -> viewModel.onImageClick()}"
             app:imageUri="@{viewModel.liveUrl}"/>
 
-        <RelativeLayout
-            android:id="@+id/rl_tail"
+        <LinearLayout
+            android:id="@+id/ll_tail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/iv_live_photo"
-            android:layout_marginTop="8dp">
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
                 android:drawableStart="@drawable/ic_location"
-                android:gravity="center"
+                android:ellipsize="start"
+                android:gravity="start|center_vertical"
+                android:maxLines="2"
                 android:text="@{viewModel.location}"
                 android:textSize="12sp"/>
 
             <TextView
                 android:layout_width="48dp"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
                 android:layout_marginEnd="8dp"
-                android:layout_toStartOf="@+id/iv_comments"
                 android:drawableStart="@{viewModel.hasLiked ? @drawable/ic_praise : @drawable/ic_not_praise}"
                 android:gravity="center"
                 android:onClick="@{() -> viewModel.onLikeClick()}"
@@ -106,20 +109,18 @@
                 android:id="@+id/iv_comments"
                 android:layout_width="48dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
                 android:drawableStart="@drawable/ic_comments"
                 android:gravity="center"
                 android:onClick="@{() -> viewModel.onCommentClick()}"
                 android:text="@{viewModel.commentNum}"
                 android:textSize="13sp"/>
-        </RelativeLayout>
+        </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/rl_tail"
+            android:layout_below="@+id/ll_tail"
             android:layout_marginTop="8dp"
             android:visibility="@{viewModel.commentVisibility ? View.VISIBLE : View.GONE}"
             app:items="@{viewModel.comments}"/>
