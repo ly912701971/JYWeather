@@ -23,6 +23,7 @@ class SettingViewModel {
 
     val bgResId: ObservableField<Int> = ObservableField(DrawableUtil.getBackground(db.condCode))
     val notificationCheck: ObservableBoolean = ObservableBoolean(db.notification)
+    val smartRemindCheck: ObservableBoolean = ObservableBoolean(db.smartRemind)
     val autoUpdateCheck: ObservableBoolean = ObservableBoolean(db.autoUpdate)
     val intervalText: ObservableField<String> = ObservableField("${db.updateInterval} 小时")
     val snackbarObj: ObservableField<SnackbarObj> = ObservableField()
@@ -41,13 +42,18 @@ class SettingViewModel {
 
     fun onNotificationCheck(view: CompoundButton, isChecked: Boolean) {
         if (isChecked) {
-            NotificationUtil.openNotification(context)
+            NotificationUtil.openNotification()
         } else {
-            NotificationUtil.cancelNotification(context)
+            NotificationUtil.cancelNotification()
         }
 
         notificationCheck.set(isChecked)
         db.notification = isChecked
+    }
+
+    fun onSmartRemindCheck(view: CompoundButton, isChecked: Boolean) {
+        smartRemindCheck.set(isChecked)
+        db.smartRemind = isChecked
     }
 
     fun onAutoUpdateCheck(view: CompoundButton, isChecked: Boolean) {

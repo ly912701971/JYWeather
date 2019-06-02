@@ -7,8 +7,12 @@ import com.jy.weather.JYApplication
 import com.jy.weather.data.remote.NetworkInterface
 import com.jy.weather.service.AutoUpdateService
 import com.jy.weather.util.NetworkUtil
+import com.jy.weather.util.NotificationUtil
+import com.jy.weather.util.StringUtil
 
 class AutoUpdateReceiver : BroadcastReceiver() {
+
+    private val db = JYApplication.cityDB
 
     override fun onReceive(context: Context?, intent: Intent?) {
         updateWeather()
@@ -16,10 +20,17 @@ class AutoUpdateReceiver : BroadcastReceiver() {
     }
 
     private fun updateWeather() {
-        val cityList = JYApplication.cityDB.getAllCityDataFromDB()
+        val cityList = db.getAllCityDataFromDB()
         if (NetworkUtil.isNetworkAvailable()) {
-            cityList.forEach {
-                NetworkInterface.queryWeatherData(it.cityName)
+            for ((cityName, _, _, _) in cityList) {
+                NetworkInterface.queryWeatherData(
+                    cityName,
+                    {
+                        if (cityName == db.defaultCity && db.smartRemind) {
+                            NotificationUtil.showNotification(cityName, StringUtil.getNotification(it))
+                        }
+                    }
+                )
             }
         }
     }

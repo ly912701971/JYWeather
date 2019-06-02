@@ -19,18 +19,22 @@ import com.jy.weather.activity.WeatherActivity
  */
 object NotificationUtil {
 
+    private val context = JYApplication.INSTANCE
+    private val manager by lazy {
+        context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    }
+
     /**
      * 打开通知栏
      */
-    fun openNotification(context: Context) {
-        val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager// 管理消息通知
-        val builder: Notification.Builder = Notification.Builder(context)
+    fun openNotification() {
+        val builder = Notification.Builder(context)
             .setSmallIcon(R.mipmap.ic_icon_round)
             .setTicker("卷云天气")
             .setWhen(System.currentTimeMillis())
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {// 版本大于8.0，需要设置渠道name和id
             val channel =
-                NotificationChannel("jy", "卷云天气", NotificationManager.IMPORTANCE_DEFAULT).apply {
+                NotificationChannel("jy", "卷云天气常驻", NotificationManager.IMPORTANCE_DEFAULT).apply {
                     // 取消震动
                     vibrationPattern = longArrayOf(0)
                 }
@@ -69,12 +73,42 @@ object NotificationUtil {
         // 使通知栏响应点击事件，进入MainActivity
         remoteViews.setOnClickPendingIntent(R.id.rl_notice_bar, pendingIntent)
 
-        manager.notify(R.string.app_name, notification.apply {
+        manager.notify("卷云天气常驻".hashCode(), notification.apply {
             contentView = remoteViews
             contentIntent = pendingIntent
         })
     }
 
-    fun cancelNotification(context: Context) =
+    fun cancelNotification() =
         (context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).cancel(R.string.app_name)
+
+    fun showNotification(city: String, message: String) {
+        val builder = Notification.Builder(context)
+            .setSmallIcon(R.mipmap.ic_icon_round)
+            .setTicker("你有一条新的天气信息")
+            .setWhen(System.currentTimeMillis())
+            .setAutoCancel(true)
+            .setContentTitle(city)
+            .setContentText(message)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {// 版本大于8.0，需要设置渠道name和id
+            val channel =
+                NotificationChannel("jy", "卷云天气通知", NotificationManager.IMPORTANCE_DEFAULT).apply {
+                    // 取消震动
+                    vibrationPattern = longArrayOf(0)
+                }
+            builder.setChannelId("jy")
+            manager.createNotificationChannel(channel)
+        }
+        val pi = PendingIntent.getActivity(
+            context,
+            0,
+            Intent(context, WeatherActivity::class.java).apply { putExtra("city", city) },
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )
+        builder.setContentIntent(pi)
+        val notification = builder.build().apply {
+            flags = Notification.FLAG_AUTO_CANCEL// 该通知常驻在通知栏，始终存在
+        }
+        manager.notify("卷云天气通知".hashCode(), notification)
+    }
 }

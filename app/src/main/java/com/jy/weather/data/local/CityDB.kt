@@ -19,6 +19,7 @@ class CityDB(context: Context) {
         private const val DB_DEFAULT_CITY = "default_city"
         private const val DB_COND_CODE = "cond_code"
         private const val DB_NOTIFICATION = "notification"
+        private const val DB_SMART_REMIND = "smart_remind"
         private const val DB_AUTO_UPDATE = "auto_update"
         private const val DB_UPDATE_INTERVAL = "update_interval"
         private const val DB_LIVE_WEATHER_CACHE = "live_weather_cache"
@@ -51,6 +52,13 @@ class CityDB(context: Context) {
         get() = sp.getBoolean(DB_NOTIFICATION, false)
         set(notification) {
             editor.putBoolean(DB_NOTIFICATION, notification)
+            editor.apply()
+        }
+
+    var smartRemind: Boolean
+        get() = sp.getBoolean(DB_SMART_REMIND, false)
+        set(value) {
+            editor.putBoolean(DB_SMART_REMIND, value)
             editor.apply()
         }
 

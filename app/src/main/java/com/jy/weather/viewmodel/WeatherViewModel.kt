@@ -111,7 +111,7 @@ class WeatherViewModel {
             }
 
             if (db.notification) {// 打开通知栏
-                NotificationUtil.openNotification(context)
+                NotificationUtil.openNotification()
             }
             if (db.autoUpdate) {// 打开自动更新服务
                 navigator.get()?.startAutoUpdateService()

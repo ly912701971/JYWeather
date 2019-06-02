@@ -65,4 +65,15 @@ object StringUtil {
         return builder.append("${city}今日天气为：${condText}，${tempScope}，空气质量${airBrief}，紫外线${uvBrief}。")
             .append(endWord).toString()
     }
+
+    fun getNotification(weatherData: String): String {
+        val builder = StringBuilder()
+        val weather = JsonUtil.handleWeatherResponse(weatherData)
+            ?: return builder.append("天气已更新，点击查看详情").toString()
+        val tempScope = "${weather.dailyForecasts[0].minTemp}~${weather.dailyForecasts[0].maxTemp}C"
+        val condText = weather.now.condText
+        val airBrief = weather.lifestyles.find { it.type == "air" }?.brief
+        val uvBrief = weather.lifestyles.find { it.type == "uv" }?.brief
+        return builder.append("${condText}，${tempScope}，空气质量：${airBrief}，紫外线：${uvBrief}。").toString()
+    }
 }
