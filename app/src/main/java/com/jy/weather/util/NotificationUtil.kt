@@ -79,8 +79,7 @@ object NotificationUtil {
         })
     }
 
-    fun cancelNotification() =
-        (context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).cancel(R.string.app_name)
+    fun cancelNotification() = manager.cancel("卷云天气常驻".hashCode())
 
     fun showNotification(city: String, message: String) {
         val builder = Notification.Builder(context)
