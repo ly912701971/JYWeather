@@ -1,6 +1,6 @@
 package com.jy.weather.viewmodel
 
-import android.databinding.*
+import androidx.databinding.*
 import com.jy.weather.JYApplication
 import com.jy.weather.R
 import com.jy.weather.data.remote.NetworkInterface

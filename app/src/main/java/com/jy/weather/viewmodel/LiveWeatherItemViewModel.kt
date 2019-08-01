@@ -1,9 +1,9 @@
 package com.jy.weather.viewmodel
 
-import android.databinding.ObservableArrayList
-import android.databinding.ObservableBoolean
-import android.databinding.ObservableField
-import android.databinding.ObservableList
+import androidx.databinding.ObservableArrayList
+import androidx.databinding.ObservableBoolean
+import androidx.databinding.ObservableField
+import androidx.databinding.ObservableList
 import com.jy.weather.data.remote.NetworkInterface
 import com.jy.weather.entity.Comment
 import com.jy.weather.entity.LiveWeather

@@ -2,7 +2,7 @@ package com.jy.weather
 
 import android.app.Application
 import android.content.Context
-import android.support.multidex.MultiDex
+import androidx.multidex.MultiDex
 
 import com.jy.weather.data.local.CityDB
 import com.tencent.bugly.Bugly

@@ -2,8 +2,8 @@ package com.jy.weather.activity
 
 import android.Manifest
 import android.content.Intent
-import android.databinding.DataBindingUtil
-import android.databinding.Observable
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.Observable
 import android.os.Bundle
 import android.provider.Settings
 import com.jy.weather.JYApplication

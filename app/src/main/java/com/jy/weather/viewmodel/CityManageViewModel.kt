@@ -1,9 +1,9 @@
 package com.jy.weather.viewmodel
 
 import android.app.AlertDialog
-import android.databinding.ObservableArrayList
-import android.databinding.ObservableField
-import android.databinding.ObservableList
+import androidx.databinding.ObservableArrayList
+import androidx.databinding.ObservableField
+import androidx.databinding.ObservableList
 import com.jy.weather.JYApplication
 import com.jy.weather.R
 import com.jy.weather.entity.CityData

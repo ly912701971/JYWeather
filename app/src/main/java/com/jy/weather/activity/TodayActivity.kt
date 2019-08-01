@@ -1,6 +1,6 @@
 package com.jy.weather.activity
 
-import android.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil
 import android.os.Bundle
 import com.jy.weather.R
 import com.jy.weather.databinding.ActivityTodayBinding

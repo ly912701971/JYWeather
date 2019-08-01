@@ -1,6 +1,6 @@
 package com.jy.weather.viewmodel
 
-import android.databinding.ObservableField
+import androidx.databinding.ObservableField
 import com.jy.weather.JYApplication
 import com.jy.weather.entity.DailyForecast
 import com.jy.weather.entity.Now

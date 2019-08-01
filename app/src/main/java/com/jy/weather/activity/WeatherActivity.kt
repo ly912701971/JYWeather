@@ -4,10 +4,10 @@ import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Intent
-import android.databinding.DataBindingUtil
-import android.databinding.Observable
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.Observable
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.KeyEvent
 import android.view.animation.DecelerateInterpolator
 import android.widget.TextView

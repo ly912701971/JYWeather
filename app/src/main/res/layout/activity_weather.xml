@@ -63,7 +63,7 @@
                 android:src="@drawable/ic_setting"/>
         </RelativeLayout>
 
-        <android.support.v4.widget.SwipeRefreshLayout
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/srl_refresh"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -186,7 +186,7 @@
 
                         <include layout="@layout/divider"/>
 
-                        <android.support.v7.widget.RecyclerView
+                        <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rv_hourly"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -211,7 +211,7 @@
 
                         <include layout="@layout/divider"/>
 
-                        <android.support.v7.widget.RecyclerView
+                        <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rv_daily"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -474,7 +474,7 @@
                     </LinearLayout>
                 </LinearLayout>
             </ScrollView>
-        </android.support.v4.widget.SwipeRefreshLayout>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </RelativeLayout>
 </layout>
 

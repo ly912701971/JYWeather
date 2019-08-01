@@ -57,7 +57,7 @@
 
             <include layout="@layout/divider"/>
 
-            <android.support.v4.widget.SwipeRefreshLayout
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:id="@+id/srl_refresh"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -71,10 +71,10 @@
                     android:dividerHeight="1px"
                     android:scrollbars="none"
                     app:data="@{viewModel.liveWeathers}"/>
-            </android.support.v4.widget.SwipeRefreshLayout>
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
         </LinearLayout>
 
-        <android.support.design.widget.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"

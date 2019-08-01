@@ -1,7 +1,7 @@
 package com.jy.weather.viewmodel
 
-import android.databinding.ObservableBoolean
-import android.databinding.ObservableField
+import androidx.databinding.ObservableBoolean
+import androidx.databinding.ObservableField
 import com.jy.weather.JYApplication
 import com.jy.weather.entity.CityData
 

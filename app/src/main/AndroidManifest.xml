@@ -38,7 +38,7 @@
 
         <!-- Bugly:兼容Android N或者以上的设备 -->
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileProvider"
             android:exported="false"
             android:grantUriPermissions="true">

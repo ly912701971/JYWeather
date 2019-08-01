@@ -9,7 +9,7 @@ import android.net.Uri
 import android.util.AttributeSet
 import com.jy.weather.R
 
-class CircleImageView : android.support.v7.widget.AppCompatImageView {
+class CircleImageView : androidx.appcompat.widget.AppCompatImageView {
 
     companion object {
         private val SCALE_TYPE = ScaleType.CENTER_CROP

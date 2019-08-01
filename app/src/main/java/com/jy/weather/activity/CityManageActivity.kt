@@ -4,8 +4,8 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
-import android.databinding.DataBindingUtil
-import android.databinding.Observable
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.Observable
 import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
