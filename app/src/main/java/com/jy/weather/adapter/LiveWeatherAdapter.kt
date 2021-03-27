@@ -1,12 +1,12 @@
 package com.jy.weather.adapter
 
 import android.content.Context
-import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.jy.weather.BR
 import com.jy.weather.R
 import com.jy.weather.databinding.ItemLiveWeatherBinding

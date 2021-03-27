@@ -9,6 +9,5 @@ package com.jy.weather.widget
 class WeatherWidget52 : WeatherWidget() {
 
     override fun updateWidget() {
-
     }
 }

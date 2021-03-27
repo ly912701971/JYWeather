@@ -1,8 +1,8 @@
 package com.jy.weather.viewmodel
 
+import android.widget.CompoundButton
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
-import android.widget.CompoundButton
 import com.jy.weather.JYApplication
 import com.jy.weather.R
 import com.jy.weather.navigator.SettingNavigator

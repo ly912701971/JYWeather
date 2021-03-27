@@ -2,9 +2,9 @@ package com.jy.weather.activity
 
 import android.app.AlertDialog
 import android.content.Intent
+import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.Observable
-import android.os.Bundle
 import com.jy.weather.R
 import com.jy.weather.databinding.ActivitySettingBinding
 import com.jy.weather.navigator.SettingNavigator
@@ -75,7 +75,8 @@ class SettingActivity : BaseActivity(), SettingNavigator {
     override fun showIntervalDialog() {
         AlertDialog.Builder(this, AlertDialogUtil.getTheme())
             .setTitle(getString(R.string.update_interval))
-            .setSingleChoiceItems(viewModel.intervalTimes, viewModel.getChosenIndex()) { dialog, index ->
+            .setSingleChoiceItems(viewModel.intervalTimes,
+                viewModel.getChosenIndex()) { dialog, index ->
                 viewModel.onIntervalItemChoose(index)
                 dialog.dismiss()
             }

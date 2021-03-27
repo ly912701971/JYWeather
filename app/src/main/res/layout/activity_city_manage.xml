@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
         <variable
             name="viewModel"
-            type="com.jy.weather.viewmodel.CityManageViewModel"/>
+            type="com.jy.weather.viewmodel.CityManageViewModel" />
     </data>
 
     <RelativeLayout
@@ -27,9 +27,9 @@
                 android:layout_height="?attr/actionBarSize"
                 app:navigationIcon="@drawable/ic_set_back"
                 app:title="@string/city_manage"
-                app:titleTextAppearance="@style/Toolbar.TitleText"/>
+                app:titleTextAppearance="@style/Toolbar.TitleText" />
 
-            <include layout="@layout/divider"/>
+            <include layout="@layout/divider" />
 
             <com.baoyz.swipemenulistview.SwipeMenuListView
                 android:id="@+id/smlv_city_list"
@@ -37,7 +37,7 @@
                 android:layout_height="match_parent"
                 android:divider="@color/divider"
                 android:dividerHeight="1px"
-                app:data="@{viewModel.cities}"/>
+                app:data="@{viewModel.cities}" />
         </LinearLayout>
     </RelativeLayout>
 </layout>

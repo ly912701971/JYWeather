@@ -4,13 +4,13 @@ import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Intent
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.Observable
 import android.os.Bundle
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.KeyEvent
 import android.view.animation.DecelerateInterpolator
 import android.widget.TextView
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.Observable
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.jy.weather.BR
 import com.jy.weather.R
 import com.jy.weather.adapter.CommonAdapter
@@ -46,7 +46,7 @@ class WeatherActivity : BaseActivity(), WeatherNavigator {
 
         setupSnackbarCallback()
 
-        viewModel.onNewIntent(intent.getStringExtra("city"))
+        viewModel.onNewIntent(intent.getStringExtra("city") ?: "")
     }
 
     private fun setupView() {
@@ -71,7 +71,11 @@ class WeatherActivity : BaseActivity(), WeatherNavigator {
         binding.rvDaily.apply {
             layoutManager = object : LinearLayoutManager(
                 context,
-                VERTICAL, false) {
+                VERTICAL,
+                false
+            ) {
+                override fun isAutoMeasureEnabled(): Boolean = true
+
                 // 屏蔽RecyclerView的垂直滑动，否则与最外层ScrollView冲突，导致滑动卡顿
                 override fun canScrollVertically(): Boolean = false
             }
@@ -114,7 +118,7 @@ class WeatherActivity : BaseActivity(), WeatherNavigator {
         super.onNewIntent(intent)
 
         setIntent(intent)
-        viewModel.onNewIntent(intent.getStringExtra("city"))
+        viewModel.onNewIntent(intent.getStringExtra("city") ?: "")
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {

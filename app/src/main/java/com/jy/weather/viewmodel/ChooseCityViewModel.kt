@@ -1,16 +1,20 @@
 package com.jy.weather.viewmodel
 
+import android.text.Editable
+import android.view.View
+import android.widget.TextView
 import androidx.databinding.ObservableArrayList
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableList
-import android.text.Editable
-import android.view.View
-import android.widget.TextView
 import com.jy.weather.JYApplication
 import com.jy.weather.R
 import com.jy.weather.navigator.ChooseCityNavigator
-import com.jy.weather.util.*
+import com.jy.weather.util.DrawableUtil
+import com.jy.weather.util.GpsUtil
+import com.jy.weather.util.LocationUtil
+import com.jy.weather.util.NetworkUtil
+import com.jy.weather.util.SnackbarObj
 import java.lang.ref.WeakReference
 
 class ChooseCityViewModel {
@@ -103,11 +107,10 @@ class ChooseCityViewModel {
     private fun showGpsNotOpen() =
         snackbarObj.set(
             SnackbarObj(context.getString(R.string.locate_failed),
-                context.getString(R.string.goto_open),
-                View.OnClickListener {
-                    navigator.get()?.startOpenGpsActivity()
-                }
-            )
+                context.getString(R.string.goto_open)
+            ) {
+                navigator.get()?.startOpenGpsActivity()
+            }
         )
 
     private fun setLocation(city: String) = location.set(city)

@@ -12,6 +12,7 @@ object NetworkUtil {
      * @return true:网络正常，false:网络异常
      */
     fun isNetworkAvailable() =
-        (JYApplication.INSTANCE.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager)
+        (JYApplication.INSTANCE
+            .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager)
             .allNetworkInfo.find { it.isConnected } != null
 }

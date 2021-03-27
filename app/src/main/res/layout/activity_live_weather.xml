@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
         <variable
             name="viewModel"
-            type="com.jy.weather.viewmodel.LiveWeatherViewModel"/>
+            type="com.jy.weather.viewmodel.LiveWeatherViewModel" />
     </data>
 
     <RelativeLayout
@@ -33,7 +32,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/ic_set_back"/>
+                    android:src="@drawable/ic_set_back" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -42,7 +41,7 @@
                     android:layout_marginStart="34dp"
                     android:layout_toEndOf="@+id/iv_back"
                     android:text="@string/live_weather"
-                    android:textSize="18sp"/>
+                    android:textSize="18sp" />
 
                 <com.jy.weather.widget.CircleImageView
                     android:id="@+id/civ_portrait"
@@ -52,10 +51,10 @@
                     android:layout_centerVertical="true"
                     android:onClick="@{() -> viewModel.showLoginDialog()}"
                     android:src="@drawable/ic_user_logout"
-                    app:imageUri="@{viewModel.portraitUrl}"/>
+                    app:imageUri="@{viewModel.portraitUrl}" />
             </RelativeLayout>
 
-            <include layout="@layout/divider"/>
+            <include layout="@layout/divider" />
 
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:id="@+id/srl_refresh"
@@ -70,7 +69,7 @@
                     android:divider="@color/divider"
                     android:dividerHeight="1px"
                     android:scrollbars="none"
-                    app:data="@{viewModel.liveWeathers}"/>
+                    app:data="@{viewModel.liveWeathers}" />
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
         </LinearLayout>
 
@@ -84,6 +83,6 @@
             android:backgroundTint="#aa323232"
             android:onClick="@{() -> viewModel.requestPermission()}"
             android:src="@drawable/ic_take_photo"
-            app:borderWidth="0dp"/>
+            app:borderWidth="0dp" />
     </RelativeLayout>
 </layout>

@@ -33,7 +33,8 @@ class TodayViewModel {
         city: String,
         updateTime: String,
         now: Now,
-        dailyForecast: DailyForecast) {
+        dailyForecast: DailyForecast
+    ) {
         this.location.set(city)
         this.updateTime.set(updateTime)
 

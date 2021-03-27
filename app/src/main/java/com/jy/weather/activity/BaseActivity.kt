@@ -4,12 +4,12 @@ import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import android.util.DisplayMetrics
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout.LayoutParams
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.jy.weather.R
 
 /**
@@ -41,7 +41,8 @@ open class BaseActivity : AppCompatActivity() {
      */
     fun setStatusBarTrans() = setStatusBarColor(Color.TRANSPARENT)
 
-    private fun setStatusBarBackgroundDark() = setStatusBarColor(getColorById(R.color.background_dark))
+    private fun setStatusBarBackgroundDark() =
+        setStatusBarColor(getColorById(R.color.background_dark))
 
     private fun getColorById(resId: Int): Int =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -53,7 +54,8 @@ open class BaseActivity : AppCompatActivity() {
     fun getDialogParams(percentWidth: Double): LayoutParams {
         val metrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(metrics)
-        return LayoutParams((metrics.widthPixels * percentWidth).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
+        return LayoutParams((metrics.widthPixels * percentWidth).toInt(),
+            ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
     fun showToast(text: String) = Toast.makeText(this, text, Toast.LENGTH_SHORT).show()

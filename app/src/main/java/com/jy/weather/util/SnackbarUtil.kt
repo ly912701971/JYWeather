@@ -1,7 +1,7 @@
 package com.jy.weather.util
 
-import com.google.android.material.snackbar.Snackbar
 import android.view.View
+import com.google.android.material.snackbar.Snackbar
 
 object SnackbarUtil {
 

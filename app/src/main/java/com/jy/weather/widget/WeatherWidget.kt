@@ -20,7 +20,9 @@ abstract class WeatherWidget : AppWidgetProvider() {
 
     protected var remoteView: RemoteViews? = null
 
-    override fun onUpdate(context: Context?, appWidgetManager: AppWidgetManager?, appWidgetIds: IntArray?) {
+    override fun onUpdate(
+        context: Context?, appWidgetManager: AppWidgetManager?, appWidgetIds: IntArray?
+    ) {
         super.onUpdate(context, appWidgetManager, appWidgetIds)
 
         updateWidget()

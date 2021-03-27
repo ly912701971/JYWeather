@@ -1,14 +1,14 @@
 package com.jy.weather.util
 
-import androidx.databinding.BindingAdapter
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import androidx.recyclerview.widget.RecyclerView
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ListView
+import androidx.databinding.BindingAdapter
+import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.baoyz.swipemenulistview.SwipeMenuAdapter
 import com.bumptech.glide.Glide
 import com.jy.weather.R

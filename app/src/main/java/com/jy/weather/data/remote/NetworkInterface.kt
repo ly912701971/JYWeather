@@ -2,8 +2,17 @@ package com.jy.weather.data.remote
 
 import com.jy.weather.JYApplication
 import com.jy.weather.entity.LiveWeather
-import com.jy.weather.util.*
-import okhttp3.*
+import com.jy.weather.util.ImageUtil
+import com.jy.weather.util.JsonUtil
+import com.jy.weather.util.OkHttpUtil
+import com.jy.weather.util.StringUtil
+import com.jy.weather.util.UserUtil
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.Response
 import org.json.JSONObject
 import java.io.File
 import java.io.IOException
@@ -23,7 +32,8 @@ object NetworkInterface {
     // publish server host
     private const val SERVER_HOST = "47.102.221.69"
 
-    private const val WEATHER_URL = "http://$SERVER_HOST/weather.php?city=%s"
+    private const val WEATHER_URL =
+        "https://free-api.heweather.net/s6/weather?key=4d9d9383c876415a92bb9e2fddba0b15&location=%s"
 
     private const val QQ_USER_INFO_URL =
         "https://graph.qq.com/user/get_user_info?access_token=%s&oauth_consumer_key=1109139576&openid=%s"
@@ -47,13 +57,9 @@ object NetworkInterface {
             String.format(WEATHER_URL, city),
             object : Callback {
                 override fun onResponse(call: Call, response: Response) {
-                    val responseString = (response.body() ?: return).string()
-                    val jsonObject = JSONObject(responseString)
-                    if (jsonObject.optInt("code") == 0) {
-                        val data = jsonObject.optString("data")
-                        db.setCityDataToDB(city, data)
-                        onSuccess(data)
-                    }
+                    val responseString = (response.body ?: return).string()
+                    db.setCityDataToDB(city, responseString)
+                    onSuccess(responseString)
                 }
 
                 override fun onFailure(call: Call, e: IOException) {
@@ -74,7 +80,7 @@ object NetworkInterface {
             String.format(QQ_USER_INFO_URL, accessToken, openId),
             object : Callback {
                 override fun onResponse(call: Call, response: Response) {
-                    val responseString = (response.body() ?: return).string()
+                    val responseString = (response.body ?: return).string()
                     val jsonObject = JSONObject(responseString)
                     if (jsonObject.optInt("ret") == 0) {
                         UserUtil.nickname = jsonObject.optString("nickname")
@@ -111,7 +117,7 @@ object NetworkInterface {
             ).toString(),
             object : Callback {
                 override fun onResponse(call: Call, response: Response) {
-                    val responseString = (response.body() ?: return).string()
+                    val responseString = (response.body ?: return).string()
                     val jsonObject = JSONObject(responseString)
                     if (jsonObject.optInt("code") == 0) {
                         val data = jsonObject.optString("data")
@@ -133,7 +139,8 @@ object NetworkInterface {
         userName: String,
         portraitUrl: String,
         onSuccess: () -> Unit = {},
-        onFailure: (Exception) -> Unit = {}) {
+        onFailure: (Exception) -> Unit = {}
+    ) {
         OkHttpUtil.uploadJsonAsync(
             UPLOAD_USER_INFO,
             JSONObject(
@@ -165,7 +172,7 @@ object NetworkInterface {
         onFailure: (Exception) -> Unit = {}
     ) {
         val file = File(ImageUtil.compress(imageUri))
-        val fileBody = RequestBody.create(MediaType.parse("application/octet-stream"), file)
+        val fileBody = file.asRequestBody("application/octet-stream".toMediaTypeOrNull())
         val requestBody = MultipartBody.Builder()
             .setType(MultipartBody.FORM)
             .addFormDataPart("openId", openId)
@@ -180,7 +187,7 @@ object NetworkInterface {
                     file.delete()
                 }
 
-                val responseString = (response.body() ?: return).string()
+                val responseString = (response.body ?: return).string()
                 onSuccess(responseString)
             }
 
@@ -240,7 +247,7 @@ object NetworkInterface {
             ).toString(),
             object : Callback {
                 override fun onResponse(call: Call, response: Response) {
-                    val responseString = (response.body() ?: return).string()
+                    (response.body ?: return).string()
                     onSuccess()
                 }
 

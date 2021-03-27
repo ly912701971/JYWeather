@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#aaffffff"
@@ -16,7 +15,7 @@
         android:background="@drawable/shape_comment_edit_text"
         android:hint="@string/comment"
         android:paddingStart="12dp"
-        android:paddingEnd="12dp"/>
+        android:paddingEnd="12dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -28,5 +27,5 @@
         android:paddingEnd="8dp"
         android:paddingBottom="4dp"
         android:text="发送"
-        android:textSize="13sp"/>
+        android:textSize="13sp" />
 </LinearLayout>

@@ -1,6 +1,11 @@
 package com.jy.weather.viewmodel
 
-import androidx.databinding.*
+import androidx.databinding.ObservableArrayList
+import androidx.databinding.ObservableArrayMap
+import androidx.databinding.ObservableBoolean
+import androidx.databinding.ObservableField
+import androidx.databinding.ObservableList
+import androidx.databinding.ObservableMap
 import com.jy.weather.JYApplication
 import com.jy.weather.R
 import com.jy.weather.data.remote.NetworkInterface
@@ -8,7 +13,11 @@ import com.jy.weather.entity.DailyForecast
 import com.jy.weather.entity.HourlyForecast
 import com.jy.weather.entity.Now
 import com.jy.weather.navigator.WeatherNavigator
-import com.jy.weather.util.*
+import com.jy.weather.util.DrawableUtil
+import com.jy.weather.util.JsonUtil
+import com.jy.weather.util.NetworkUtil
+import com.jy.weather.util.NotificationUtil
+import com.jy.weather.util.SnackbarObj
 import java.lang.ref.WeakReference
 
 class WeatherViewModel {
@@ -91,6 +100,7 @@ class WeatherViewModel {
     }
 
     private fun handleData(dataText: String?) {
+        if (dataText?.isEmpty() == true) return
         val weather = JsonUtil.handleWeatherResponse(dataText) ?: return
         if (weather.status == "ok") {
             // 处理数据

@@ -2,10 +2,10 @@ package com.jy.weather.activity
 
 import android.Manifest
 import android.content.Intent
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.Observable
 import android.os.Bundle
 import android.provider.Settings
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.Observable
 import com.jy.weather.JYApplication
 import com.jy.weather.R
 import com.jy.weather.adapter.CitySearchAdapter
@@ -111,7 +111,9 @@ class ChooseCityActivity : BaseActivity(), ChooseCityNavigator {
         super.onDestroy()
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<String>, grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         PermissionUtil.onPermissionResult(
@@ -134,7 +136,8 @@ class ChooseCityActivity : BaseActivity(), ChooseCityNavigator {
     }
 
     override fun startOpenGpsActivity() =
-        startActivityForResult(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), LOCATION_REQUEST_CODE)
+        startActivityForResult(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS),
+            LOCATION_REQUEST_CODE)
 
     override fun startWeatherActivity(city: String) {
         startActivity(Intent(this, WeatherActivity::class.java).apply {

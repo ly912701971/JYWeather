@@ -1,17 +1,22 @@
 package com.jy.weather.viewmodel
 
-import androidx.databinding.ObservableBoolean
-import androidx.databinding.ObservableField
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.text.Editable
-import android.view.View
 import android.widget.CompoundButton
+import androidx.databinding.ObservableBoolean
+import androidx.databinding.ObservableField
 import com.jy.weather.JYApplication
 import com.jy.weather.R
 import com.jy.weather.data.remote.NetworkInterface
 import com.jy.weather.navigator.CommentNavigator
-import com.jy.weather.util.*
+import com.jy.weather.util.DrawableUtil
+import com.jy.weather.util.GaussianBlurUtil
+import com.jy.weather.util.GpsUtil
+import com.jy.weather.util.LocationUtil
+import com.jy.weather.util.NetworkUtil
+import com.jy.weather.util.SnackbarObj
+import com.jy.weather.util.UserUtil
 import java.lang.ref.WeakReference
 
 class PublishLiveViewModel {
@@ -84,7 +89,8 @@ class PublishLiveViewModel {
             )
         }
 
-    fun onCheckChangedListener(button: CompoundButton, checked: Boolean) = locationCheck.set(checked)
+    fun onCheckChangedListener(button: CompoundButton, checked: Boolean) =
+        locationCheck.set(checked)
 
     fun locate() {
         if (GpsUtil.isOpen(context)) {
@@ -99,12 +105,12 @@ class PublishLiveViewModel {
 
     private fun showGpsNotOpen() =
         snackbarObj.set(
-            SnackbarObj(context.getString(R.string.locate_failed),
-                context.getString(R.string.goto_open),
-                View.OnClickListener {
-                    navigator.get()?.startOpenGpsActivity()
-                }
-            )
+            SnackbarObj(
+                context.getString(R.string.locate_failed),
+                context.getString(R.string.goto_open)
+            ) {
+                navigator.get()?.startOpenGpsActivity()
+            }
         )
 
     private fun setLocation(address: String) = location.set(address)

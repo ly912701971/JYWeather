@@ -22,7 +22,8 @@ class WeatherWidget51 : WeatherWidget() {
 
     override fun updateWidget() {
         if (remoteView == null) {
-            remoteView = RemoteViews(JYApplication.INSTANCE.packageName, R.layout.widget_desktop_5x1)
+            remoteView =
+                RemoteViews(JYApplication.INSTANCE.packageName, R.layout.widget_desktop_5x1)
         }
 
         val view = remoteView ?: return
@@ -30,10 +31,12 @@ class WeatherWidget51 : WeatherWidget() {
         val city = JYApplication.cityDB.defaultCity ?: "北京"
         if (city != defaultCity) {// 城市变化
             defaultCity = city
-            val weather = JsonUtil.handleWeatherResponse(JYApplication.cityDB.getCityDataFromDB(city))
-                ?: return
+            val weather =
+                JsonUtil.handleWeatherResponse(JYApplication.cityDB.getCityDataFromDB(city))
+                    ?: return
             view.setTextViewText(R.id.tv_city, city)
-            view.setImageViewResource(R.id.iv_weather_icon, DrawableUtil.getCondIcon(weather.now.code))
+            view.setImageViewResource(R.id.iv_weather_icon,
+                DrawableUtil.getCondIcon(weather.now.code))
             view.setTextViewText(R.id.tv_cond, weather.now.condText)
             view.setTextViewText(R.id.tv_now_temp,
                 weather.now.temperature + JYApplication.INSTANCE.getString(R.string.c_degree))

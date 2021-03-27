@@ -3,10 +3,10 @@ package com.jy.weather.activity
 import android.Manifest
 import android.app.Activity
 import android.content.Intent
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.Observable
 import android.os.Bundle
 import android.provider.Settings
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.Observable
 import com.jy.weather.R
 import com.jy.weather.databinding.ActivityPublishLiveBinding
 import com.jy.weather.navigator.CommentNavigator
@@ -32,7 +32,7 @@ class PublishLiveActivity : BaseActivity(), CommentNavigator {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_publish_live)
         viewModel = PublishLiveViewModel()
         binding.viewModel = viewModel
-        viewModel.setImageUri(intent.getStringExtra("image_uri"))
+        viewModel.setImageUri(intent.getStringExtra("image_uri") ?: "")
 
         setupListener()
 
@@ -87,7 +87,9 @@ class PublishLiveActivity : BaseActivity(), CommentNavigator {
         super.onDestroy()
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         PermissionUtil.onPermissionResult(
@@ -122,7 +124,8 @@ class PublishLiveActivity : BaseActivity(), CommentNavigator {
         )
 
     override fun startOpenGpsActivity() =
-        startActivityForResult(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), LOCATION_REQUEST_CODE)
+        startActivityForResult(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS),
+            LOCATION_REQUEST_CODE)
 
     override fun exitActivity(status: String) {
         setResult(Activity.RESULT_OK, Intent().putExtra("update_status", status))

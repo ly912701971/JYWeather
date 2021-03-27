@@ -1,7 +1,14 @@
 package com.jy.weather.widget
 
 import android.content.Context
-import android.graphics.*
+import android.graphics.Bitmap
+import android.graphics.BitmapShader
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Matrix
+import android.graphics.Paint
+import android.graphics.RectF
+import android.graphics.Shader
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
@@ -61,9 +68,11 @@ class CircleImageView : androidx.appcompat.widget.AppCompatImageView {
     }
 
     @JvmOverloads
-    constructor(context: Context, attrs: AttributeSet, defStyle: Int = 0) : super(context, attrs, defStyle) {
+    constructor(context: Context, attrs: AttributeSet, defStyle: Int = 0) : super(context, attrs,
+        defStyle) {
         val a = context.obtainStyledAttributes(attrs, R.styleable.CircleImageView, defStyle, 0)
-        mBorderWidth = a.getDimensionPixelSize(R.styleable.CircleImageView_border_width, DEFAULT_BORDER_WIDTH)
+        mBorderWidth =
+            a.getDimensionPixelSize(R.styleable.CircleImageView_border_width, DEFAULT_BORDER_WIDTH)
         mBorderColor = a.getColor(R.styleable.CircleImageView_border_color, DEFAULT_BORDER_COLOR)
         a.recycle()
         init()
@@ -100,9 +109,11 @@ class CircleImageView : androidx.appcompat.widget.AppCompatImageView {
             return
         }
 
-        canvas.drawCircle((width shr 1).toFloat(), (height shr 1).toFloat(), mDrawableRadius, mBitmapPaint)
+        canvas.drawCircle((width shr 1).toFloat(), (height shr 1).toFloat(), mDrawableRadius,
+            mBitmapPaint)
         if (mBorderWidth != 0) {
-            canvas.drawCircle((width shr 1).toFloat(), (height shr 1).toFloat(), mBorderRadius, mBorderPaint)
+            canvas.drawCircle((width shr 1).toFloat(), (height shr 1).toFloat(), mBorderRadius,
+                mBorderPaint)
         }
     }
 
@@ -151,9 +162,11 @@ class CircleImageView : androidx.appcompat.widget.AppCompatImageView {
 
         return try {
             val bitmap: Bitmap = if (drawable is ColorDrawable) {
-                Bitmap.createBitmap(COLOR_DRAWABLE_DIMENSION, COLOR_DRAWABLE_DIMENSION, BITMAP_CONFIG)
+                Bitmap.createBitmap(COLOR_DRAWABLE_DIMENSION, COLOR_DRAWABLE_DIMENSION,
+                    BITMAP_CONFIG)
             } else {
-                Bitmap.createBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight, BITMAP_CONFIG)
+                Bitmap.createBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight,
+                    BITMAP_CONFIG)
             }
             val canvas = Canvas(bitmap)
             drawable.setBounds(0, 0, canvas.width, canvas.height)

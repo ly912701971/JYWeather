@@ -5,13 +5,14 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.os.IBinder
 import android.util.Log
 import com.jy.weather.receiver.SendMessageReceiver
-import java.util.*
+import java.util.Calendar
 
 class SendMessageService : Service() {
 
-    override fun onBind(intent: Intent?) = null
+    override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val now = Calendar.getInstance()

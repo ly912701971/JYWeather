@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
         <variable
             name="viewModel"
-            type="com.jy.weather.viewmodel.PublishLiveViewModel"/>
+            type="com.jy.weather.viewmodel.PublishLiveViewModel" />
     </data>
 
     <RelativeLayout
@@ -34,7 +33,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/ic_set_back"/>
+                    android:src="@drawable/ic_set_back" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -44,7 +43,7 @@
                     android:layout_toEndOf="@id/iv_back"
                     android:text="@string/preview"
                     android:textColor="@color/white"
-                    android:textSize="18sp"/>
+                    android:textSize="18sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -54,7 +53,7 @@
                     android:onClick="@{() -> viewModel.onPublishClick()}"
                     android:text="@string/publish"
                     android:textColor="@color/light_blue"
-                    android:textSize="18sp"/>
+                    android:textSize="18sp" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -73,7 +72,7 @@
                     android:lines="4"
                     android:maxLength="160"
                     android:textColor="@color/white"
-                    android:textSize="14sp"/>
+                    android:textSize="14sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -83,7 +82,7 @@
                     android:layout_margin="4dp"
                     android:text="@{viewModel.textNumber}"
                     android:textColor="@color/light_gray"
-                    android:textSize="13sp"/>
+                    android:textSize="13sp" />
             </RelativeLayout>
 
             <ImageView
@@ -93,7 +92,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginBottom="16dp"
                 android:scaleType="centerCrop"
-                app:imageUri="@{viewModel.imageUri}"/>
+                app:imageUri="@{viewModel.imageUri}" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -107,7 +106,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:checked="@{viewModel.locationCheck}"
-                    android:onCheckedChanged="@{viewModel::onCheckChangedListener}"/>
+                    android:onCheckedChanged="@{viewModel::onCheckChangedListener}" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -119,7 +118,7 @@
                     android:gravity="center_vertical"
                     android:onClick="@{() -> viewModel.onLocationClick()}"
                     android:text="@{viewModel.location}"
-                    android:textSize="13sp"/>
+                    android:textSize="13sp" />
             </RelativeLayout>
         </LinearLayout>
     </RelativeLayout>

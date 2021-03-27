@@ -25,68 +25,60 @@ class CityDB(context: Context) {
         private const val DB_LIVE_WEATHER_CACHE = "live_weather_cache"
     }
 
-    private val sp: SharedPreferences
-    private var editor: Editor
-
-    init {
-        sp = context.getSharedPreferences(DB_BASE_PATH, Context.MODE_PRIVATE)
-        editor = sp.edit()
-    }
+    private val sp: SharedPreferences =
+        context.getSharedPreferences(DB_BASE_PATH, Context.MODE_PRIVATE)
+    private val editor: Editor
+        get() = sp.edit()
 
     var defaultCity: String?
         get() = sp.getString(DB_DEFAULT_CITY, null)
         set(defaultCity) {
-            editor.putString(DB_DEFAULT_CITY, defaultCity)
-            editor.apply()
+            editor.putString(DB_DEFAULT_CITY, defaultCity).apply()
         }
 
     var condCode: String
         get() = sp.getString(DB_COND_CODE, null) ?: "0"
         set(condCode) {
-            editor.putString(DB_COND_CODE, condCode)
-            editor.apply()
+            editor.putString(DB_COND_CODE, condCode).apply()
         }
 
     // 默认不打开通知栏
     var notification: Boolean
         get() = sp.getBoolean(DB_NOTIFICATION, false)
         set(notification) {
-            editor.putBoolean(DB_NOTIFICATION, notification)
-            editor.apply()
+            editor.putBoolean(DB_NOTIFICATION, notification).apply()
         }
 
     var smartRemind: Boolean
         get() = sp.getBoolean(DB_SMART_REMIND, false)
         set(value) {
-            editor.putBoolean(DB_SMART_REMIND, value)
-            editor.apply()
+            editor.putBoolean(DB_SMART_REMIND, value).apply()
         }
 
     // 默认不自动更新
     var autoUpdate: Boolean
         get() = sp.getBoolean(DB_AUTO_UPDATE, false)
         set(autoUpdate) {
-            editor.putBoolean(DB_AUTO_UPDATE, autoUpdate)
-            editor.apply()
+            editor.putBoolean(DB_AUTO_UPDATE, autoUpdate).apply()
         }
 
     // 默认更新时间为2小时
     var updateInterval: Int
         get() = sp.getInt(DB_UPDATE_INTERVAL, 2)
         set(hour) {
-            editor.putInt(DB_UPDATE_INTERVAL, hour)
-            editor.apply()
+            editor.putInt(DB_UPDATE_INTERVAL, hour).apply()
         }
 
     var liveWeatherCache: String
         get() = sp.getString(DB_LIVE_WEATHER_CACHE, null) ?: ""
         set(value) {
-            editor.putString(DB_LIVE_WEATHER_CACHE, value)
-            editor.apply()
+            editor.putString(DB_LIVE_WEATHER_CACHE, value).apply()
         }
 
     fun getCityDataFromDB(city: String) =
-        LitePal.where("cityName = ?", city).find(Weather::class.java)[0].weatherData
+        LitePal.where("cityName = ?", city)
+            .find(Weather::class.java)
+            .getOrNull(0)?.weatherData ?: ""
 
     fun getAllCityDataFromDB(): MutableList<Weather> = LitePal.findAll(Weather::class.java)
 
@@ -122,7 +114,6 @@ class CityDB(context: Context) {
 
     fun clearCache() {
         LitePal.deleteAllAsync(Weather::class.java)
-
         editor.clear()
         editor.apply()
     }

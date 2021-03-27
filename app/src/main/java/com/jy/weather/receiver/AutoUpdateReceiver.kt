@@ -27,7 +27,10 @@ class AutoUpdateReceiver : BroadcastReceiver() {
                     cityName,
                     {
                         if (cityName == db.defaultCity && db.smartRemind) {
-                            NotificationUtil.showNotification(cityName, StringUtil.getNotification(it))
+                            NotificationUtil.showNotification(
+                                cityName,
+                                StringUtil.getNotification(it)
+                            )
                         }
                     }
                 )

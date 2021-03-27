@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
-        <import type="android.view.View"/>
-
-        <import type="java.lang.String"/>
+        <import type="android.view.View" />
 
         <variable
             name="viewModel"
-            type="com.jy.weather.viewmodel.LiveWeatherItemViewModel"/>
+            type="com.jy.weather.viewmodel.LiveWeatherItemViewModel" />
     </data>
 
     <RelativeLayout
@@ -28,7 +25,7 @@
                 android:id="@+id/iv_portrait"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
-                app:imageUri="@{viewModel.userPortrait}"/>
+                app:imageUri="@{viewModel.userPortrait}" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -42,7 +39,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{viewModel.userName}"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -50,7 +47,7 @@
                     android:layout_marginTop="2dp"
                     android:text="@{viewModel.liveTime}"
                     android:textColor="@color/text_gray"
-                    android:textSize="12sp"/>
+                    android:textSize="12sp" />
             </LinearLayout>
         </RelativeLayout>
 
@@ -62,7 +59,7 @@
             android:layout_marginTop="8dp"
             android:text="@{viewModel.liveText}"
             android:textSize="14sp"
-            android:visibility="@{viewModel.liveTextVisibility ? View.VISIBLE : View.GONE}"/>
+            android:visibility="@{viewModel.liveTextVisibility ? View.VISIBLE : View.GONE}" />
 
         <ImageView
             android:id="@+id/iv_live_photo"
@@ -72,7 +69,7 @@
             android:layout_marginTop="8dp"
             android:adjustViewBounds="true"
             android:onClick="@{() -> viewModel.onImageClick()}"
-            app:imageUri="@{viewModel.liveUrl}"/>
+            app:imageUri="@{viewModel.liveUrl}" />
 
         <LinearLayout
             android:id="@+id/ll_tail"
@@ -88,32 +85,36 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
-                android:drawableStart="@drawable/ic_location"
                 android:ellipsize="start"
                 android:gravity="start|center_vertical"
                 android:maxLines="2"
                 android:text="@{viewModel.location}"
-                android:textSize="12sp"/>
+                android:textSize="12sp"
+                app:drawableStartCompat="@drawable/ic_location" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:imageId="@{viewModel.likeStatusResId}" />
 
             <TextView
                 android:layout_width="48dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:drawableStart="@{viewModel.hasLiked ? @drawable/ic_praise : @drawable/ic_not_praise}"
                 android:gravity="center"
                 android:onClick="@{() -> viewModel.onLikeClick()}"
                 android:text="@{String.valueOf(safeUnbox(viewModel.likeNum))}"
-                android:textSize="13sp"/>
+                android:textSize="13sp" />
 
             <TextView
                 android:id="@+id/iv_comments"
                 android:layout_width="48dp"
                 android:layout_height="wrap_content"
-                android:drawableStart="@drawable/ic_comments"
                 android:gravity="center"
                 android:onClick="@{() -> viewModel.onCommentClick()}"
                 android:text="@{viewModel.commentNum}"
-                android:textSize="13sp"/>
+                android:textSize="13sp"
+                app:drawableStartCompat="@drawable/ic_comments" />
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -123,6 +124,6 @@
             android:layout_below="@+id/ll_tail"
             android:layout_marginTop="8dp"
             android:visibility="@{viewModel.commentVisibility ? View.VISIBLE : View.GONE}"
-            app:items="@{viewModel.comments}"/>
+            app:items="@{viewModel.comments}" />
     </RelativeLayout>
 </layout>

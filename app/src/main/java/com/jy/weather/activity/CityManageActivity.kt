@@ -4,8 +4,6 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.Observable
 import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
@@ -13,6 +11,8 @@ import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.EditText
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.Observable
 import com.baoyz.swipemenulistview.SwipeMenuItem
 import com.baoyz.swipemenulistview.SwipeMenuListView
 import com.jy.weather.R
@@ -91,9 +91,10 @@ class CityManageActivity : BaseActivity(), CityManageNavigator {
         binding.smlvCityList.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT)
 
         // SwipeMenuListView子项点击事件
-        binding.smlvCityList.onItemClickListener = AdapterView.OnItemClickListener { _, _, index, _ ->
-            viewModel.onItemClick(index)
-        }
+        binding.smlvCityList.onItemClickListener =
+            AdapterView.OnItemClickListener { _, _, index, _ ->
+                viewModel.onItemClick(index)
+            }
 
         // SwipeMenuListView子项菜单点击事件
         binding.smlvCityList.setOnMenuItemClickListener { index, _, position ->
@@ -153,7 +154,9 @@ class CityManageActivity : BaseActivity(), CityManageNavigator {
         )
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         PermissionUtil.onPermissionResult(

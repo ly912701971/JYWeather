@@ -11,7 +11,8 @@ object PermissionUtil {
         activity: Activity,
         permission: String,
         permissionGranted: () -> Unit,
-        showPermissionHintDialog: () -> Unit) {
+        showPermissionHintDialog: () -> Unit
+    ) {
         if (ContextCompat.checkSelfPermission(activity, permission)
             != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
@@ -32,7 +33,8 @@ object PermissionUtil {
     fun onPermissionResult(
         grantResults: IntArray,
         permissionGranted: () -> Unit,
-        permissionDenied: () -> Unit = {}) {
+        permissionDenied: () -> Unit = {}
+    ) {
         if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             permissionGranted()
         } else {

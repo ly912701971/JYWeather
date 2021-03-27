@@ -49,7 +49,8 @@ object NotificationUtil {
         val remoteViews = RemoteViews(context.packageName, R.layout.widget_notification)
         // 设置通知栏布局里面控件的属性
         val defaultCity = JYApplication.cityDB.defaultCity ?: "北京"
-        val weather = JsonUtil.handleWeatherResponse(JYApplication.cityDB.getCityDataFromDB(defaultCity))
+        val weather =
+            JsonUtil.handleWeatherResponse(JYApplication.cityDB.getCityDataFromDB(defaultCity))
         if (weather != null) {
             remoteViews.apply {
                 setTextViewText(R.id.city_name, defaultCity)// 常驻城市名称

@@ -1,11 +1,11 @@
 package com.jy.weather.adapter
 
 import android.content.Context
-import androidx.databinding.DataBindingUtil
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import androidx.databinding.DataBindingUtil
 import com.jy.weather.databinding.ItemCityBinding
 import com.jy.weather.entity.CityData
 import com.jy.weather.viewmodel.CityListItemViewModel

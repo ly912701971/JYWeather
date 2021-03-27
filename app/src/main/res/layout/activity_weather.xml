@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
-        <import type="android.view.View"/>
+        <import type="android.view.View" />
 
         <variable
             name="viewModel"
-            type="com.jy.weather.viewmodel.WeatherViewModel"/>
+            type="com.jy.weather.viewmodel.WeatherViewModel" />
     </data>
 
     <RelativeLayout
@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:onClick="@{() -> viewModel.startCityManageActivity()}"
-                android:src="@drawable/ic_home"/>
+                android:src="@drawable/ic_home" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -42,7 +42,7 @@
                 android:layout_toEndOf="@id/iv_home"
                 android:onClick="@{() -> viewModel.startCityManageActivity()}"
                 android:text="@{viewModel.currentCity}"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -51,7 +51,7 @@
                 android:layout_marginEnd="16dp"
                 android:layout_toStartOf="@+id/iv_setting"
                 android:onClick="@{() -> viewModel.startLiveWeatherActivity()}"
-                android:src="@drawable/ic_live_weather"/>
+                android:src="@drawable/ic_live_weather" />
 
             <ImageView
                 android:id="@+id/iv_setting"
@@ -60,7 +60,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:onClick="@{() -> viewModel.startSettingActivity()}"
-                android:src="@drawable/ic_setting"/>
+                android:src="@drawable/ic_setting" />
         </RelativeLayout>
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -101,13 +101,13 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/update_time"/>
+                                android:text="@string/update_time" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="4dp"
-                                android:text="@{viewModel.updateTime}"/>
+                                android:text="@{viewModel.updateTime}" />
                         </LinearLayout>
 
                         <TextView
@@ -116,7 +116,7 @@
                             android:layout_above="@id/ll_brief"
                             android:onClick="@{() -> viewModel.startTodayActivity()}"
                             android:text="@{viewModel.temperature}"
-                            android:textSize="80sp"/>
+                            android:textSize="80sp" />
 
                         <LinearLayout
                             android:id="@+id/ll_brief"
@@ -130,34 +130,34 @@
                             <ImageView
                                 android:layout_width="32dp"
                                 android:layout_height="32dp"
-                                app:imageId="@{safeUnbox(viewModel.iconId)}"/>
+                                app:imageId="@{safeUnbox(viewModel.iconId)}" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="8dp"
                                 android:text="@{viewModel.condText}"
-                                android:textSize="16sp"/>
+                                android:textSize="16sp" />
 
                             <View
                                 android:layout_width="1dp"
                                 android:layout_height="match_parent"
                                 android:layout_marginStart="8dp"
-                                android:background="@color/white"/>
+                                android:background="@color/white" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="8dp"
                                 android:text="@{viewModel.windDirection}"
-                                android:textSize="16sp"/>
+                                android:textSize="16sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="8dp"
                                 android:text="@{viewModel.windScale}"
-                                android:textSize="16sp"/>
+                                android:textSize="16sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -165,7 +165,7 @@
                                 android:layout_marginStart="8dp"
                                 android:drawableEnd="@drawable/ic_goto"
                                 android:text="@{@string/relative_hum + viewModel.relativeHum}"
-                                android:textSize="16sp"/>
+                                android:textSize="16sp" />
                         </LinearLayout>
                     </RelativeLayout>
 
@@ -182,20 +182,20 @@
                             android:layout_height="wrap_content"
                             android:padding="8dp"
                             android:text="@string/hourly_forecast"
-                            android:textSize="16sp"/>
+                            android:textSize="16sp" />
 
-                        <include layout="@layout/divider"/>
+                        <include layout="@layout/divider" />
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rv_hourly"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="8dp"
-                            app:items="@{viewModel.hourlyForecasts}"/>
+                            app:items="@{viewModel.hourlyForecasts}" />
                     </LinearLayout>
 
                     <!-- daily forecast part -->
-                    <LinearLayout
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="24dp"
@@ -203,20 +203,27 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/tv_daily_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="8dp"
                             android:text="@string/daily_forecast"
-                            android:textSize="16sp"/>
+                            android:textSize="16sp" />
 
-                        <include layout="@layout/divider"/>
+                        <View
+                            android:id="@+id/v_daily_divider"
+                            android:layout_width="match_parent"
+                            android:layout_height="1px"
+                            android:layout_below="@+id/tv_daily_title"
+                            android:background="@color/divider" />
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rv_daily"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:items="@{viewModel.dailyForecasts}"/>
-                    </LinearLayout>
+                            android:layout_below="@+id/v_daily_divider"
+                            app:items="@{viewModel.dailyForecasts}" />
+                    </RelativeLayout>
 
                     <!-- life suggestion part -->
                     <LinearLayout
@@ -231,9 +238,9 @@
                             android:layout_height="wrap_content"
                             android:padding="8dp"
                             android:text="@string/sug"
-                            android:textSize="16sp"/>
+                            android:textSize="16sp" />
 
-                        <include layout="@layout/divider"/>
+                        <include layout="@layout/divider" />
 
                         <GridLayout
                             android:layout_width="match_parent"
@@ -254,13 +261,13 @@
                                 <ImageView
                                     android:layout_width="48dp"
                                     android:layout_height="48dp"
-                                    android:src="@drawable/ic_air"/>
+                                    android:src="@drawable/ic_air" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="4dp"
-                                    android:text="@{viewModel.styleMap[`air`].first}"/>
+                                    android:text="@{viewModel.styleMap[`air`].first}" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -268,7 +275,7 @@
                                     android:layout_marginTop="4dp"
                                     android:text="@string/sug_air"
                                     android:textColor="@color/dark_gray"
-                                    android:textSize="13sp"/>
+                                    android:textSize="13sp" />
                             </LinearLayout>
 
                             <LinearLayout
@@ -282,13 +289,13 @@
                                 <ImageView
                                     android:layout_width="48dp"
                                     android:layout_height="48dp"
-                                    android:src="@drawable/ic_comfort"/>
+                                    android:src="@drawable/ic_comfort" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="4dp"
-                                    android:text="@{viewModel.styleMap[`comf`].first}"/>
+                                    android:text="@{viewModel.styleMap[`comf`].first}" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -296,7 +303,7 @@
                                     android:layout_marginTop="4dp"
                                     android:text="@string/sug_comfort"
                                     android:textColor="@color/dark_gray"
-                                    android:textSize="13sp"/>
+                                    android:textSize="13sp" />
                             </LinearLayout>
 
                             <LinearLayout
@@ -310,13 +317,13 @@
                                 <ImageView
                                     android:layout_width="48dp"
                                     android:layout_height="48dp"
-                                    android:src="@drawable/ic_wash_car"/>
+                                    android:src="@drawable/ic_wash_car" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="4dp"
-                                    android:text="@{viewModel.styleMap[`cw`].first}"/>
+                                    android:text="@{viewModel.styleMap[`cw`].first}" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -324,7 +331,7 @@
                                     android:layout_marginTop="4dp"
                                     android:text="@string/sug_car_wash"
                                     android:textColor="@color/dark_gray"
-                                    android:textSize="13sp"/>
+                                    android:textSize="13sp" />
                             </LinearLayout>
 
                             <LinearLayout
@@ -338,13 +345,13 @@
                                 <ImageView
                                     android:layout_width="48dp"
                                     android:layout_height="48dp"
-                                    android:src="@drawable/ic_dress"/>
+                                    android:src="@drawable/ic_dress" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="4dp"
-                                    android:text="@{viewModel.styleMap[`drsg`].first}"/>
+                                    android:text="@{viewModel.styleMap[`drsg`].first}" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -352,7 +359,7 @@
                                     android:layout_marginTop="4dp"
                                     android:text="@string/sug_dress"
                                     android:textColor="@color/dark_gray"
-                                    android:textSize="13sp"/>
+                                    android:textSize="13sp" />
                             </LinearLayout>
 
                             <LinearLayout
@@ -367,13 +374,13 @@
                                 <ImageView
                                     android:layout_width="48dp"
                                     android:layout_height="48dp"
-                                    android:src="@drawable/ic_flu"/>
+                                    android:src="@drawable/ic_flu" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="4dp"
-                                    android:text="@{viewModel.styleMap[`flu`].first}"/>
+                                    android:text="@{viewModel.styleMap[`flu`].first}" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -381,7 +388,7 @@
                                     android:layout_marginTop="4dp"
                                     android:text="@string/sug_flu"
                                     android:textColor="@color/dark_gray"
-                                    android:textSize="13sp"/>
+                                    android:textSize="13sp" />
                             </LinearLayout>
 
                             <LinearLayout
@@ -396,13 +403,13 @@
                                 <ImageView
                                     android:layout_width="48dp"
                                     android:layout_height="48dp"
-                                    android:src="@drawable/ic_sport"/>
+                                    android:src="@drawable/ic_sport" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="4dp"
-                                    android:text="@{viewModel.styleMap[`sport`].first}"/>
+                                    android:text="@{viewModel.styleMap[`sport`].first}" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -410,7 +417,7 @@
                                     android:layout_marginTop="4dp"
                                     android:text="@string/sug_sport"
                                     android:textColor="@color/dark_gray"
-                                    android:textSize="13sp"/>
+                                    android:textSize="13sp" />
                             </LinearLayout>
 
                             <LinearLayout
@@ -425,13 +432,13 @@
                                 <ImageView
                                     android:layout_width="48dp"
                                     android:layout_height="48dp"
-                                    android:src="@drawable/ic_travel"/>
+                                    android:src="@drawable/ic_travel" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="4dp"
-                                    android:text="@{viewModel.styleMap[`trav`].first}"/>
+                                    android:text="@{viewModel.styleMap[`trav`].first}" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -439,7 +446,7 @@
                                     android:layout_marginTop="4dp"
                                     android:text="@string/sug_travel"
                                     android:textColor="@color/dark_gray"
-                                    android:textSize="13sp"/>
+                                    android:textSize="13sp" />
                             </LinearLayout>
 
                             <LinearLayout
@@ -454,13 +461,13 @@
                                 <ImageView
                                     android:layout_width="48dp"
                                     android:layout_height="48dp"
-                                    android:src="@drawable/ic_uv"/>
+                                    android:src="@drawable/ic_uv" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="4dp"
-                                    android:text="@{viewModel.styleMap[`uv`].first}"/>
+                                    android:text="@{viewModel.styleMap[`uv`].first}" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -468,7 +475,7 @@
                                     android:layout_marginTop="4dp"
                                     android:text="@string/sug_ultraviolet"
                                     android:textColor="@color/dark_gray"
-                                    android:textSize="13sp"/>
+                                    android:textSize="13sp" />
                             </LinearLayout>
                         </GridLayout>
                     </LinearLayout>

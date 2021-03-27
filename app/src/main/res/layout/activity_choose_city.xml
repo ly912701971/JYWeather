@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
-        <import type="android.view.View"/>
+        <import type="android.view.View" />
 
         <variable
             name="viewModel"
-            type="com.jy.weather.viewmodel.ChooseCityViewModel"/>
+            type="com.jy.weather.viewmodel.ChooseCityViewModel" />
     </data>
 
     <RelativeLayout
@@ -34,7 +34,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/ic_set_back"/>
+                    android:src="@drawable/ic_set_back" />
 
                 <EditText
                     android:id="@+id/et_search"
@@ -53,7 +53,7 @@
                     android:paddingEnd="16dp"
                     android:paddingBottom="8dp"
                     android:textColor="@color/white"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp" />
             </RelativeLayout>
 
             <GridLayout
@@ -75,7 +75,7 @@
                     android:layout_gravity="center"
                     android:padding="16dp"
                     android:text="@string/hot_city"
-                    android:textColor="@color/light_gray"/>
+                    android:textColor="@color/light_gray" />
 
                 <TextView
                     android:id="@+id/tv_location"
@@ -91,7 +91,7 @@
                     android:onClick="@{viewModel::onCityClick}"
                     android:padding="8dp"
                     android:text="@{viewModel.location}"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -106,7 +106,7 @@
                     android:onClick="@{viewModel::onCityClick}"
                     android:padding="8dp"
                     android:text="@string/beijing"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -119,7 +119,7 @@
                     android:onClick="@{viewModel::onCityClick}"
                     android:padding="8dp"
                     android:text="@string/tianjin"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -132,7 +132,7 @@
                     android:onClick="@{viewModel::onCityClick}"
                     android:padding="8dp"
                     android:text="@string/shanghai"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -147,7 +147,7 @@
                     android:onClick="@{viewModel::onCityClick}"
                     android:padding="8dp"
                     android:text="@string/chongqing"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -160,7 +160,7 @@
                     android:onClick="@{viewModel::onCityClick}"
                     android:padding="8dp"
                     android:text="@string/shenyang"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -173,7 +173,7 @@
                     android:onClick="@{viewModel::onCityClick}"
                     android:padding="8dp"
                     android:text="@string/dalian"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -188,7 +188,7 @@
                     android:onClick="@{viewModel::onCityClick}"
                     android:padding="8dp"
                     android:text="@string/changchun"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -201,7 +201,7 @@
                     android:onClick="@{viewModel::onCityClick}"
                     android:padding="8dp"
                     android:text="@string/haerbin"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -214,7 +214,7 @@
                     android:onClick="@{viewModel::onCityClick}"
                     android:padding="8dp"
                     android:text="@string/zhengzhou"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -229,7 +229,7 @@
                     android:onClick="@{viewModel::onCityClick}"
                     android:padding="8dp"
                     android:text="@string/wuhan"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -242,7 +242,7 @@
                     android:onClick="@{viewModel::onCityClick}"
                     android:padding="8dp"
                     android:text="@string/changsha"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -255,7 +255,7 @@
                     android:onClick="@{viewModel::onCityClick}"
                     android:padding="8dp"
                     android:text="@string/guangzhou"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -270,7 +270,7 @@
                     android:onClick="@{viewModel::onCityClick}"
                     android:padding="8dp"
                     android:text="@string/shenzhen"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -283,7 +283,7 @@
                     android:onClick="@{viewModel::onCityClick}"
                     android:padding="8dp"
                     android:text="@string/nanjing"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -296,7 +296,7 @@
                     android:onClick="@{viewModel::onCityClick}"
                     android:padding="8dp"
                     android:text="@string/hangzhou"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -311,7 +311,7 @@
                     android:onClick="@{viewModel::onCityClick}"
                     android:padding="8dp"
                     android:text="@string/dongguan"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -324,7 +324,7 @@
                     android:onClick="@{viewModel::onCityClick}"
                     android:padding="8dp"
                     android:text="@string/chengdu"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -337,7 +337,7 @@
                     android:onClick="@{viewModel::onCityClick}"
                     android:padding="8dp"
                     android:text="@string/qingdao"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -352,7 +352,7 @@
                     android:onClick="@{viewModel::onCityClick}"
                     android:padding="8dp"
                     android:text="@string/suzhou"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -365,7 +365,7 @@
                     android:onClick="@{viewModel::onCityClick}"
                     android:padding="8dp"
                     android:text="@string/xiamen"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp" />
             </GridLayout>
 
             <ListView
@@ -375,7 +375,7 @@
                 android:divider="@color/divider"
                 android:dividerHeight="1px"
                 android:visibility="@{viewModel.hasSearch ? View.VISIBLE : View.GONE}"
-                app:data="@{viewModel.searchResult}"/>
+                app:data="@{viewModel.searchResult}" />
         </LinearLayout>
     </RelativeLayout>
 </layout>

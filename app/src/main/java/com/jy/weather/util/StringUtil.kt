@@ -2,7 +2,9 @@ package com.jy.weather.util
 
 import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 import java.util.regex.Pattern
 
 /**
@@ -62,7 +64,8 @@ object StringUtil {
         val condText = weather.now.condText
         val airBrief = weather.lifestyles.find { it.type == "air" }?.brief
         val uvBrief = weather.lifestyles.find { it.type == "uv" }?.brief
-        return builder.append("${city}今日天气为：${condText}，${tempScope}，空气质量${airBrief}，紫外线${uvBrief}。")
+        return builder.append(
+            "${city}今日天气为：${condText}，${tempScope}，空气质量${airBrief}，紫外线${uvBrief}。")
             .append(endWord).toString()
     }
 
@@ -74,6 +77,7 @@ object StringUtil {
         val condText = weather.now.condText
         val airBrief = weather.lifestyles.find { it.type == "air" }?.brief
         val uvBrief = weather.lifestyles.find { it.type == "uv" }?.brief
-        return builder.append("${condText}，${tempScope}，空气质量：${airBrief}，紫外线：${uvBrief}。").toString()
+        return builder.append("${condText}，${tempScope}，空气质量：${airBrief}，紫外线：${uvBrief}。")
+            .toString()
     }
 }

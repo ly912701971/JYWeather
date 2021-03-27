@@ -16,7 +16,7 @@ object ImageUtil {
         val outputFile = File(targetPath)
         try {
             if (!outputFile.exists()) {
-                outputFile.parentFile.mkdirs()
+                outputFile.parentFile?.mkdirs()
             } else {
                 outputFile.delete()
             }

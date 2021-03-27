@@ -114,7 +114,8 @@ class CityManageViewModel {
             else -> {
                 when {
                     !phoneNumberRegex.matches(phoneNumber) ->
-                        snackbarObj.set(SnackbarObj(context.getString(R.string.phone_number_not_valid)))
+                        snackbarObj.set(
+                            SnackbarObj(context.getString(R.string.phone_number_not_valid)))
 
                     call.isEmpty() ->
                         snackbarObj.set(SnackbarObj(context.getString(R.string.call_empty)))
@@ -133,7 +134,8 @@ class CityManageViewModel {
                         cities[index].call = call
                         cities[index].phoneNumber = phoneNumber
                         dialog.dismiss()
-                        snackbarObj.set(SnackbarObj(context.getString(R.string.family_number_associate_success)))
+                        snackbarObj.set(SnackbarObj(
+                            context.getString(R.string.family_number_associate_success)))
                     }
                 }
             }

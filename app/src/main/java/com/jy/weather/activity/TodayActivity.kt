@@ -1,7 +1,7 @@
 package com.jy.weather.activity
 
-import androidx.databinding.DataBindingUtil
 import android.os.Bundle
+import androidx.databinding.DataBindingUtil
 import com.jy.weather.R
 import com.jy.weather.databinding.ActivityTodayBinding
 import com.jy.weather.entity.DailyForecast
@@ -29,8 +29,8 @@ class TodayActivity : BaseActivity() {
 
         val intent = intent
         viewModel.start(
-            intent.getStringExtra("city"),
-            intent.getStringExtra("update_time"),
+            intent.getStringExtra("city") ?: "",
+            intent.getStringExtra("update_time") ?: "",
             intent.getSerializableExtra("now") as Now,
             intent.getSerializableExtra("daily_forecast") as DailyForecast
         )

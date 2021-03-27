@@ -4,6 +4,7 @@ import androidx.databinding.ObservableArrayList
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableList
+import com.jy.weather.R
 import com.jy.weather.data.remote.NetworkInterface
 import com.jy.weather.entity.Comment
 import com.jy.weather.entity.LiveWeather
@@ -16,6 +17,7 @@ class LiveWeatherItemViewModel(liveWeather: LiveWeather, navigator: LiveWeatherN
 
     private val navigator = WeakReference(navigator)
     private val liveId = liveWeather.liveId
+    private var hasLiked = liveWeather.hasLiked == 1
 
     val userName: ObservableField<String> = ObservableField(liveWeather.userName)
     val userPortrait: ObservableField<String> = ObservableField(liveWeather.userPortrait)
@@ -24,14 +26,16 @@ class LiveWeatherItemViewModel(liveWeather: LiveWeather, navigator: LiveWeatherN
     val location: ObservableField<String> = ObservableField(liveWeather.location)
     val liveUrl: ObservableField<String> = ObservableField(liveWeather.liveUrl)
     val likeNum: ObservableField<Int> = ObservableField(liveWeather.likeNum)
-    val hasLiked: ObservableBoolean = ObservableBoolean(liveWeather.hasLiked == 1)
+    val likeStatusResId: ObservableField<Int> = ObservableField(R.drawable.ic_not_praise)
     val comments: ObservableList<Comment> = ObservableArrayList<Comment>().apply {
         addAll(liveWeather.commentArray)
     }
 
-    val commentNum: ObservableField<String> = ObservableField(liveWeather.commentArray.size.toString())
+    val commentNum: ObservableField<String> =
+        ObservableField(liveWeather.commentArray.size.toString())
     val liveTextVisibility: ObservableBoolean = ObservableBoolean(liveWeather.liveText.isNotEmpty())
-    val commentVisibility: ObservableBoolean = ObservableBoolean(liveWeather.commentArray.isNotEmpty())
+    val commentVisibility: ObservableBoolean =
+        ObservableBoolean(liveWeather.commentArray.isNotEmpty())
 
     fun onImageClick() {
         navigator.get()?.showBigImageDialog(liveUrl.get()!!)
@@ -46,12 +50,14 @@ class LiveWeatherItemViewModel(liveWeather: LiveWeather, navigator: LiveWeatherN
                     UserUtil.openId,
                     liveId.toString(),
                     {
-                        if (hasLiked.get()) {
+                        if (hasLiked) {
                             likeNum.set(likeNum.get()?.minus(1))
-                            hasLiked.set(false)
+                            hasLiked = false
+                            likeStatusResId.set(R.drawable.ic_not_praise)
                         } else {
                             likeNum.set(likeNum.get()?.plus(1))
-                            hasLiked.set(true)
+                            hasLiked = true
+                            likeStatusResId.set(R.drawable.ic_praise)
                         }
                     }
                 )

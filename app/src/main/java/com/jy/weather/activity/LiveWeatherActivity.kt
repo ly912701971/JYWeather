@@ -4,11 +4,11 @@ import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.Observable
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.Observable
 import com.jy.weather.R
 import com.jy.weather.adapter.LiveWeatherAdapter
 import com.jy.weather.databinding.ActivityLiveWeatherBinding
@@ -152,7 +152,8 @@ class LiveWeatherActivity : BaseActivity(), LiveWeatherNavigator {
      * 拍照
      */
     private fun startShootPage() {
-        val photoDir = File("${Environment.getExternalStorageDirectory()}${File.separator}photoCache${File.separator}")
+        val photoDir = File(
+            "${Environment.getExternalStorageDirectory()}${File.separator}photoCache${File.separator}")
         if (!photoDir.exists()) {
             photoDir.mkdirs()
         }
@@ -201,7 +202,9 @@ class LiveWeatherActivity : BaseActivity(), LiveWeatherNavigator {
         bigImageDialog.show(supportFragmentManager, url)
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         PermissionUtil.onPermissionResult(
@@ -232,7 +235,8 @@ class LiveWeatherActivity : BaseActivity(), LiveWeatherNavigator {
                     viewModel.uploadComment(commentText)
                 }
 
-                UserUtil.REQUEST_LOGIN -> UserUtil.onActivityResultData(requestCode, resultCode, data)
+                UserUtil.REQUEST_LOGIN -> UserUtil.onActivityResultData(requestCode, resultCode,
+                    data)
             }
         }
 

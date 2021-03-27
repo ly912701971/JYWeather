@@ -2,22 +2,27 @@ package com.jy.weather.viewmodel
 
 import android.app.Activity
 import android.content.ContentUris
-import androidx.databinding.ObservableArrayList
-import androidx.databinding.ObservableBoolean
-import androidx.databinding.ObservableField
-import androidx.databinding.ObservableList
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.provider.DocumentsContract
 import android.provider.MediaStore
+import androidx.databinding.ObservableArrayList
+import androidx.databinding.ObservableBoolean
+import androidx.databinding.ObservableField
+import androidx.databinding.ObservableList
 import com.jy.weather.JYApplication
 import com.jy.weather.R
 import com.jy.weather.data.remote.NetworkInterface
 import com.jy.weather.entity.Comment
 import com.jy.weather.entity.LiveWeather
 import com.jy.weather.navigator.LiveWeatherNavigator
-import com.jy.weather.util.*
+import com.jy.weather.util.DrawableUtil
+import com.jy.weather.util.GaussianBlurUtil
+import com.jy.weather.util.JsonUtil
+import com.jy.weather.util.NetworkUtil
+import com.jy.weather.util.SnackbarObj
+import com.jy.weather.util.UserUtil
 import java.lang.ref.WeakReference
 
 class LiveWeatherViewModel {
@@ -209,7 +214,8 @@ class LiveWeatherViewModel {
                     }
                     "com.android.providers.downloads.documents" -> {
                         val contentUri =
-                            ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), docId.toLong())
+                            ContentUris.withAppendedId(
+                                Uri.parse("content://downloads/public_downloads"), docId.toLong())
                         getImagePath(contentUri, null)
                     }
                     else -> ""

@@ -5,7 +5,7 @@
 
         <variable
             name="viewModel"
-            type="com.jy.weather.viewmodel.CitySearchItemViewModel"/>
+            type="com.jy.weather.viewmodel.CitySearchItemViewModel" />
     </data>
 
     <RelativeLayout
@@ -21,6 +21,6 @@
             android:paddingRight="32dp"
             android:paddingBottom="16dp"
             android:text="@{viewModel.cityInfo}"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
     </RelativeLayout>
 </layout>

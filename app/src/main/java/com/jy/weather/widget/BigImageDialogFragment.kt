@@ -2,11 +2,11 @@ package com.jy.weather.widget
 
 import android.app.Dialog
 import android.os.Bundle
-import androidx.fragment.app.DialogFragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.fragment.app.DialogFragment
 import com.bumptech.glide.Glide
 import com.jy.weather.R
 
@@ -34,7 +34,9 @@ class BigImageDialogFragment : DialogFragment() {
         setStyle(STYLE_NORMAL, android.R.style.Theme_Black_NoTitleBar_Fullscreen)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View? {
         val view = inflater.inflate(R.layout.dialog_big_image, container, false)
         imageView = view.findViewById(R.id.iv_big_image)
         imageView?.setOnClickListener { dismiss() }
