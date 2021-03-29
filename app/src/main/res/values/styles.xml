@@ -23,7 +23,7 @@
     </style>
 
     <style name="WelcomeTheme" parent="AppTheme">
-        <item name="android:windowBackground">@drawable/ic_launcher</item>
+        <item name="android:windowBackground">@drawable/ic_splash</item>
     </style>
 
     <style name="SimpleDialogTheme" parent="android:style/Theme.Dialog">

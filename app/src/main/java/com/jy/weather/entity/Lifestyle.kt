@@ -1,6 +1,8 @@
 package com.jy.weather.entity
 
 import com.google.gson.annotations.SerializedName
+import com.jy.weather.util.DrawableUtil
+import com.jy.weather.util.StringUtil
 
 /**
  * Lifestyle实体类
@@ -15,4 +17,7 @@ data class Lifestyle(
 
     @SerializedName("txt")
     val text: String    //详细信息
-)
+) {
+    val title: String get() = StringUtil.getLiftStyleTitle(type)
+    val resId: Int get() = DrawableUtil.getLifeStyleIconId(type)
+}

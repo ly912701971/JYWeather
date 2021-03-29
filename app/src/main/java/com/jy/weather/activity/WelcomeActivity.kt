@@ -2,8 +2,9 @@ package com.jy.weather.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import com.jy.weather.JYApplication
+import io.reactivex.android.schedulers.AndroidSchedulers
+import java.util.concurrent.TimeUnit
 
 /**
  * 启动界面
@@ -15,13 +16,7 @@ class WelcomeActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStatusBarTrans()
-
-        Handler().postDelayed(
-            {
-                jumpActivity()
-            },
-            1000
-        )
+        AndroidSchedulers.mainThread().scheduleDirect({ jumpActivity() }, 1, TimeUnit.SECONDS)
     }
 
     private fun jumpActivity() {

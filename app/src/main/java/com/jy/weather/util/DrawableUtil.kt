@@ -77,4 +77,17 @@ object DrawableUtil {
                 }
             }
         }
+
+    fun getLifeStyleIconId(type: String): Int =
+        when (type) {
+            "air" -> R.drawable.ic_air
+            "comf" -> R.drawable.ic_comfort
+            "cw" -> R.drawable.ic_wash_car
+            "drsg" -> R.drawable.ic_dress
+            "flu" -> R.drawable.ic_flu
+            "sport" -> R.drawable.ic_sport
+            "trav" -> R.drawable.ic_travel
+            "uv" -> R.drawable.ic_uv
+            else -> 0
+        }
 }

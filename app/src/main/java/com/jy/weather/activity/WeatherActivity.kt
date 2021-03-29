@@ -10,6 +10,7 @@ import android.view.animation.DecelerateInterpolator
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.Observable
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jy.weather.BR
 import com.jy.weather.R
@@ -85,6 +86,20 @@ class WeatherActivity : BaseActivity(), WeatherNavigator {
                 R.layout.item_daily_forecast,
                 BR.dailyForecast
             )
+        }
+
+        binding.rvLife.run {
+            layoutManager = GridLayoutManager(context, 4)
+            setHasFixedSize(true)
+            adapter = CommonAdapter(
+                viewModel.liftStyles,
+                R.layout.item_lift_style,
+                BR.style
+            ).apply {
+                setOnItemClickListener {
+                    viewModel.showLifestyleDialog(it)
+                }
+            }
         }
     }
 

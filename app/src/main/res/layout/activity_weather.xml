@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="ContentDescription">
 
     <data>
 
@@ -18,7 +20,7 @@
         app:backgroundId="@{safeUnbox(viewModel.bgResId)}">
 
         <!-- header part -->
-        <RelativeLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/rl_header"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
@@ -30,38 +32,43 @@
                 android:id="@+id/iv_home"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
                 android:onClick="@{() -> viewModel.startCityManageActivity()}"
-                android:src="@drawable/ic_home" />
+                android:src="@drawable/ic_home"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
                 android:layout_marginStart="34dp"
-                android:layout_toEndOf="@id/iv_home"
                 android:onClick="@{() -> viewModel.startCityManageActivity()}"
                 android:text="@{viewModel.currentCity}"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/iv_home"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
                 android:layout_marginEnd="16dp"
-                android:layout_toStartOf="@+id/iv_setting"
                 android:onClick="@{() -> viewModel.startLiveWeatherActivity()}"
-                android:src="@drawable/ic_live_weather" />
+                android:src="@drawable/ic_live_weather"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/iv_setting"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/iv_setting"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
                 android:onClick="@{() -> viewModel.startSettingActivity()}"
-                android:src="@drawable/ic_setting" />
-        </RelativeLayout>
+                android:src="@drawable/ic_setting"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/srl_refresh"
@@ -77,411 +84,214 @@
                 android:overScrollMode="never"
                 android:scrollbars="none">
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:visibility="@{viewModel.isViewReady ? View.VISIBLE : View.INVISIBLE}">
 
                     <!-- now part -->
-                    <RelativeLayout
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cl_now"
                         android:layout_width="match_parent"
                         android:layout_height="400dp"
                         android:paddingStart="16dp"
-                        android:paddingEnd="16dp">
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:gravity="end"
-                            android:paddingTop="8dp"
-                            android:paddingBottom="8dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/update_time" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="4dp"
-                                android:text="@{viewModel.updateTime}" />
-                        </LinearLayout>
+                        android:paddingEnd="16dp"
+                        app:layout_constraintTop_toTopOf="parent">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_above="@id/ll_brief"
+                            android:layout_marginStart="4dp"
+                            android:text="@{viewModel.updateTime}"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:onClick="@{() -> viewModel.startTodayActivity()}"
                             android:text="@{viewModel.temperature}"
-                            android:textSize="80sp" />
+                            android:textSize="80sp"
+                            app:layout_constraintBottom_toTopOf="@+id/ll_brief"
+                            app:layout_constraintStart_toStartOf="parent" />
 
-                        <LinearLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/ll_brief"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentBottom="true"
-                            android:gravity="center_vertical"
                             android:onClick="@{() -> viewModel.startTodayActivity()}"
-                            android:orientation="horizontal">
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent">
 
                             <ImageView
+                                android:id="@+id/iv_icon"
                                 android:layout_width="32dp"
                                 android:layout_height="32dp"
-                                app:imageId="@{safeUnbox(viewModel.iconId)}" />
+                                app:imageId="@{safeUnbox(viewModel.iconId)}"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
 
                             <TextView
+                                android:id="@+id/tv_cond"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="8dp"
                                 android:text="@{viewModel.condText}"
-                                android:textSize="16sp" />
+                                android:textSize="16sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/iv_icon"
+                                app:layout_constraintTop_toTopOf="parent" />
 
                             <View
+                                android:id="@+id/v_brief_divider"
                                 android:layout_width="1dp"
-                                android:layout_height="match_parent"
+                                android:layout_height="32dp"
                                 android:layout_marginStart="8dp"
-                                android:background="@color/white" />
+                                android:background="@color/white"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/tv_cond"
+                                app:layout_constraintTop_toTopOf="parent" />
 
                             <TextView
+                                android:id="@+id/tv_wind_dir"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="8dp"
                                 android:text="@{viewModel.windDirection}"
-                                android:textSize="16sp" />
+                                android:textSize="16sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/v_brief_divider"
+                                app:layout_constraintTop_toTopOf="parent" />
 
                             <TextView
+                                android:id="@+id/tv_wind_scale"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="8dp"
                                 android:text="@{viewModel.windScale}"
-                                android:textSize="16sp" />
+                                android:textSize="16sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/tv_wind_dir"
+                                app:layout_constraintTop_toTopOf="parent" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="8dp"
-                                android:drawableEnd="@drawable/ic_goto"
                                 android:text="@{@string/relative_hum + viewModel.relativeHum}"
-                                android:textSize="16sp" />
-                        </LinearLayout>
-                    </RelativeLayout>
+                                android:textSize="16sp"
+                                app:drawableEndCompat="@drawable/ic_goto"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/tv_wind_scale"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <!-- hourly forecast part -->
-                    <LinearLayout
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cl_hourly"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="24dp"
-                        android:background="@color/background_dark"
-                        android:orientation="vertical">
+                        android:background="@drawable/shape_weather_block"
+                        app:layout_constraintTop_toBottomOf="@+id/cl_now">
 
                         <TextView
+                            android:id="@+id/tv_hourly_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:padding="8dp"
+                            android:padding="12dp"
                             android:text="@string/hourly_forecast"
-                            android:textSize="16sp" />
+                            android:textSize="16sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                        <include layout="@layout/divider" />
+                        <View
+                            android:id="@+id/v_hourly_divider"
+                            android:layout_width="match_parent"
+                            android:layout_height="1px"
+                            android:background="@color/divider"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_hourly_title" />
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rv_hourly"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="8dp"
-                            app:items="@{viewModel.hourlyForecasts}" />
-                    </LinearLayout>
+                            app:items="@{viewModel.hourlyForecasts}"
+                            app:layout_constraintTop_toBottomOf="@+id/v_hourly_divider" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <!-- daily forecast part -->
-                    <RelativeLayout
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cl_daily"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="24dp"
-                        android:background="@color/background_dark"
-                        android:orientation="vertical">
+                        android:background="@drawable/shape_weather_block"
+                        app:layout_constraintTop_toBottomOf="@id/cl_hourly">
 
                         <TextView
                             android:id="@+id/tv_daily_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:padding="8dp"
+                            android:padding="12dp"
                             android:text="@string/daily_forecast"
-                            android:textSize="16sp" />
+                            android:textSize="16sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <View
                             android:id="@+id/v_daily_divider"
                             android:layout_width="match_parent"
                             android:layout_height="1px"
-                            android:layout_below="@+id/tv_daily_title"
-                            android:background="@color/divider" />
+                            android:background="@color/divider"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_daily_title" />
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rv_daily"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/v_daily_divider"
-                            app:items="@{viewModel.dailyForecasts}" />
-                    </RelativeLayout>
+                            app:items="@{viewModel.dailyForecasts}"
+                            app:layout_constraintTop_toBottomOf="@+id/v_daily_divider" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <!-- life suggestion part -->
-                    <LinearLayout
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="24dp"
-                        android:background="@color/background_dark"
-                        android:orientation="vertical">
+                        android:background="@drawable/shape_weather_block"
+                        app:layout_constraintTop_toBottomOf="@id/cl_daily">
 
                         <TextView
+                            android:id="@+id/tv_life_title"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:padding="8dp"
+                            android:padding="12dp"
                             android:text="@string/sug"
-                            android:textSize="16sp" />
+                            android:textSize="16sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                        <include layout="@layout/divider" />
+                        <View
+                            android:id="@+id/v_life_divider"
+                            android:layout_width="match_parent"
+                            android:layout_height="1px"
+                            android:background="@color/divider"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_life_title" />
 
-                        <GridLayout
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_life"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:columnCount="4"
-                            android:orientation="horizontal"
-                            android:padding="8dp"
-                            android:rowCount="2">
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_columnWeight="1"
-                                android:gravity="center"
-                                android:onClick="@{() -> viewModel.showLifestyleDialog(`air`)}"
-                                android:orientation="vertical">
-
-                                <ImageView
-                                    android:layout_width="48dp"
-                                    android:layout_height="48dp"
-                                    android:src="@drawable/ic_air" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="4dp"
-                                    android:text="@{viewModel.styleMap[`air`].first}" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="4dp"
-                                    android:text="@string/sug_air"
-                                    android:textColor="@color/dark_gray"
-                                    android:textSize="13sp" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_columnWeight="1"
-                                android:gravity="center"
-                                android:onClick="@{() -> viewModel.showLifestyleDialog(`comf`)}"
-                                android:orientation="vertical">
-
-                                <ImageView
-                                    android:layout_width="48dp"
-                                    android:layout_height="48dp"
-                                    android:src="@drawable/ic_comfort" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="4dp"
-                                    android:text="@{viewModel.styleMap[`comf`].first}" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="4dp"
-                                    android:text="@string/sug_comfort"
-                                    android:textColor="@color/dark_gray"
-                                    android:textSize="13sp" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_columnWeight="1"
-                                android:gravity="center"
-                                android:onClick="@{() -> viewModel.showLifestyleDialog(`cw`)}"
-                                android:orientation="vertical">
-
-                                <ImageView
-                                    android:layout_width="48dp"
-                                    android:layout_height="48dp"
-                                    android:src="@drawable/ic_wash_car" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="4dp"
-                                    android:text="@{viewModel.styleMap[`cw`].first}" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="4dp"
-                                    android:text="@string/sug_car_wash"
-                                    android:textColor="@color/dark_gray"
-                                    android:textSize="13sp" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_columnWeight="1"
-                                android:gravity="center"
-                                android:onClick="@{() -> viewModel.showLifestyleDialog(`drsg`)}"
-                                android:orientation="vertical">
-
-                                <ImageView
-                                    android:layout_width="48dp"
-                                    android:layout_height="48dp"
-                                    android:src="@drawable/ic_dress" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="4dp"
-                                    android:text="@{viewModel.styleMap[`drsg`].first}" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="4dp"
-                                    android:text="@string/sug_dress"
-                                    android:textColor="@color/dark_gray"
-                                    android:textSize="13sp" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_columnWeight="1"
-                                android:layout_marginTop="16dp"
-                                android:gravity="center"
-                                android:onClick="@{() -> viewModel.showLifestyleDialog(`flu`)}"
-                                android:orientation="vertical">
-
-                                <ImageView
-                                    android:layout_width="48dp"
-                                    android:layout_height="48dp"
-                                    android:src="@drawable/ic_flu" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="4dp"
-                                    android:text="@{viewModel.styleMap[`flu`].first}" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="4dp"
-                                    android:text="@string/sug_flu"
-                                    android:textColor="@color/dark_gray"
-                                    android:textSize="13sp" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_columnWeight="1"
-                                android:layout_marginTop="16dp"
-                                android:gravity="center"
-                                android:onClick="@{() -> viewModel.showLifestyleDialog(`sport`)}"
-                                android:orientation="vertical">
-
-                                <ImageView
-                                    android:layout_width="48dp"
-                                    android:layout_height="48dp"
-                                    android:src="@drawable/ic_sport" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="4dp"
-                                    android:text="@{viewModel.styleMap[`sport`].first}" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="4dp"
-                                    android:text="@string/sug_sport"
-                                    android:textColor="@color/dark_gray"
-                                    android:textSize="13sp" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_columnWeight="1"
-                                android:layout_marginTop="16dp"
-                                android:gravity="center"
-                                android:onClick="@{() -> viewModel.showLifestyleDialog(`trav`)}"
-                                android:orientation="vertical">
-
-                                <ImageView
-                                    android:layout_width="48dp"
-                                    android:layout_height="48dp"
-                                    android:src="@drawable/ic_travel" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="4dp"
-                                    android:text="@{viewModel.styleMap[`trav`].first}" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="4dp"
-                                    android:text="@string/sug_travel"
-                                    android:textColor="@color/dark_gray"
-                                    android:textSize="13sp" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_columnWeight="1"
-                                android:layout_marginTop="16dp"
-                                android:gravity="center"
-                                android:onClick="@{() -> viewModel.showLifestyleDialog(`uv`)}"
-                                android:orientation="vertical">
-
-                                <ImageView
-                                    android:layout_width="48dp"
-                                    android:layout_height="48dp"
-                                    android:src="@drawable/ic_uv" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="4dp"
-                                    android:text="@{viewModel.styleMap[`uv`].first}" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="4dp"
-                                    android:text="@string/sug_ultraviolet"
-                                    android:textColor="@color/dark_gray"
-                                    android:textSize="13sp" />
-                            </LinearLayout>
-                        </GridLayout>
-                    </LinearLayout>
-                </LinearLayout>
+                            app:items="@{viewModel.liftStyles}"
+                            app:layout_constraintTop_toBottomOf="@+id/v_life_divider" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </ScrollView>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </RelativeLayout>
 </layout>
-

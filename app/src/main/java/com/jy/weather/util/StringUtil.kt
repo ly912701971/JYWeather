@@ -35,6 +35,19 @@ object StringUtil {
         }
     }
 
+    fun getLiftStyleTitle(type: String): String =
+        when (type) {
+            "air" -> "空气"
+            "comf" -> "舒适度"
+            "cw" -> "洗车"
+            "drsg" -> "穿衣"
+            "flu" -> "感冒"
+            "sport" -> "运动"
+            "trav" -> "旅游"
+            "uv" -> "紫外线"
+            else -> ""
+        }
+
     fun getWeekday(dateText: String): String {
         var date: Date? = null
         try {

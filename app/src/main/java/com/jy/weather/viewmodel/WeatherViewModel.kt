@@ -1,16 +1,15 @@
 package com.jy.weather.viewmodel
 
 import androidx.databinding.ObservableArrayList
-import androidx.databinding.ObservableArrayMap
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableList
-import androidx.databinding.ObservableMap
 import com.jy.weather.JYApplication
 import com.jy.weather.R
 import com.jy.weather.data.remote.NetworkInterface
 import com.jy.weather.entity.DailyForecast
 import com.jy.weather.entity.HourlyForecast
+import com.jy.weather.entity.Lifestyle
 import com.jy.weather.entity.Now
 import com.jy.weather.navigator.WeatherNavigator
 import com.jy.weather.util.DrawableUtil
@@ -38,7 +37,7 @@ class WeatherViewModel {
     val temperature: ObservableField<String> = ObservableField()
     val hourlyForecasts: ObservableList<HourlyForecast> = ObservableArrayList()
     val dailyForecasts: ObservableList<DailyForecast> = ObservableArrayList()
-    val styleMap: ObservableMap<String, Pair<String, String>> = ObservableArrayMap()
+    val liftStyles: ObservableList<Lifestyle> = ObservableArrayList()
     val snackbarObj: ObservableField<SnackbarObj> = ObservableField()
 
     lateinit var dialogText: String
@@ -73,8 +72,8 @@ class WeatherViewModel {
 
     fun startLiveWeatherActivity() = navigator.get()?.startLiveWeatherActivity()
 
-    fun showLifestyleDialog(type: String) {
-        dialogText = (styleMap[type] ?: return).second
+    fun showLifestyleDialog(index: Int) {
+        dialogText = liftStyles.getOrNull(index)?.text ?: return
         navigator.get()?.showLifestyleDialog()
     }
 
@@ -105,17 +104,18 @@ class WeatherViewModel {
         if (weather.status == "ok") {
             // 处理数据
             currentCity.set(weather.basic.cityName)
-            updateTime.set(weather.update.loc)
+            updateTime.set("发布时间：${weather.update.loc}")
             now = weather.now
             handleNow(now)
-            weather.lifestyles.forEach {
-                styleMap[it.type] = Pair(it.brief, it.text)
+            liftStyles.run {
+                clear()
+                addAll(weather.lifestyles)
             }
-            dailyForecasts.apply {
+            dailyForecasts.run {
                 clear()
                 addAll(weather.dailyForecasts)
             }
-            hourlyForecasts.apply {
+            hourlyForecasts.run {
                 clear()
                 addAll(weather.hourlyForecasts)
             }
