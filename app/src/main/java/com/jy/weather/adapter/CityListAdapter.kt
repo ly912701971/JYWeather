@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import androidx.databinding.DataBindingUtil
 import com.jy.weather.databinding.ItemCityBinding
-import com.jy.weather.entity.CityData
+import com.jy.weather.entity.WeatherData
 import com.jy.weather.viewmodel.CityListItemViewModel
 
 /**
@@ -18,7 +18,7 @@ import com.jy.weather.viewmodel.CityListItemViewModel
 class CityListAdapter(context: Context) : BaseAdapter(), IBaseAdapter {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
-    private var cityList: List<CityData> = listOf()
+    private var cityList: List<WeatherData> = listOf()
 
     override fun getCount() = cityList.size
 
@@ -41,7 +41,7 @@ class CityListAdapter(context: Context) : BaseAdapter(), IBaseAdapter {
     }
 
     override fun setData(data: List<*>) {
-        cityList = data as List<CityData>
+        cityList = data as List<WeatherData>
         notifyDataSetChanged()
     }
 }

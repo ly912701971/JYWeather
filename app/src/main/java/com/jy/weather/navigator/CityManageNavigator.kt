@@ -1,6 +1,7 @@
 package com.jy.weather.navigator
 
+import com.jy.weather.entity.Location
+
 interface CityManageNavigator {
-    fun requestPermission(index: Int)
-    fun startWeatherActivity(city: String)
+    fun startWeatherActivity(city: String, cityId: String, location: Location?)
 }

@@ -8,7 +8,7 @@
 
         <variable
             name="style"
-            type="com.jy.weather.entity.Lifestyle" />
+            type="com.jy.weather.entity.Index" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -31,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="@{style.brief}"
+            android:text="@{style.category}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iv_icon" />

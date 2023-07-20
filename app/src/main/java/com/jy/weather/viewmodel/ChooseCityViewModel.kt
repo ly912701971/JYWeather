@@ -1,21 +1,25 @@
 package com.jy.weather.viewmodel
 
 import android.text.Editable
-import android.view.View
-import android.widget.TextView
 import androidx.databinding.ObservableArrayList
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableList
+import androidx.lifecycle.lifecycleScope
 import com.jy.weather.JYApplication
 import com.jy.weather.R
+import com.jy.weather.data.remote.NetworkInterface
+import com.jy.weather.entity.Location
 import com.jy.weather.navigator.ChooseCityNavigator
 import com.jy.weather.util.DrawableUtil
 import com.jy.weather.util.GpsUtil
+import com.jy.weather.util.JsonUtil
 import com.jy.weather.util.LocationUtil
 import com.jy.weather.util.NetworkUtil
 import com.jy.weather.util.SnackbarObj
 import java.lang.ref.WeakReference
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class ChooseCityViewModel {
 
@@ -23,12 +27,8 @@ class ChooseCityViewModel {
     private val db = JYApplication.cityDB
 
     private var hasGranted: Boolean = false
-    private val nationalCityList: Array<String> by lazy {
-        context.resources.getStringArray(R.array.national_cities_list)
-    }
-    private val locateUnknown: String by lazy {
-        context.getString(R.string.locate_unknown)
-    }
+    private val locateUnknown: String by lazy { context.getString(R.string.locate_unknown) }
+    private val locList = mutableListOf<Location>()
 
     private lateinit var navigator: WeakReference<ChooseCityNavigator>
 
@@ -49,13 +49,17 @@ class ChooseCityViewModel {
 
     fun afterTextChanged(editable: Editable) {
         if (editable.isNotEmpty()) {
-            searchResult.apply {
-                clear()
-                addAll(nationalCityList.filter {
-                    it.contains(editable)
-                })
+            navigator.get()?.getActivity()?.lifecycleScope?.launch(Dispatchers.IO) {
+                NetworkInterface.queryLocationData(editable.toString())?.let {
+                    searchResult.clear()
+                    locList.clear()
+                    JsonUtil.handleLocationData(it)?.data?.forEach { loc ->
+                        searchResult.add(loc.loc)
+                        locList.add(loc)
+                    }
+                }
+                hasSearch.set(true)
             }
-            hasSearch.set(true)
         } else {
             hasSearch.set(false)
         }
@@ -74,44 +78,34 @@ class ChooseCityViewModel {
 
     fun onPermissionDenied() = setLocation(locateUnknown)
 
-    fun onCityClick(v: View) {
+    fun onCityClick(city: String, cityId: String) {
         if (!NetworkUtil.isNetworkAvailable()) {
             snackbarObj.set(SnackbarObj(context.getString(R.string.network_unavailable)))
             return
         }
 
-        val city = when (v.id) {
-            R.id.tv_location -> if (!hasGranted) {
-                snackbarObj.set(SnackbarObj(context.getString(R.string.permission_denied)))
-                return
-            } else if (!GpsUtil.isOpen(context)) {
-                showGpsNotOpen()
-                return
-            } else {
-                (v as TextView).text.toString()
-            }
-
-            else -> (v as TextView).text.toString()
-        }.replace(Regex("[市县区]"), "")
-
-        if (city == locateUnknown) {
+        if (!hasGranted) {
+            snackbarObj.set(SnackbarObj(context.getString(R.string.permission_denied)))
+            return
+        } else if (!GpsUtil.isOpen(context)) {
+            showGpsNotOpen()
             return
         }
 
-        navigator.get()?.startWeatherActivity(city)
+        val cityName = if (cityId.isEmpty()) location.get() else city.replace(Regex("[市县区]"), "")
+        if (cityName == locateUnknown) return
+        navigator.get()?.startWeatherActivity(cityName, cityId)
     }
 
     fun onSearchResultItemClick(index: Int) =
-        navigator.get()?.startWeatherActivity(searchResult[index].split(Regex(" - "))[0])
+        navigator.get()
+            ?.startWeatherActivity(locList[index].name, locList[index].id, locList[index])
 
-    private fun showGpsNotOpen() =
-        snackbarObj.set(
-            SnackbarObj(context.getString(R.string.locate_failed),
-                context.getString(R.string.goto_open)
-            ) {
-                navigator.get()?.startOpenGpsActivity()
-            }
-        )
+    private fun showGpsNotOpen() = snackbarObj.set(SnackbarObj(
+        context.getString(R.string.locate_failed), context.getString(R.string.goto_open)
+    ) {
+        navigator.get()?.startOpenGpsActivity()
+    })
 
     private fun setLocation(city: String) = location.set(city)
 }

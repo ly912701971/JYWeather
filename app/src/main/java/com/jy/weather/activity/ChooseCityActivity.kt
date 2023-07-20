@@ -6,10 +6,13 @@ import android.os.Bundle
 import android.provider.Settings
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.Observable
+import androidx.recyclerview.widget.GridLayoutManager
 import com.jy.weather.JYApplication
 import com.jy.weather.R
+import com.jy.weather.adapter.ChooseCityAdapter
 import com.jy.weather.adapter.CitySearchAdapter
 import com.jy.weather.databinding.ActivityChooseCityBinding
+import com.jy.weather.entity.Location
 import com.jy.weather.navigator.ChooseCityNavigator
 import com.jy.weather.util.AlertDialogUtil
 import com.jy.weather.util.PermissionUtil
@@ -26,6 +29,29 @@ class ChooseCityActivity : BaseActivity(), ChooseCityNavigator {
     private lateinit var binding: ActivityChooseCityBinding
     private lateinit var viewModel: ChooseCityViewModel
     private lateinit var snackbarCallback: Observable.OnPropertyChangedCallback
+    private val hotCities = listOf(
+        "未知" to "",
+        "北京市" to "101010100",
+        "天津市" to "101030100",
+        "上海市" to "101020100",
+        "重庆市" to "101040100",
+        "沈阳市" to "101070101",
+        "大连市" to "101070201",
+        "长春市" to "101060101",
+        "哈尔滨市" to "101050101",
+        "郑州市" to "101180101",
+        "武汉市" to "101200101",
+        "长沙市" to "101250101",
+        "广州市" to "101280101",
+        "深圳市" to "101280601",
+        "南京市" to "101190101",
+        "杭州市" to "101210101",
+        "东莞市" to "101281601",
+        "成都市" to "101270101",
+        "青岛市" to "101120201",
+        "苏州市" to "101190401",
+        "厦门市" to "101230201"
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,17 +73,26 @@ class ChooseCityActivity : BaseActivity(), ChooseCityNavigator {
             when {
                 binding.etSearch.text.isNotEmpty() -> binding.etSearch.setText("")
                 JYApplication.cityDB.defaultCity == null -> {// 默认城市北京
-                    startWeatherActivity(resources.getString(R.string.default_city))
+                    startWeatherActivity(hotCities[1].first, hotCities[1].second)
                     finish()
                 }
+
                 else -> finish()
             }
         }
 
-        // adapter
-        binding.lvSearchResult.adapter = CitySearchAdapter(this)
-        binding.lvSearchResult.setOnItemClickListener { _, _, index, _ ->
-            viewModel.onSearchResultItemClick(index)
+        binding.rvHotCity.also {
+            it.layoutManager = GridLayoutManager(this, 3)
+            it.adapter = ChooseCityAdapter(hotCities) { city, cityId ->
+                viewModel.onCityClick(city, cityId)
+            }
+        }
+
+        binding.lvSearchResult.also {
+            it.adapter = CitySearchAdapter(this)
+            it.setOnItemClickListener { _, _, index, _ ->
+                viewModel.onSearchResultItemClick(index)
+            }
         }
     }
 
@@ -135,13 +170,21 @@ class ChooseCityActivity : BaseActivity(), ChooseCityNavigator {
         }
     }
 
-    override fun startOpenGpsActivity() =
-        startActivityForResult(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS),
-            LOCATION_REQUEST_CODE)
+    override fun getActivity() = this
 
-    override fun startWeatherActivity(city: String) {
+    override fun startOpenGpsActivity() =
+        startActivityForResult(
+            Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS),
+            LOCATION_REQUEST_CODE
+        )
+
+    override fun startWeatherActivity(city: String?, cityId: String, location: Location?) {
         startActivity(Intent(this, WeatherActivity::class.java).apply {
             putExtra("city", city)
+            putExtra("cityId", cityId)
+            if (location != null) {
+                putExtra("location", location)
+            }
         })
         finish()
     }

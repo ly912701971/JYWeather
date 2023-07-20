@@ -16,9 +16,8 @@ import com.jy.weather.BR
 import com.jy.weather.R
 import com.jy.weather.adapter.CommonAdapter
 import com.jy.weather.databinding.ActivityWeatherBinding
+import com.jy.weather.entity.Location
 import com.jy.weather.navigator.WeatherNavigator
-import com.jy.weather.service.AutoUpdateService
-import com.jy.weather.service.SendMessageService
 import com.jy.weather.util.SnackbarUtil
 import com.jy.weather.viewmodel.WeatherViewModel
 import kotlinx.android.synthetic.main.dialog_lifestyle.view.*
@@ -47,7 +46,11 @@ class WeatherActivity : BaseActivity(), WeatherNavigator {
 
         setupSnackbarCallback()
 
-        viewModel.onNewIntent(intent.getStringExtra("city") ?: "")
+        viewModel.onNewIntent(
+            intent.getStringExtra("city") ?: "",
+            intent.getStringExtra("cityId") ?: "",
+            intent.getSerializableExtra("location") as? Location
+        )
     }
 
     private fun setupView() {
@@ -62,7 +65,7 @@ class WeatherActivity : BaseActivity(), WeatherNavigator {
             }
             setHasFixedSize(true)
             adapter = CommonAdapter(
-                viewModel.hourlyForecasts,
+                viewModel.hourly,
                 R.layout.item_hourly_forecast,
                 BR.hourlyForecast
             )
@@ -82,7 +85,7 @@ class WeatherActivity : BaseActivity(), WeatherNavigator {
             }
             setHasFixedSize(true)
             adapter = CommonAdapter(
-                viewModel.dailyForecasts,
+                viewModel.daily,
                 R.layout.item_daily_forecast,
                 BR.dailyForecast
             )
@@ -92,7 +95,7 @@ class WeatherActivity : BaseActivity(), WeatherNavigator {
             layoutManager = GridLayoutManager(context, 4)
             setHasFixedSize(true)
             adapter = CommonAdapter(
-                viewModel.liftStyles,
+                viewModel.index,
                 R.layout.item_lift_style,
                 BR.style
             ).apply {
@@ -133,7 +136,11 @@ class WeatherActivity : BaseActivity(), WeatherNavigator {
         super.onNewIntent(intent)
 
         setIntent(intent)
-        viewModel.onNewIntent(intent.getStringExtra("city") ?: "")
+        viewModel.onNewIntent(
+            intent.getStringExtra("city") ?: "",
+            intent.getStringExtra("cityId") ?: "",
+            intent.getSerializableExtra("location") as? Location
+        )
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
@@ -160,12 +167,13 @@ class WeatherActivity : BaseActivity(), WeatherNavigator {
             }
         }
 
+    override fun getActivity() = this
+
     override fun startTodayActivity() =
         startActivity(Intent(this, TodayActivity::class.java).apply {
             putExtra("city", viewModel.currentCity.get())
-            putExtra("update_time", viewModel.updateTime.get())
-            putExtra("now", viewModel.now)
-            putExtra("daily_forecast", viewModel.dailyForecasts[0])
+            putExtra("now", viewModel.weather.get()?.now)
+            putExtra("daily", viewModel.daily[0])
         })
 
     override fun startCityManageActivity() =
@@ -176,14 +184,6 @@ class WeatherActivity : BaseActivity(), WeatherNavigator {
 
     override fun startLiveWeatherActivity() =
         startActivity(Intent(this, LiveWeatherActivity::class.java))
-
-    override fun startAutoUpdateService() {
-        startService(Intent(this, AutoUpdateService::class.java))
-    }
-
-    override fun startSendMessageService() {
-        startService(Intent(this, SendMessageService::class.java))
-    }
 
     override fun startDataRefreshAnimator() {
         // 刷新数据动画

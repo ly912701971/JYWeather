@@ -25,7 +25,7 @@ class WelcomeActivity : BaseActivity() {
             startActivity(Intent(this, ChooseCityActivity::class.java))
         } else {
             startActivity(Intent(this, WeatherActivity::class.java).apply {
-                putExtra("city", city)
+                putExtra("cityId", city)
             })
         }
         finish()

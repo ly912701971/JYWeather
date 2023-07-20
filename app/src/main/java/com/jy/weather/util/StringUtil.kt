@@ -14,7 +14,8 @@ import java.util.regex.Pattern
  */
 object StringUtil {
 
-    private val weekdays = arrayOf("星期天", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六")
+    private val weekdays =
+        arrayOf("星期天", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六")
 
     /**
      * 用于查看text是否含有数字
@@ -24,29 +25,26 @@ object StringUtil {
     /**
      * 返回紫外线强弱等级
      */
-    fun getUvLevel(indexText: String): String {
-        val index = Integer.parseInt(indexText)
-        return when {
-            index >= 11 -> "极强"
-            index >= 8 -> "很强"
-            index >= 6 -> "强"
-            index >= 3 -> "中等"
-            else -> "弱"
+    fun getUvLevel(indexText: String) =
+        when (Integer.parseInt(indexText)) {
+            5 -> "很强"
+            4 -> "强"
+            3 -> "中等"
+            2 -> "弱"
+            else -> "最弱"
         }
-    }
 
-    fun getLiftStyleTitle(type: String): String =
-        when (type) {
-            "air" -> "空气"
-            "comf" -> "舒适度"
-            "cw" -> "洗车"
-            "drsg" -> "穿衣"
-            "flu" -> "感冒"
-            "sport" -> "运动"
-            "trav" -> "旅游"
-            "uv" -> "紫外线"
-            else -> ""
-        }
+    fun getIndexTitle(type: String) = when (type) {
+        "1" -> "运动"
+        "2" -> "洗车"
+        "3" -> "穿衣"
+        "5" -> "紫外线"
+        "6" -> "旅游"
+        "8" -> "舒适度"
+        "9" -> "感冒"
+        "10" -> "空气"
+        else -> ""
+    }
 
     fun getWeekday(dateText: String): String {
         var date: Date? = null
@@ -61,36 +59,4 @@ object StringUtil {
     fun getTime(): String = SimpleDateFormat("HH:mm", Locale.CHINA).format(Date())
 
     fun getDateTime(): String = SimpleDateFormat("yy-MM-dd HH:mm", Locale.CHINA).format(Date())
-
-    fun getMessage(call: String, weatherData: String): String {
-        val endWord = "请留意天气变化，提前做好应对措施。\r\n[卷云天气]祝您生活愉快！"
-        val builder = StringBuilder()
-        if (call.contains(Regex("的"))) {
-            builder.append("${call}，")
-        } else {
-            builder.append("亲爱的$call，")
-        }
-        val weather = JsonUtil.handleWeatherResponse(weatherData)
-            ?: return builder.append(endWord).toString()
-        val city = weather.basic.cityName
-        val tempScope = "${weather.dailyForecasts[0].minTemp}~${weather.dailyForecasts[0].maxTemp}C"
-        val condText = weather.now.condText
-        val airBrief = weather.lifestyles.find { it.type == "air" }?.brief
-        val uvBrief = weather.lifestyles.find { it.type == "uv" }?.brief
-        return builder.append(
-            "${city}今日天气为：${condText}，${tempScope}，空气质量${airBrief}，紫外线${uvBrief}。")
-            .append(endWord).toString()
-    }
-
-    fun getNotification(weatherData: String): String {
-        val builder = StringBuilder()
-        val weather = JsonUtil.handleWeatherResponse(weatherData)
-            ?: return builder.append("天气已更新，点击查看详情").toString()
-        val tempScope = "${weather.dailyForecasts[0].minTemp}~${weather.dailyForecasts[0].maxTemp}C"
-        val condText = weather.now.condText
-        val airBrief = weather.lifestyles.find { it.type == "air" }?.brief
-        val uvBrief = weather.lifestyles.find { it.type == "uv" }?.brief
-        return builder.append("${condText}，${tempScope}，空气质量：${airBrief}，紫外线：${uvBrief}。")
-            .toString()
-    }
 }

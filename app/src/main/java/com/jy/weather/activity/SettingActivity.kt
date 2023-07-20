@@ -1,6 +1,5 @@
 package com.jy.weather.activity
 
-import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
@@ -8,7 +7,6 @@ import androidx.databinding.Observable
 import com.jy.weather.R
 import com.jy.weather.databinding.ActivitySettingBinding
 import com.jy.weather.navigator.SettingNavigator
-import com.jy.weather.service.AutoUpdateService
 import com.jy.weather.util.AlertDialogUtil
 import com.jy.weather.util.SnackbarUtil
 import com.jy.weather.viewmodel.SettingViewModel
@@ -66,26 +64,6 @@ class SettingActivity : BaseActivity(), SettingNavigator {
 
     override fun startChooseCityActivity() {
         startActivity(Intent(this, ChooseCityActivity::class.java))
-    }
-
-    override fun startAutoUpdateService() {
-        startService(Intent(this, AutoUpdateService::class.java))
-    }
-
-    override fun showIntervalDialog() {
-        AlertDialog.Builder(this, AlertDialogUtil.getTheme())
-            .setTitle(getString(R.string.update_interval))
-            .setSingleChoiceItems(viewModel.intervalTimes,
-                viewModel.getChosenIndex()) { dialog, index ->
-                viewModel.onIntervalItemChoose(index)
-                dialog.dismiss()
-            }
-            .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
-                dialog.dismiss()
-            }
-            .setCancelable(false)
-            .create()
-            .show()
     }
 
     override fun showClearCacheDialog() {

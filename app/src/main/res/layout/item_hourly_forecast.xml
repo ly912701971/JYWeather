@@ -6,7 +6,7 @@
 
         <variable
             name="hourlyForecast"
-            type="com.jy.weather.entity.HourlyForecast" />
+            type="com.jy.weather.entity.Hourly" />
     </data>
 
     <LinearLayout
@@ -21,21 +21,21 @@
             android:id="@+id/tv_update_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{hourlyForecast.time}" />
+            android:text="@{hourlyForecast.fxTime}" />
 
         <ImageView
             android:id="@+id/iv_weather_icon"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginTop="4dp"
-            app:imageId="@{hourlyForecast.icon}" />
+            app:imageId="@{hourlyForecast.iconResId}" />
 
         <TextView
             android:id="@+id/tv_temp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="@{hourlyForecast.temperature}" />
+            android:text="@{hourlyForecast.temp}" />
 
         <TextView
             android:id="@+id/tv_cond"
@@ -43,14 +43,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:gravity="center"
-            android:text="@{hourlyForecast.condText}" />
+            android:text="@{hourlyForecast.text}" />
 
         <TextView
             android:id="@+id/tv_wind_dir"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="@{hourlyForecast.windDirection}" />
+            android:text="@{hourlyForecast.windDir}" />
 
         <TextView
             android:id="@+id/tv_wind_sc"

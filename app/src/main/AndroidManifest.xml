@@ -97,28 +97,5 @@
             android:name=".activity.CommentActivity"
             android:theme="@style/Transparent"
             android:windowSoftInputMode="adjustResize" />
-
-        <service android:name=".service.AutoUpdateService" />
-        <service android:name=".service.SendMessageService" />
-
-        <receiver android:name=".receiver.AutoUpdateReceiver" />
-        <receiver android:name=".receiver.SendMessageReceiver" />
-
-        <!-- 桌面插件 -->
-        <receiver
-            android:name=".widget.WeatherWidget51"
-            android:label="卷云天气">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="android.appwidget.action.APPWIDGET_DISABLED" />
-                <action android:name="android.appwidget.action.APPWIDGET_ENABLED" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/weather_info51" />
-        </receiver>
     </application>
 </manifest>

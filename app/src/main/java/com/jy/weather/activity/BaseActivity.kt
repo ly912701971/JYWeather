@@ -23,7 +23,7 @@ open class BaseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setStatusBarBackgroundDark()
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT//强制竖屏
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT // 强制竖屏
     }
 
     /**

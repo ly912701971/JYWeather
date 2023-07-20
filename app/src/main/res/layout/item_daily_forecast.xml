@@ -6,7 +6,7 @@
 
         <variable
             name="dailyForecast"
-            type="com.jy.weather.entity.DailyForecast" />
+            type="com.jy.weather.entity.Daily" />
     </data>
 
     <LinearLayout
@@ -52,7 +52,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="@{dailyForecast.dayCondText}" />
+                android:text="@{dailyForecast.textDay}" />
         </LinearLayout>
 
         <TextView
@@ -61,7 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1.5"
             android:gravity="center"
-            android:text="@{dailyForecast.minTemp}" />
+            android:text="@{dailyForecast.tempMin}" />
 
         <TextView
             android:id="@+id/tv_temp_max"
@@ -69,7 +69,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1.5"
             android:gravity="center"
-            android:text="@{dailyForecast.maxTemp}" />
+            android:text="@{dailyForecast.tempMax}" />
     </LinearLayout>
 </layout>
 
