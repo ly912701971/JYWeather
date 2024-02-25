@@ -27,6 +27,7 @@ class JYApplication : Application() {
 
         // litepal数据库
         LitePal.initialize(this)
+        Log.i("JYApplication", "test")
     }
 
     override fun attachBaseContext(base: Context) {
